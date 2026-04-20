@@ -346,204 +346,273 @@ footer a:hover {
 
 /* ─── VoiceMail Participation Page ───────────────────────────── */
 body.voicemail-page {
-  font-family: 'Segoe UI', sans-serif;
-  background: #f4f6f9;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  min-height: 100vh;
+  --vm-bg: #f3f7ff;
+  --vm-ink: #1f2a44;
+  --vm-muted: #5a6782;
+  --vm-panel: #ffffff;
+  --vm-line: #dbe5f3;
+  --vm-primary: #3a6ff8;
+  --vm-primary-dk: #2f5de0;
+  --vm-success: #1f9d5a;
+  background:
+    radial-gradient(circle at 5% -5%, rgba(58, 111, 248, .12), transparent 38%),
+    radial-gradient(circle at 95% 10%, rgba(16, 185, 129, .09), transparent 30%),
+    linear-gradient(180deg, #f8fbff 0%, var(--vm-bg) 100%);
+  color: var(--vm-ink);
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  line-height: 1.65;
 }
 
-.voicemail-page .card {
-  background: #fff;
-  padding: 2.5rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 24px rgba(0,0,0,.1);
-  width: 100%;
-  max-width: 420px;
+.voicemail-page .vm-layout {
+  width: min(1100px, calc(100% - 2rem));
+  margin: 1.8rem auto 2.6rem;
 }
 
-.voicemail-page h1 {
-  margin-bottom: 1.5rem;
-  font-size: 1.6rem;
-  color: #333;
+.voicemail-page .panel {
+  background: var(--vm-panel);
+  border: 1px solid rgba(142, 163, 196, .24);
+  border-radius: 18px;
+  box-shadow: 0 16px 34px rgba(20, 38, 76, .08);
+}
+
+.voicemail-page .site-header {
+  padding: 2rem 2.2rem;
+  margin-bottom: 1.2rem;
   text-align: center;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fbff 40%, #eef4ff 100%);
+}
+
+.voicemail-page .site-header h1 {
+  margin: 0;
+  font-size: clamp(1.8rem, 3.4vw, 2.5rem);
+  letter-spacing: -.025em;
+  line-height: 1.2;
+}
+
+.voicemail-page .site-header p {
+  max-width: 72ch;
+  margin: .85rem auto 0;
+  color: var(--vm-muted);
+  font-size: 1.04rem;
+}
+
+.voicemail-page .vm-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 1.2rem;
+  align-items: start;
+}
+
+.voicemail-page .vm-main {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.voicemail-page .introduction,
+.voicemail-page .faq,
+.voicemail-page .card {
+  padding: 1.45rem 1.55rem;
+}
+
+.voicemail-page h2 {
+  margin: 0 0 .9rem;
+  color: #132449;
+  line-height: 1.25;
+}
+
+.voicemail-page .introduction p {
+  color: var(--vm-muted);
+  margin-bottom: .85rem;
+}
+
+.voicemail-page .example-title {
+  margin: 1rem 0 .55rem;
+  font-size: 1.02rem;
+  color: #2a3b5b;
+}
+
+.voicemail-page .example-quote {
+  margin: 0 0 .9rem;
+  background: linear-gradient(180deg, #f5f9ff 0%, #f1f6fd 100%);
+  border: 1px solid #d8e7fb;
+  border-left: 4px solid var(--vm-primary);
+  border-radius: 12px;
+  padding: .95rem 1.1rem;
+  color: #43506d;
+  font-style: italic;
+}
+
+.voicemail-page .register-card {
+  position: sticky;
+  top: 1rem;
+}
+
+.voicemail-page .card-title {
+  margin: 0 0 1rem;
+  text-align: center;
+  font-size: 1.5rem;
 }
 
 .voicemail-page label {
   display: block;
-  margin-bottom: .3rem;
+  margin-bottom: .32rem;
   font-weight: 600;
-  color: #555;
   font-size: .9rem;
+  color: #35415f;
 }
 
 .voicemail-page input {
   width: 100%;
-  padding: .65rem .8rem;
-  margin-bottom: 1.2rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 1rem;
-  transition: border-color .2s;
+  border: 1px solid #cfd9e8;
+  border-radius: 10px;
+  padding: .7rem .82rem;
+  margin-bottom: .95rem;
+  font-size: .98rem;
+  color: #132449;
+  background: #fbfdff;
+  transition: border-color .18s, box-shadow .18s, transform .12s;
+}
+
+.voicemail-page input::placeholder {
+  color: #8a96ae;
 }
 
 .voicemail-page input:focus {
   outline: none;
-  border-color: #4a90d9;
+  border-color: var(--vm-primary);
+  box-shadow: 0 0 0 3px rgba(58, 111, 248, .16);
 }
 
 .voicemail-page button {
   width: 100%;
-  padding: .75rem;
-  background: #4a90d9;
+  border: 0;
+  border-radius: 10px;
+  padding: .78rem;
+  font-size: .98rem;
+  font-weight: 700;
+  background: linear-gradient(180deg, var(--vm-primary) 0%, var(--vm-primary-dk) 100%);
   color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-size: 1rem;
   cursor: pointer;
-  transition: background .2s;
+  transition: transform .15s, filter .2s;
 }
 
 .voicemail-page button:hover {
-  background: #3a7bc8;
+  filter: brightness(1.04);
+  transform: translateY(-1px);
+}
+
+.voicemail-page button:active {
+  transform: translateY(0);
 }
 
 .voicemail-page .msg {
-  text-align: center;
-  margin-top: 1rem;
-  color: green;
   display: none;
-}
-
-.voicemail-page .faq {
-  max-width: 600px;
-  width: 100%;
-  margin-top: 2.5rem;
-}
-
-.voicemail-page .faq h2 {
+  margin-top: .9rem;
+  padding: .85rem .95rem;
+  border-radius: 10px;
+  background: #ecfdf4;
+  border: 1px solid #bceacc;
+  color: #16663a;
   text-align: center;
-  color: #333;
-  margin-bottom: 1rem;
-  font-size: 1.4rem;
 }
 
-.voicemail-page details {
-  background: #fff;
-  border-radius: 8px;
-  margin-bottom: .6rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,.06);
-}
-
-.voicemail-page summary {
-  padding: .9rem 1.2rem;
-  cursor: pointer;
-  font-weight: 600;
-  color: #444;
-  list-style: none;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.voicemail-page summary::after {
-  content: '+';
-  font-size: 1.2rem;
-  color: #4a90d9;
-}
-
-.voicemail-page details[open] summary::after {
-  content: '−';
-}
-
-.voicemail-page details p {
-  padding: 0 1.2rem 1rem;
-  color: #666;
-  line-height: 1.6;
+.voicemail-page #participantId {
+  display: inline-block;
+  margin-top: .25rem;
+  font-size: 1.5rem;
+  letter-spacing: .08em;
+  color: var(--vm-success);
 }
 
 .voicemail-page .instructions {
-  margin-top: 1.5rem;
-  border-top: 1px solid #e0e0e0;
-  padding-top: 1.2rem;
   display: none;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--vm-line);
 }
 
 .voicemail-page .instructions h2 {
-  color: #333;
-  font-size: 1.3rem;
-  margin-bottom: .8rem;
+  margin-bottom: .6rem;
+  font-size: 1.2rem;
 }
 
 .voicemail-page .instructions ol {
-  padding-left: 1.2rem;
-  color: #555;
-  line-height: 1.8;
+  padding-left: 1.15rem;
+  color: #4f5e7d;
 }
 
-.voicemail-page .instructions ol li {
-  margin-bottom: .4rem;
+.voicemail-page .instructions li {
+  margin-bottom: .45rem;
 }
 
-.voicemail-page .instructions .phone {
-  font-size: 1.2rem;
+.voicemail-page .room-list {
+  margin-top: .4rem;
+  padding-left: 1rem;
+}
+
+.voicemail-page .phone {
+  color: var(--vm-primary-dk);
   font-weight: 700;
-  color: #4a90d9;
 }
 
-.voicemail-page .introduction {
-  max-width: 600px;
-  width: 100%;
-  margin-top: 2.5rem;
+.voicemail-page .faq h2 {
+  margin-bottom: .8rem;
+}
+
+.voicemail-page .faq details {
   background: #fff;
-  border-left: 4px solid #34a853;
-  border-radius: 8px;
-  padding: 1.5rem 1.8rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,.06);
-}
-
-.voicemail-page .introduction h2 {
-  color: #333;
-  font-size: 1.3rem;
-  margin-bottom: .8rem;
-}
-
-.voicemail-page .introduction p {
-  color: #555;
-  line-height: 1.7;
-  margin-bottom: .8rem;
-}
-
-.voicemail-page .introduction ul {
-  padding-left: 1.2rem;
-  color: #555;
-  line-height: 1.8;
-}
-
-.voicemail-page .introduction ul li {
-  margin-bottom: .3rem;
-}
-
-.voicemail-page .site-header {
-  width: 100%;
-  max-width: 700px;
-  text-align: center;
-  margin-top: 2rem;
-  margin-bottom: .5rem;
-}
-
-.voicemail-page .site-header h1 {
-  font-size: 2rem;
-  color: #333;
+  border: 1px solid #d9e4f2;
+  border-radius: 12px;
+  box-shadow: none;
   margin-bottom: .6rem;
 }
 
-.voicemail-page .site-header p {
-  color: #666;
-  font-size: 1.05rem;
-  line-height: 1.6;
-  max-width: 550px;
-  margin: 0 auto;
+.voicemail-page .faq summary {
+  padding: .9rem 1rem;
+  color: #25375b;
+  font-size: .98rem;
+}
+
+.voicemail-page .faq summary::after {
+  content: '+';
+  color: var(--vm-primary);
+  font-size: 1.15rem;
+}
+
+.voicemail-page .faq details[open] summary::after {
+  content: '−';
+}
+
+.voicemail-page .faq details p {
+  padding: 0 1rem .95rem;
+  color: #556684;
+}
+
+@media (max-width: 980px) {
+  .voicemail-page .vm-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .voicemail-page .register-card {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .voicemail-page .vm-layout {
+    width: min(100%, calc(100% - 1rem));
+    margin-top: .8rem;
+  }
+
+  .voicemail-page .site-header,
+  .voicemail-page .introduction,
+  .voicemail-page .faq,
+  .voicemail-page .card {
+    padding: 1.05rem 1rem;
+    border-radius: 14px;
+  }
+
+  .voicemail-page .site-header p {
+    font-size: .96rem;
+  }
 }
