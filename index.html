@@ -12,8 +12,8 @@
         label { display: block; margin-bottom: .3rem; font-weight: 600; color: #555; font-size: .9rem; }
         input { width: 100%; padding: .65rem .8rem; margin-bottom: 1.2rem; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; transition: border-color .2s; }
         input:focus { outline: none; border-color: #4a90d9; }
-        button { width: 100%; padding: .75rem; background: #4a90d9; color: #fff; border: none; border-radius: 6px; font-size: 1rem; cursor: pointer; transition: background .2s; }
-        button:hover { background: #3a7bc8; }
+        .register-btn { width: 100%; padding: .75rem; background: #4a90d9; color: #fff; border: none; border-radius: 6px; font-size: 1rem; cursor: pointer; transition: background .2s; }
+        .register-btn:hover { background: #3a7bc8; }
         .msg { text-align: center; margin-top: 1rem; color: green; display: none; }
         .faq { max-width: 600px; width: 100%; margin-top: 2.5rem; }
         .faq h2 { text-align: center; color: #333; margin-bottom: 1rem; font-size: 1.4rem; }
@@ -35,101 +35,250 @@
         .site-header { width: 100%; max-width: 700px; text-align: center; margin-top: 2rem; margin-bottom: .5rem; }
         .site-header h1 { font-size: 2rem; color: #333; margin-bottom: .6rem; }
         .site-header p { color: #666; font-size: 1.05rem; line-height: 1.6; max-width: 550px; margin: 0 auto; }
+        .lang-toggle { width: 100%; max-width: 700px; display: flex; justify-content: flex-end; margin-top: 1.2rem; }
+        .lang-btn { border: 1px solid #cfd5df; background: #fff; color: #444; padding: .4rem .75rem; border-radius: 6px; margin-left: .5rem; cursor: pointer; font-size: .9rem; }
+        .lang-btn.active { background: #4a90d9; border-color: #4a90d9; color: #fff; }
     </style>
 </head>
 <body style="flex-direction:column;">
+    <div class="lang-toggle" role="group" aria-label="Language switcher">
+        <button type="button" class="lang-btn active" data-lang="en">English</button>
+        <button type="button" class="lang-btn" data-lang="de">Deutsch</button>
+    </div>
+
     <div class="site-header">
-        <h1>🎙️ VoiceMail Research</h1>
-        <p>Support our acoustic research by leaving short voicemails from different rooms in your apartment, in which you briefly describe your surroundings. It only takes about 5 minutes — and helps us understand how room properties affect voice recordings.</p>
+        <h1 data-i18n="siteTitle">🎙️ VoiceMail Research</h1>
+        <p data-i18n="siteSubtitle">Support our acoustic research by leaving short voicemails from different rooms in your apartment, in which you briefly describe your surroundings. It only takes about 5 minutes — and helps us understand how room properties affect voice recordings.</p>
     </div>
 
     <div class="introduction">
-        <h2>📖 Introduction</h2>
-        <p>Thank you for your interest in our acoustic research study! We are investigating how different rooms and their properties affect voice recordings.</p>
-        <p>As a participant, you will <strong>leave a voicemail of approximately 1 minute from each of 5 rooms in your apartment</strong> (bathroom, living room, kitchen, bedroom, and hallway), briefly describing your surroundings in each. The whole process takes about 5 minutes.</p>
-        <p><strong>Talking for about 1 minute is the core of the experiment.</strong> Your descriptions don’t need to be perfectly accurate — just do your best. If describing the room doesn’t take up the full minute, feel free to simply talk about anything — the weather, your favorite dish, or “What would you take to an island?” — just keep speaking naturally.</p>
-           <h3 style="margin-top:1rem; margin-bottom:.5rem; color:#333; font-size:1.1rem;">💬 Example  Voicemail Message</h3>
-        <blockquote style="background:#f0f4f8; border-left:3px solid #4a90d9; padding:1rem 1.2rem; border-radius:6px; color:#444; font-style:italic; line-height:1.7;">
+        <h2 data-i18n="introTitle">📖 Introduction</h2>
+        <p data-i18n="introP1">Thank you for your interest in our acoustic research study! We are investigating how different rooms and their properties affect voice recordings.</p>
+        <p data-i18n="introP2">As a participant, you will <strong>leave a voicemail of approximately 1 minute from each of 5 rooms in your apartment</strong> (bathroom, living room, kitchen, bedroom, and hallway), briefly describing your surroundings in each. The whole process takes about 5 minutes.</p>
+        <p data-i18n="introP3"><strong>Talking for about 1 minute is the core of the experiment.</strong> Your descriptions don’t need to be perfectly accurate — just do your best. If describing the room doesn’t take up the full minute, feel free to simply talk about anything — the weather, your favorite dish, or “What would you take to an island?” — just keep speaking naturally.</p>
+        <h3 style="margin-top:1rem; margin-bottom:.5rem; color:#333; font-size:1.1rem;" data-i18n="exampleTitle">💬 Example Voicemail Message</h3>
+        <blockquote style="background:#f0f4f8; border-left:3px solid #4a90d9; padding:1rem 1.2rem; border-radius:6px; color:#444; font-style:italic; line-height:1.7;" data-i18n="exampleQuote">
             "Hello this is Participant 113, it is April 20th, Sunday, around 3 PM. I am in the bathroom, calling from a Samsung Galaxy A54. The door is closed. The bathroom is approximately 4 meters wide and 3 meters across, ceiling height is approximately 2.5 meters. The floor is tiled, and the walls are tiled up to a height of approx 2 meters. The rest is wallpaper. There is a sink, a toilet and a bathtub. I am walking around the room, now I am standing rather close to a wall. Hmm, what else can I say... the weather today is really nice, sunny and about 20 degrees. I think if I could take one thing to a desert island, it would probably be a good book. Anyway, I think that's about a minute, goodbye!"
         </blockquote>
-        <p>All data is handled confidentially and used for scientific purposes only.</p>
-        <p>To get started, <strong>register below</strong> with your email and phone number. Your participant ID and detailed instructions will appear <strong>immediately on this page</strong> — no need to wait for an email or SMS.</p>
+        <p data-i18n="introP4">All data is handled confidentially and used for scientific purposes only.</p>
+        <p data-i18n="introP5">To get started, <strong>register below</strong> with your email and phone number. Your participant ID and detailed instructions will appear <strong>immediately on this page</strong> — no need to wait for an email or SMS.</p>
      
     </div>
 
     <div class="card">
-        <h1>Participate</h1>
+        <h1 data-i18n="participateTitle">Participate</h1>
         <form id="contactForm">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="you@example.com" required>
+            <label for="email" data-i18n="emailLabel">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" data-i18n-placeholder="emailPlaceholder" required>
 
-            <label for="phone">Phone Number</label>
-            <input type="tel" id="phone" name="phone" placeholder="+1 234 567 890" required>
+            <label for="phone" data-i18n="phoneLabel">Phone Number</label>
+            <input type="tel" id="phone" name="phone" placeholder="+1 234 567 890" data-i18n-placeholder="phonePlaceholder" required>
 
-            <button type="submit">Register</button>
+            <button type="submit" class="register-btn" data-i18n="registerButton">Register</button>
         </form>
-        <p class="msg" id="msg">Thank you! Your participant ID is <br> <strong id="participantId"></strong></p> 
+        <p class="msg" id="msg"><span id="msgText" data-i18n="msgText">Thank you! Your participant ID is</span> <br> <strong id="participantId"></strong></p>
         <div class="instructions" id="instructionsBox">
-            <h2>📋 Instructions</h2>
+            <h2 data-i18n="instructionsTitle">📋 Instructions</h2>
             <ol>
-                <li>Call the following number for <strong>each</strong> room and leave a separate voicemail (~1 minute each): <span class="phone">+49 123 456 789</span></li>
-                <li>Leave one voicemail per room for each of the following 5 rooms:
+                <li data-i18n="i1">Call the following number for <strong>each</strong> room and leave a separate voicemail (~1 minute each): <span class="phone">+49 123 456 789</span></li>
+                <li data-i18n="i2">Leave one voicemail per room for each of the following 5 rooms:
                     <ul style="margin-top:.4rem;">
-                        <li>🛁 Bathroom</li>
-                        <li>🛋️ Living room</li>
-                        <li>🍳 Kitchen</li>
-                        <li>🛏️ Bedroom</li>
-                        <li>🚪 Hallway</li>
+                        <li data-i18n="room1">🛁 Bathroom</li>
+                        <li data-i18n="room2">🛋️ Living room</li>
+                        <li data-i18n="room3">🍳 Kitchen</li>
+                        <li data-i18n="room4">🛏️ Bedroom</li>
+                        <li data-i18n="room5">🚪 Hallway</li>
                     </ul>
                 </li>
-                <li>For each call, go into the room and close the door.</li>
-                <li>Start by stating your <strong>participant ID</strong> digit by digit (e.g. "one-two-three-four").</li>
-                <li>State the <strong>date, day and approximate time</strong> (e.g. "It is April 20th, Sunday, around 3 PM").</li>
-                <li>State the <strong>phone model</strong> you are calling from (e.g. "I am calling from a Samsung Galaxy A54").</li>
-                <li>State <strong>which room</strong> you are in (e.g. "I am in the bathroom").</li>
-                <li>Estimate and mention the <strong>size of the room</strong> (e.g. "approximately 3 by 4 meters, ceiling height about 2.5 meters"). A rough estimate is fine.</li>
-                <li>Describe the <strong>surface materials</strong> — floors, walls, and ceiling (e.g. tiles, carpet, hardwood, concrete, wallpaper).</li>
-                <li>Describe any <strong>other features</strong> you notice — furniture, windows, curtains, appliances, etc.</li>
-                <li><strong>For acoustic variation, it is encouraged to walk around the room</strong> while talking — feel free to move around freely.</li>
-                <li><strong>Talking for about 1 minute is the core of the experiment.</strong> If your room description doesn't fill the full minute, just keep talking about anything — the weather, your favorite dish, or "What would you take to an island?" The important thing is to keep speaking naturally.</li>
-                <li>Hang up, then move to the next room and call again.</li>
+                <li data-i18n="i3">For each call, go into the room and close the door.</li>
+                <li data-i18n="i4">Start by stating your <strong>participant ID</strong> digit by digit (e.g. "one-two-three-four").</li>
+                <li data-i18n="i5">State the <strong>date, day and approximate time</strong> (e.g. "It is April 20th, Sunday, around 3 PM").</li>
+                <li data-i18n="i6">State the <strong>phone model</strong> you are calling from (e.g. "I am calling from a Samsung Galaxy A54").</li>
+                <li data-i18n="i7">State <strong>which room</strong> you are in (e.g. "I am in the bathroom").</li>
+                <li data-i18n="i8">Estimate and mention the <strong>size of the room</strong> (e.g. "approximately 3 by 4 meters, ceiling height about 2.5 meters"). A rough estimate is fine.</li>
+                <li data-i18n="i9">Describe the <strong>surface materials</strong> — floors, walls, and ceiling (e.g. tiles, carpet, hardwood, concrete, wallpaper).</li>
+                <li data-i18n="i10">Describe any <strong>other features</strong> you notice — furniture, windows, curtains, appliances, etc.</li>
+                <li data-i18n="i11"><strong>For acoustic variation, it is encouraged to walk around the room</strong> while talking — feel free to move around freely.</li>
+                <li data-i18n="i12"><strong>Talking for about 1 minute is the core of the experiment.</strong> If your room description doesn't fill the full minute, just keep talking about anything — the weather, your favorite dish, or "What would you take to an island?" The important thing is to keep speaking naturally.</li>
+                <li data-i18n="i13">Hang up, then move to the next room and call again.</li>
             </ol>
-            <h3 style="margin-top:1rem; margin-bottom:.5rem; color:#333; font-size:1.1rem;">💬 Example  Voicemail Message</h3>
-            <blockquote style="background:#f0f4f8; border-left:3px solid #4a90d9; padding:1rem 1.2rem; border-radius:6px; color:#444; font-style:italic; line-height:1.7;">
+            <h3 style="margin-top:1rem; margin-bottom:.5rem; color:#333; font-size:1.1rem;" data-i18n="exampleTitle">💬 Example Voicemail Message</h3>
+            <blockquote style="background:#f0f4f8; border-left:3px solid #4a90d9; padding:1rem 1.2rem; border-radius:6px; color:#444; font-style:italic; line-height:1.7;" data-i18n="exampleQuote">
                 "Hello this is Participant 113, it is April 20th, Sunday, around 3 PM. I am in the bathroom, calling from a Samsung Galaxy A54. The door is closed. The bathroom is approximately 4 meters wide and 3 meters across, ceiling height is approximately 2.5 meters. The floor is tiled, and the walls are tiled up to a height of approx 2 meters. The rest is wallpaper. There is a sink, a toilet and a bathtub. I am walking around the room, now I am standing rather close to a wall. Hmm, what else can I say... the weather today is really nice, sunny and about 20 degrees. I think if I could take one thing to a desert island, it would probably be a good book. Anyway, I think that's about a minute, goodbye!"
             </blockquote>
         </div>
     </div>
 
     <div class="faq">
-        <h2>FAQ</h2>
+        <h2 data-i18n="faqTitle">FAQ</h2>
         <details>
-            <summary>Does it need to be completely silent while I record?</summary>
-            <p>No — normal background noise is perfectly fine. You do not need to wait for silence. Just speak clearly so your voice is audible.</p>
+            <summary data-i18n="faqQ1">Does it need to be completely silent while I record?</summary>
+            <p data-i18n="faqA1">No — normal background noise is perfectly fine. You do not need to wait for silence. Just speak clearly so your voice is audible.</p>
         </details>
         <details>
-            <summary>Do I need to know the exact dimensions of my rooms?</summary>
-            <p>Not at all. A rough estimate is enough (e.g. "about 3 by 4 meters"). You don't need to measure anything — just describe what you see and estimate as best you can.</p>
+            <summary data-i18n="faqQ2">Do I need to know the exact dimensions of my rooms?</summary>
+            <p data-i18n="faqA2">Not at all. A rough estimate is enough (e.g. "about 3 by 4 meters"). You don't need to measure anything — just describe what you see and estimate as best you can.</p>
         </details>
         <details>
-            <summary>How is my data handled?</summary>
-            <p>All recordings are stored anonymously and linked only to your participant ID. Your phone number and email will be deleted after your trial has been processed. The data is used exclusively for scientific research purposes.</p>
+            <summary data-i18n="faqQ3">How is my data handled?</summary>
+            <p data-i18n="faqA3">All recordings are stored anonymously and linked only to your participant ID. Your phone number and email will be deleted after your trial has been processed. The data is used exclusively for scientific research purposes.</p>
         </details>
         <details>
-            <summary>How long does the whole process take?</summary>
-            <p>Each voicemail should be about 1 minute long. With 5 rooms, the total time effort is approximately 5 minutes.</p>
+            <summary data-i18n="faqQ4">How long does the whole process take?</summary>
+            <p data-i18n="faqA4">Each voicemail should be about 1 minute long. With 5 rooms, the total time effort is approximately 5 minutes.</p>
         </details>
         <details>
-            <summary>What if I forgot to mention something?</summary>
-            <p>Don't worry — it's not a big issue if you forgot to state some information. Just try to cover as much as you can. There is no need to re-record.</p>
+            <summary data-i18n="faqQ5">What if I forgot to mention something?</summary>
+            <p data-i18n="faqA5">Don't worry — it's not a big issue if you forgot to state some information. Just try to cover as much as you can. There is no need to re-record.</p>
         </details>
         <details>
-            <summary>What if I messed up a recording?</summary>
-            <p>Simply call again and leave a new voicemail for that room. If there are multiple voicemails for the same room, only the most recent one will be used.</p>
+            <summary data-i18n="faqQ6">What if I messed up a recording?</summary>
+            <p data-i18n="faqA6">Simply call again and leave a new voicemail for that room. If there are multiple voicemails for the same room, only the most recent one will be used.</p>
+        </details>
+        <details>
+            <summary data-i18n="faqQ7">Which languages can I leave the voicemail in?</summary>
+            <p data-i18n="faqA7">English and German are both perfectly fine.</p>
         </details>
     </div>
 
     <script>
+        const translations = {
+            en: {
+                pageTitle: 'Participate',
+                siteTitle: '🎙️ VoiceMail Research',
+                siteSubtitle: 'Support our acoustic research by leaving short voicemails from different rooms in your apartment, in which you briefly describe your surroundings. It only takes about 5 minutes — and helps us understand how room properties affect voice recordings.',
+                introTitle: '📖 Introduction',
+                introP1: 'Thank you for your interest in our acoustic research study! We are investigating how different rooms and their properties affect voice recordings.',
+                introP2: 'As a participant, you will <strong>leave a voicemail of approximately 1 minute from each of 5 rooms in your apartment</strong> (bathroom, living room, kitchen, bedroom, and hallway), briefly describing your surroundings in each. The whole process takes about 5 minutes.',
+                introP3: '<strong>Talking for about 1 minute is the core of the experiment.</strong> Your descriptions don’t need to be perfectly accurate — just do your best. If describing the room doesn’t take up the full minute, feel free to simply talk about anything — the weather, your favorite dish, or “What would you take to an island?” — just keep speaking naturally.',
+                exampleTitle: '💬 Example Voicemail Message',
+                exampleQuote: '"Hello this is Participant 113, it is April 20th, Sunday, around 3 PM. I am in the bathroom, calling from a Samsung Galaxy A54. The door is closed. The bathroom is approximately 4 meters wide and 3 meters across, ceiling height is approximately 2.5 meters. The floor is tiled, and the walls are tiled up to a height of approx 2 meters. The rest is wallpaper. There is a sink, a toilet and a bathtub. I am walking around the room, now I am standing rather close to a wall. Hmm, what else can I say... the weather today is really nice, sunny and about 20 degrees. I think if I could take one thing to a desert island, it would probably be a good book. Anyway, I think that\'s about a minute, goodbye!"',
+                introP4: 'All data is handled confidentially and used for scientific purposes only.',
+                introP5: 'To get started, <strong>register below</strong> with your email and phone number. Your participant ID and detailed instructions will appear <strong>immediately on this page</strong> — no need to wait for an email or SMS.',
+                participateTitle: 'Participate',
+                emailLabel: 'Email',
+                emailPlaceholder: 'you@example.com',
+                phoneLabel: 'Phone Number',
+                phonePlaceholder: '+1 234 567 890',
+                registerButton: 'Register',
+                msgText: 'Thank you! Your participant ID is',
+                instructionsTitle: '📋 Instructions',
+                i1: 'Call the following number for <strong>each</strong> room and leave a separate voicemail (~1 minute each): <span class="phone">+49 123 456 789</span>',
+                i2: 'Leave one voicemail per room for each of the following 5 rooms:',
+                room1: '🛁 Bathroom',
+                room2: '🛋️ Living room',
+                room3: '🍳 Kitchen',
+                room4: '🛏️ Bedroom',
+                room5: '🚪 Hallway',
+                i3: 'For each call, go into the room and close the door.',
+                i4: 'Start by stating your <strong>participant ID</strong> digit by digit (e.g. "one-two-three-four").',
+                i5: 'State the <strong>date, day and approximate time</strong> (e.g. "It is April 20th, Sunday, around 3 PM").',
+                i6: 'State the <strong>phone model</strong> you are calling from (e.g. "I am calling from a Samsung Galaxy A54").',
+                i7: 'State <strong>which room</strong> you are in (e.g. "I am in the bathroom").',
+                i8: 'Estimate and mention the <strong>size of the room</strong> (e.g. "approximately 3 by 4 meters, ceiling height about 2.5 meters"). A rough estimate is fine.',
+                i9: 'Describe the <strong>surface materials</strong> — floors, walls, and ceiling (e.g. tiles, carpet, hardwood, concrete, wallpaper).',
+                i10: 'Describe any <strong>other features</strong> you notice — furniture, windows, curtains, appliances, etc.',
+                i11: '<strong>For acoustic variation, it is encouraged to walk around the room</strong> while talking — feel free to move around freely.',
+                i12: '<strong>Talking for about 1 minute is the core of the experiment.</strong> If your room description doesn\'t fill the full minute, just keep talking about anything — the weather, your favorite dish, or "What would you take to an island?" The important thing is to keep speaking naturally.',
+                i13: 'Hang up, then move to the next room and call again.',
+                faqTitle: 'FAQ',
+                faqQ1: 'Does it need to be completely silent while I record?',
+                faqA1: 'No — normal background noise is perfectly fine. You do not need to wait for silence. Just speak clearly so your voice is audible.',
+                faqQ2: 'Do I need to know the exact dimensions of my rooms?',
+                faqA2: 'Not at all. A rough estimate is enough (e.g. "about 3 by 4 meters"). You don\'t need to measure anything — just describe what you see and estimate as best you can.',
+                faqQ3: 'How is my data handled?',
+                faqA3: 'All recordings are stored anonymously and linked only to your participant ID. Your phone number and email will be deleted after your trial has been processed. The data is used exclusively for scientific research purposes.',
+                faqQ4: 'How long does the whole process take?',
+                faqA4: 'Each voicemail should be about 1 minute long. With 5 rooms, the total time effort is approximately 5 minutes.',
+                faqQ5: 'What if I forgot to mention something?',
+                faqA5: 'Don\'t worry — it\'s not a big issue if you forgot to state some information. Just try to cover as much as you can. There is no need to re-record.',
+                faqQ6: 'What if I messed up a recording?',
+                faqA6: 'Simply call again and leave a new voicemail for that room. If there are multiple voicemails for the same room, only the most recent one will be used.',
+                faqQ7: 'Which languages can I leave the voicemail in?',
+                faqA7: 'English and German are both perfectly fine.'
+            },
+            de: {
+                pageTitle: 'Teilnehmen',
+                siteTitle: '🎙️ VoiceMail-Forschung',
+                siteSubtitle: 'Unterstützen Sie unsere akustische Forschung, indem Sie kurze Voicemails aus verschiedenen Räumen Ihrer Wohnung hinterlassen und dabei kurz Ihre Umgebung beschreiben. Das dauert nur etwa 5 Minuten — und hilft uns zu verstehen, wie Raumeigenschaften Sprachaufnahmen beeinflussen.',
+                introTitle: '📖 Einführung',
+                introP1: 'Vielen Dank für Ihr Interesse an unserer akustischen Forschungsstudie! Wir untersuchen, wie unterschiedliche Räume und deren Eigenschaften Sprachaufnahmen beeinflussen.',
+                introP2: 'Als Teilnehmer hinterlassen Sie <strong>aus 5 Räumen Ihrer Wohnung jeweils eine Voicemail von ungefähr 1 Minute</strong> (Badezimmer, Wohnzimmer, Küche, Schlafzimmer und Flur) und beschreiben dabei kurz Ihre Umgebung. Der gesamte Ablauf dauert etwa 5 Minuten.',
+                introP3: '<strong>Etwa 1 Minute zu sprechen ist der Kern des Experiments.</strong> Ihre Beschreibungen müssen nicht perfekt sein — geben Sie einfach Ihr Bestes. Wenn die Raumbeschreibung keine ganze Minute füllt, sprechen Sie gerne einfach über etwas anderes weiter — z. B. über das Wetter, Ihr Lieblingsgericht oder „Was würden Sie auf eine Insel mitnehmen?“ — wichtig ist nur, natürlich weiterzusprechen.',
+                exampleTitle: '💬 Beispiel für eine Voicemail-Nachricht',
+                exampleQuote: '"Hallo, hier ist Teilnehmer 113, es ist der 20. April, Sonntag, etwa 15 Uhr. Ich bin im Badezimmer und rufe von einem Samsung Galaxy A54 an. Die Tür ist geschlossen. Das Badezimmer ist ungefähr 4 Meter breit und 3 Meter lang, die Deckenhöhe beträgt etwa 2,5 Meter. Der Boden ist gefliest, und die Wände sind bis etwa 2 Meter Höhe gefliest. Der Rest ist tapeziert. Es gibt ein Waschbecken, eine Toilette und eine Badewanne. Ich gehe gerade im Raum umher, jetzt stehe ich eher nahe an einer Wand. Hm, was kann ich noch sagen … das Wetter heute ist wirklich schön, sonnig und etwa 20 Grad. Wenn ich eine Sache auf eine einsame Insel mitnehmen könnte, wäre es wahrscheinlich ein gutes Buch. Ich glaube, das war ungefähr eine Minute, auf Wiederhören!"',
+                introP4: 'Alle Daten werden vertraulich behandelt und ausschließlich zu wissenschaftlichen Zwecken verwendet.',
+                introP5: 'Um zu starten, <strong>registrieren Sie sich unten</strong> mit Ihrer E-Mail-Adresse und Telefonnummer. Ihre Teilnehmenden-ID und die detaillierten Anweisungen erscheinen <strong>sofort auf dieser Seite</strong> — Sie müssen nicht auf eine E-Mail oder SMS warten.',
+                participateTitle: 'Teilnehmen',
+                emailLabel: 'E-Mail',
+                emailPlaceholder: 'sie@beispiel.de',
+                phoneLabel: 'Telefonnummer',
+                phonePlaceholder: '+49 170 1234567',
+                registerButton: 'Registrieren',
+                msgText: 'Danke! Ihre Teilnehmer-ID ist',
+                instructionsTitle: '📋 Anweisungen',
+                i1: 'Rufen Sie für <strong>jeden</strong> Raum die folgende Nummer an und hinterlassen Sie jeweils eine separate Voicemail (~1 Minute): <span class="phone">+49 123 456 789</span>',
+                i2: 'Hinterlassen Sie pro Raum eine Voicemail für die folgenden 5 Räume:',
+                room1: '🛁 Badezimmer',
+                room2: '🛋️ Wohnzimmer',
+                room3: '🍳 Küche',
+                room4: '🛏️ Schlafzimmer',
+                room5: '🚪 Flur',
+                i3: 'Gehen Sie für jeden Anruf in den jeweiligen Raum und schließen Sie die Tür.',
+                i4: 'Nennen Sie zu Beginn Ihre <strong>Teilnehmer-ID</strong> Ziffer für Ziffer (z. B. „eins-zwei-drei-vier").',
+                i5: 'Nennen Sie <strong>Datum, Wochentag und ungefähre Uhrzeit</strong> (z. B. „Es ist der 20. April, Sonntag, etwa 15 Uhr").',
+                i6: 'Nennen Sie das <strong>Handymodell</strong>, von dem Sie anrufen (z. B. „Ich rufe von einem Samsung Galaxy A54 an").',
+                i7: 'Nennen Sie, <strong>in welchem Raum</strong> Sie sich befinden (z. B. „Ich bin im Badezimmer").',
+                i8: 'Schätzen und nennen Sie die <strong>Größe des Raums</strong> (z. B. „ungefähr 3 mal 4 Meter, Deckenhöhe etwa 2,5 Meter"). Eine grobe Schätzung ist ausreichend.',
+                i9: 'Beschreiben Sie die <strong>Oberflächenmaterialien</strong> — Boden, Wände und Decke (z. B. Fliesen, Teppich, Parkett, Beton, Tapete).',
+                i10: 'Beschreiben Sie <strong>weitere Merkmale</strong>, die Ihnen auffallen — Möbel, Fenster, Vorhänge, Geräte usw.',
+                i11: '<strong>Für akustische Variation können Sie sich beim Sprechen gerne im Raum bewegen</strong> — bewegen Sie sich frei.',
+                i12: '<strong>Etwa 1 Minute zu sprechen ist der Kern des Experiments.</strong> Wenn Ihre Raumbeschreibung nicht die ganze Minute füllt, sprechen Sie einfach über etwas anderes weiter — das Wetter, Ihr Lieblingsgericht oder „Was würden Sie auf eine Insel mitnehmen?" Wichtig ist, natürlich weiterzusprechen.',
+                i13: 'Legen Sie auf, gehen Sie in den nächsten Raum und rufen Sie erneut an.',
+                faqTitle: 'FAQ',
+                faqQ1: 'Muss es beim Aufnehmen völlig still sein?',
+                faqA1: 'Nein — normale Hintergrundgeräusche sind völlig in Ordnung. Sie müssen nicht auf Stille warten. Sprechen Sie einfach deutlich, damit Ihre Stimme gut hörbar ist.',
+                faqQ2: 'Muss ich die exakten Maße meiner Räume kennen?',
+                faqA2: 'Nein. Eine grobe Schätzung reicht aus (z. B. „etwa 3 mal 4 Meter"). Sie müssen nichts ausmessen — beschreiben Sie einfach, was Sie sehen, so gut Sie können.',
+                faqQ3: 'Wie werden meine Daten behandelt?',
+                faqA3: 'Alle Aufnahmen werden anonym gespeichert und nur mit Ihrer Teilnehmer-ID verknüpft. Ihre Telefonnummer und E-Mail-Adresse werden gelöscht, sobald Ihr Durchlauf verarbeitet wurde. Die Daten werden ausschließlich für wissenschaftliche Forschungszwecke verwendet.',
+                faqQ4: 'Wie lange dauert der gesamte Ablauf?',
+                faqA4: 'Jede Voicemail sollte etwa 1 Minute dauern. Bei 5 Räumen beträgt der gesamte Zeitaufwand ungefähr 5 Minuten.',
+                faqQ5: 'Was ist, wenn ich etwas vergessen habe?',
+                faqA5: 'Kein Problem — wenn Sie etwas nicht erwähnt haben, ist das nicht schlimm. Versuchen Sie einfach, so viel wie möglich abzudecken. Eine Neuaufnahme ist nicht nötig.',
+                faqQ6: 'Was ist, wenn ich mich bei einer Aufnahme versprochen habe?',
+                faqA6: 'Rufen Sie einfach erneut an und hinterlassen Sie für diesen Raum eine neue Voicemail. Wenn mehrere Voicemails für denselben Raum vorliegen, wird nur die zuletzt eingegangene verwendet.',
+                faqQ7: 'In welchen Sprachen kann ich die Voicemail hinterlassen?',
+                faqA7: 'Englisch und Deutsch sind beide in Ordnung.'
+            }
+        };
+
+        function applyLanguage(lang) {
+            const dict = translations[lang] || translations.en;
+            document.documentElement.lang = lang;
+            document.title = dict.pageTitle;
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (dict[key]) el.innerHTML = dict[key];
+            });
+
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (dict[key]) el.setAttribute('placeholder', dict[key]);
+            });
+
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+            });
+        }
+
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                applyLanguage(this.getAttribute('data-lang'));
+            });
+        });
+
         document.getElementById('contactForm').addEventListener('submit', function(e) {
             e.preventDefault();
             var id = Math.floor(1000 + Math.random() * 9000);
@@ -138,6 +287,8 @@
             document.getElementById('msg').style.display = 'block';
             document.getElementById('instructionsBox').style.display = 'block';
         });
+
+        applyLanguage('en');
     </script>
 </body>
 </html>
