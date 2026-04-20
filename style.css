@@ -1,0 +1,345 @@
+/* ─── Reset & Base ────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --primary:   #2563eb;
+  --primary-dk:#1d4ed8;
+  --accent:    #f59e0b;
+  --bg:        #f8fafc;
+  --bg-alt:    #eef2f7;
+  --text:      #1e293b;
+  --muted:     #64748b;
+  --white:     #ffffff;
+  --radius:    10px;
+  --shadow:    0 4px 20px rgba(0,0,0,.08);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+}
+
+/* ─── Container ───────────────────────────────────────────────── */
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+/* ─── Header / Nav ────────────────────────────────────────────── */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--white);
+  box-shadow: 0 1px 6px rgba(0,0,0,.1);
+}
+
+header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: .9rem;
+  padding-bottom: .9rem;
+}
+
+.logo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: -.5px;
+}
+
+nav a {
+  text-decoration: none;
+  color: var(--muted);
+  margin-left: 1.5rem;
+  font-size: .95rem;
+  font-weight: 500;
+  transition: color .2s;
+}
+
+nav a:hover {
+  color: var(--primary);
+}
+
+/* ─── Hero ────────────────────────────────────────────────────── */
+.hero {
+  background: linear-gradient(135deg, var(--primary) 0%, #3b82f6 100%);
+  color: var(--white);
+  padding: 6rem 1.25rem;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 800;
+  margin-bottom: 1rem;
+  letter-spacing: -.5px;
+}
+
+.hero .subtitle {
+  font-size: 1.2rem;
+  opacity: .9;
+  margin-bottom: 2.2rem;
+}
+
+.btn {
+  display: inline-block;
+  padding: .85rem 2.25rem;
+  background: var(--accent);
+  color: var(--white);
+  font-weight: 700;
+  font-size: 1rem;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: background .2s, transform .15s;
+  box-shadow: 0 4px 14px rgba(0,0,0,.2);
+}
+
+.btn:hover {
+  background: #d97706;
+  transform: translateY(-2px);
+}
+
+/* ─── Sections ────────────────────────────────────────────────── */
+.section {
+  padding: 5rem 1.25rem;
+}
+
+.section.alt {
+  background: var(--bg-alt);
+}
+
+.section h2 {
+  font-size: 1.9rem;
+  font-weight: 700;
+  margin-bottom: 1.2rem;
+  color: var(--primary);
+  letter-spacing: -.4px;
+}
+
+.section p {
+  color: var(--muted);
+  max-width: 720px;
+  margin-bottom: .9rem;
+}
+
+/* ─── Steps ───────────────────────────────────────────────────── */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.75rem;
+  margin-top: 2rem;
+}
+
+.step {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 2rem 1.5rem;
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: var(--primary);
+  color: var(--white);
+  font-weight: 800;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.step h3 {
+  font-size: 1.1rem;
+  margin-bottom: .5rem;
+}
+
+.step p {
+  font-size: .95rem;
+  margin: 0;
+}
+
+/* ─── Cards ───────────────────────────────────────────────────── */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.75rem;
+  margin: 2rem 0 3rem;
+}
+
+.card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 2rem 1.75rem;
+  box-shadow: var(--shadow);
+}
+
+.card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 1rem;
+  color: var(--text);
+}
+
+.card ol {
+  padding-left: 1.25rem;
+}
+
+.card li {
+  margin-bottom: .6rem;
+  color: var(--muted);
+  font-size: .95rem;
+}
+
+.card a {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+/* ─── Prompts Table ───────────────────────────────────────────── */
+.prompts-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: .4rem;
+  color: var(--text);
+}
+
+.prompts-note {
+  margin-bottom: 1.2rem;
+}
+
+.prompts-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .93rem;
+  background: var(--white);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.prompts-table thead tr {
+  background: var(--primary);
+  color: var(--white);
+}
+
+.prompts-table th,
+.prompts-table td {
+  padding: .85rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.prompts-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.prompts-table tbody tr:hover {
+  background: #f1f5f9;
+}
+
+.prompts-table td:first-child {
+  font-weight: 700;
+  color: var(--primary);
+  white-space: nowrap;
+}
+
+.prompts-table td:nth-child(2) {
+  white-space: nowrap;
+  color: var(--muted);
+}
+
+/* ─── FAQ ─────────────────────────────────────────────────────── */
+.faq-list {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+  max-width: 760px;
+}
+
+details {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+summary {
+  cursor: pointer;
+  padding: 1.1rem 1.4rem;
+  font-weight: 600;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+}
+
+summary::after {
+  content: "＋";
+  font-size: 1.2rem;
+  color: var(--primary);
+  transition: transform .25s;
+}
+
+details[open] summary::after {
+  transform: rotate(45deg);
+}
+
+details p {
+  padding: 0 1.4rem 1.2rem;
+  margin: 0;
+  color: var(--muted);
+  font-size: .95rem;
+}
+
+/* ─── Footer ──────────────────────────────────────────────────── */
+footer {
+  background: var(--text);
+  color: #94a3b8;
+  text-align: center;
+  padding: 2.5rem 1.25rem;
+  font-size: .9rem;
+}
+
+footer p + p {
+  margin-top: .4rem;
+}
+
+footer a {
+  color: #93c5fd;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* ─── Responsive tweaks ───────────────────────────────────────── */
+@media (max-width: 600px) {
+  nav a {
+    margin-left: .9rem;
+    font-size: .85rem;
+  }
+
+  .prompts-table th:nth-child(2),
+  .prompts-table td:nth-child(2) {
+    display: none;
+  }
+}
