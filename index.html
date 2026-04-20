@@ -38,6 +38,16 @@
         .lang-toggle { width: 100%; max-width: 700px; display: flex; justify-content: flex-end; margin-top: 1.2rem; }
         .lang-btn { border: 1px solid #cfd5df; background: #fff; color: #444; padding: .4rem .75rem; border-radius: 6px; margin-left: .5rem; cursor: pointer; font-size: .9rem; }
         .lang-btn.active { background: #4a90d9; border-color: #4a90d9; color: #fff; }
+        select, textarea { width: 100%; padding: .65rem .8rem; margin-bottom: 1.2rem; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; transition: border-color .2s; font-family: inherit; }
+        select:focus, textarea:focus { outline: none; border-color: #4a90d9; }
+        textarea { min-height: 120px; resize: vertical; }
+        .feedback { max-width: 600px; width: 100%; margin-top: 2.5rem; background: #fff; border-radius: 8px; padding: 1.5rem 1.8rem; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+        .feedback h2 { color: #333; font-size: 1.3rem; margin-bottom: .8rem; }
+        .feedback p { color: #666; line-height: 1.6; margin-bottom: .8rem; }
+        .feedback-btn { width: 100%; padding: .75rem; background: #4a90d9; color: #fff; border: none; border-radius: 6px; font-size: 1rem; cursor: pointer; transition: background .2s; }
+        .feedback-btn:hover { background: #3a7bc8; }
+        .feedback-msg { text-align: center; margin-top: .6rem; color: green; display: none; }
+        .feedback-msg.error { color: #b00020; }
     </style>
 </head>
 <body style="flex-direction:column;">
@@ -141,6 +151,38 @@
         </details>
     </div>
 
+    <div class="feedback">
+        <h2 data-i18n="feedbackTitle">📝 Feedback</h2>
+        <p data-i18n="feedbackIntro">If you have any feedback about the process, please share it here. This helps us improve the study experience.</p>
+        <form id="feedbackForm">
+            <label for="feedbackParticipantId" data-i18n="feedbackParticipantIdLabel">Participant ID (optional)</label>
+            <input type="text" id="feedbackParticipantId" name="participantId" data-i18n-placeholder="feedbackParticipantIdPlaceholder" placeholder="e.g. 1234">
+
+            <label for="feedbackLanguage" data-i18n="feedbackLanguageLabel">Language used for voicemail</label>
+            <select id="feedbackLanguage" name="voicemailLanguage">
+                <option value="english" data-i18n="feedbackLanguageEnglish">English</option>
+                <option value="german" data-i18n="feedbackLanguageGerman">German</option>
+                <option value="both" data-i18n="feedbackLanguageBoth">Both</option>
+            </select>
+
+            <label for="feedbackRating" data-i18n="feedbackRatingLabel">How easy was the process? (1 = hard, 5 = easy)</label>
+            <select id="feedbackRating" name="easeRating" required>
+                <option value="" data-i18n="feedbackRatingPlaceholder">Please select</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+
+            <label for="feedbackText" data-i18n="feedbackTextLabel">Your feedback</label>
+            <textarea id="feedbackText" name="feedbackText" data-i18n-placeholder="feedbackTextPlaceholder" placeholder="What worked well? What should we improve?" required></textarea>
+
+            <button type="submit" class="feedback-btn" data-i18n="feedbackSubmit">Submit feedback</button>
+        </form>
+        <p class="feedback-msg" id="feedbackMsg" data-i18n="feedbackSuccess">Thank you for your feedback!</p>
+    </div>
+
     <script>
         const translations = {
             en: {
@@ -195,7 +237,22 @@
                 faqQ6: 'What if I messed up a recording?',
                 faqA6: 'Simply call again and leave a new voicemail for that room. If there are multiple voicemails for the same room, only the most recent one will be used.',
                 faqQ7: 'Which languages can I leave the voicemail in?',
-                faqA7: 'English and German are both perfectly fine.'
+                faqA7: 'English and German are both perfectly fine.',
+                feedbackTitle: '📝 Feedback',
+                feedbackIntro: 'If you have any feedback about the process, please share it here. This helps us improve the study experience.',
+                feedbackParticipantIdLabel: 'Participant ID (optional)',
+                feedbackParticipantIdPlaceholder: 'e.g. 1234',
+                feedbackLanguageLabel: 'Language used for voicemail',
+                feedbackLanguageEnglish: 'English',
+                feedbackLanguageGerman: 'German',
+                feedbackLanguageBoth: 'Both',
+                feedbackRatingLabel: 'How easy was the process? (1 = hard, 5 = easy)',
+                feedbackRatingPlaceholder: 'Please select',
+                feedbackTextLabel: 'Your feedback',
+                feedbackTextPlaceholder: 'What worked well? What should we improve?',
+                feedbackSubmit: 'Submit feedback',
+                feedbackSuccess: 'Thank you for your feedback!',
+                feedbackError: 'Sorry, feedback could not be submitted right now. Please try again shortly.'
             },
             de: {
                 pageTitle: 'Teilnehmen',
@@ -249,7 +306,22 @@
                 faqQ6: 'Was ist, wenn ich mich bei einer Aufnahme versprochen habe?',
                 faqA6: 'Rufen Sie einfach erneut an und hinterlassen Sie für diesen Raum eine neue Voicemail. Wenn mehrere Voicemails für denselben Raum vorliegen, wird nur die zuletzt eingegangene verwendet.',
                 faqQ7: 'In welchen Sprachen kann ich die Voicemail hinterlassen?',
-                faqA7: 'Englisch und Deutsch sind beide in Ordnung.'
+                faqA7: 'Englisch und Deutsch sind beide in Ordnung.',
+                feedbackTitle: '📝 Feedback',
+                feedbackIntro: 'Wenn Sie Feedback zum Ablauf haben, teilen Sie es uns bitte hier mit. Das hilft uns, die Studie zu verbessern.',
+                feedbackParticipantIdLabel: 'Teilnehmer-ID (optional)',
+                feedbackParticipantIdPlaceholder: 'z. B. 1234',
+                feedbackLanguageLabel: 'Für die Voicemail verwendete Sprache',
+                feedbackLanguageEnglish: 'Englisch',
+                feedbackLanguageGerman: 'Deutsch',
+                feedbackLanguageBoth: 'Beide',
+                feedbackRatingLabel: 'Wie einfach war der Ablauf? (1 = schwer, 5 = einfach)',
+                feedbackRatingPlaceholder: 'Bitte auswählen',
+                feedbackTextLabel: 'Ihr Feedback',
+                feedbackTextPlaceholder: 'Was lief gut? Was sollten wir verbessern?',
+                feedbackSubmit: 'Feedback senden',
+                feedbackSuccess: 'Vielen Dank für Ihr Feedback!',
+                feedbackError: 'Feedback konnte gerade nicht gesendet werden. Bitte versuchen Sie es gleich erneut.'
             }
         };
 
@@ -286,6 +358,44 @@
             this.style.display = 'none';
             document.getElementById('msg').style.display = 'block';
             document.getElementById('instructionsBox').style.display = 'block';
+        });
+
+        document.getElementById('feedbackForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const payload = {
+                participantId: document.getElementById('feedbackParticipantId').value.trim(),
+                voicemailLanguage: document.getElementById('feedbackLanguage').value,
+                easeRating: document.getElementById('feedbackRating').value,
+                feedbackText: document.getElementById('feedbackText').value.trim(),
+                uiLanguage: document.documentElement.lang || 'en',
+                submittedAt: new Date().toISOString()
+            };
+
+            const feedbackMsg = document.getElementById('feedbackMsg');
+            feedbackMsg.classList.remove('error');
+            feedbackMsg.style.display = 'none';
+
+            try {
+                const response = await fetch('/api/feedback', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to submit feedback');
+                }
+
+                this.reset();
+                feedbackMsg.textContent = translations[document.documentElement.lang || 'en'].feedbackSuccess;
+                feedbackMsg.classList.remove('error');
+                feedbackMsg.style.display = 'block';
+            } catch (err) {
+                feedbackMsg.textContent = translations[document.documentElement.lang || 'en'].feedbackError;
+                feedbackMsg.classList.add('error');
+                feedbackMsg.style.display = 'block';
+            }
         });
 
         applyLanguage('en');
