@@ -252,7 +252,8 @@
                 feedbackTextPlaceholder: 'What worked well? What should we improve?',
                 feedbackSubmit: 'Submit feedback',
                 feedbackSuccess: 'Thank you for your feedback!',
-                feedbackError: 'Sorry, feedback could not be submitted right now. Please try again shortly.'
+                feedbackError: 'Sorry, feedback could not be submitted right now. Please try again shortly.',
+                feedbackServerUnreachable: 'Feedback server is not reachable. Please open the page via the Node server (http://localhost:3000) and try again.'
             },
             de: {
                 pageTitle: 'Teilnehmen',
@@ -321,7 +322,8 @@
                 feedbackTextPlaceholder: 'Was lief gut? Was sollten wir verbessern?',
                 feedbackSubmit: 'Feedback senden',
                 feedbackSuccess: 'Vielen Dank für Ihr Feedback!',
-                feedbackError: 'Feedback konnte gerade nicht gesendet werden. Bitte versuchen Sie es gleich erneut.'
+                feedbackError: 'Feedback konnte gerade nicht gesendet werden. Bitte versuchen Sie es gleich erneut.',
+                feedbackServerUnreachable: 'Der Feedback-Server ist nicht erreichbar. Bitte öffnen Sie die Seite über den Node-Server (http://localhost:3000) und versuchen Sie es erneut.'
             }
         };
 
@@ -376,15 +378,25 @@
             feedbackMsg.classList.remove('error');
             feedbackMsg.style.display = 'none';
 
+            const isFileProtocol = window.location.protocol === 'file:';
+            const feedbackApiUrl = isFileProtocol ? 'http://localhost:3000/api/feedback' : '/api/feedback';
+
             try {
-                const response = await fetch('/api/feedback', {
+                const response = await fetch(feedbackApiUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
                 if (!response.ok) {
-                    throw new Error('Failed to submit feedback');
+                    let backendError = '';
+                    try {
+                        const body = await response.json();
+                        backendError = body && body.error ? String(body.error) : '';
+                    } catch (_) {
+                        backendError = '';
+                    }
+                    throw new Error(backendError || 'Failed to submit feedback');
                 }
 
                 this.reset();
@@ -392,7 +404,16 @@
                 feedbackMsg.classList.remove('error');
                 feedbackMsg.style.display = 'block';
             } catch (err) {
-                feedbackMsg.textContent = translations[document.documentElement.lang || 'en'].feedbackError;
+                const lang = document.documentElement.lang || 'en';
+                const baseError = translations[lang].feedbackError;
+                const serverUnreachable = translations[lang].feedbackServerUnreachable;
+                const detail = err && err.message ? String(err.message) : '';
+
+                if (isFileProtocol) {
+                    feedbackMsg.textContent = serverUnreachable;
+                } else {
+                    feedbackMsg.textContent = detail ? `${baseError} (${detail})` : baseError;
+                }
                 feedbackMsg.classList.add('error');
                 feedbackMsg.style.display = 'block';
             }

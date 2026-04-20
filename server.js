@@ -21,9 +21,20 @@ const MIME_TYPES = {
   '.ico': 'image/x-icon'
 };
 
-function sendJson(res, statusCode, payload) {
-  res.writeHead(statusCode, { 'Content-Type': 'application/json; charset=utf-8' });
+function sendJson(res, statusCode, payload, extraHeaders = {}) {
+  res.writeHead(statusCode, {
+    'Content-Type': 'application/json; charset=utf-8',
+    ...extraHeaders
+  });
   res.end(JSON.stringify(payload));
+}
+
+function apiCorsHeaders() {
+  return {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type'
+  };
 }
 
 function safePathname(urlPath) {
@@ -135,13 +146,19 @@ async function readAllFeedback() {
 const server = http.createServer(async (req, res) => {
   const urlPath = req.url.split('?')[0];
 
+  if (req.method === 'OPTIONS' && urlPath === '/api/feedback') {
+    res.writeHead(204, apiCorsHeaders());
+    res.end();
+    return;
+  }
+
   if (req.method === 'POST' && urlPath === '/api/feedback') {
     try {
       const body = await readJsonBody(req);
       const validationError = validateFeedback(body);
 
       if (validationError) {
-        sendJson(res, 400, { ok: false, error: validationError });
+        sendJson(res, 400, { ok: false, error: validationError }, apiCorsHeaders());
         return;
       }
 
@@ -157,17 +174,17 @@ const server = http.createServer(async (req, res) => {
       };
 
       await appendFeedbackRecord(record);
-      sendJson(res, 201, { ok: true });
+      sendJson(res, 201, { ok: true }, apiCorsHeaders());
       return;
     } catch (err) {
-      sendJson(res, 400, { ok: false, error: err.message || 'Bad request' });
+      sendJson(res, 400, { ok: false, error: err.message || 'Bad request' }, apiCorsHeaders());
       return;
     }
   }
 
   if (req.method === 'GET' && urlPath === '/api/feedback') {
     const submissions = await readAllFeedback();
-    sendJson(res, 200, { ok: true, count: submissions.length, submissions });
+    sendJson(res, 200, { ok: true, count: submissions.length, submissions }, apiCorsHeaders());
     return;
   }
 
