@@ -89,10 +89,12 @@
 
             <label for="phone" data-i18n="phoneLabel">Phone Number</label>
             <input type="tel" id="phone" name="phone" placeholder="+1 234 567 890" data-i18n-placeholder="phonePlaceholder" required>
+            <span id="phoneError" style="display:none; color:#b00020; font-size:.85rem; margin-top:-.8rem; margin-bottom:.8rem; display:none;"></span>
 
             <button type="submit" class="register-btn" data-i18n="registerButton">Register</button>
         </form>
         <p class="msg" id="msg"><span id="msgText" data-i18n="msgText">Thank you! Your participant ID is</span> <br> <strong id="participantId"></strong></p>
+        <div id="duplicateWarning" style="display:none; background:#fff8e1; border-left:4px solid #f9a825; border-radius:6px; padding:1rem 1.2rem; margin-top:1rem; color:#6d4c00;"></div>
         <div class="instructions" id="instructionsBox">
             <h2 data-i18n="instructionsTitle">📋 Instructions</h2>
             <ul>
@@ -268,7 +270,9 @@
                 feedbackSuccess: 'Thank you for your feedback!',
                 feedbackError: 'Sorry, feedback could not be submitted right now. Please try again shortly.',
                 feedbackServerUnreachable: 'Feedback server is not reachable. Please open the page via the Node server (http://localhost:3000) and try again.',
-                registerError: 'Sorry, registration could not be completed right now. Please try again shortly.'
+                registerError: 'Sorry, registration could not be completed right now. Please try again shortly.',
+                phoneError: 'Please enter a valid phone number (digits, spaces, +, –, and parentheses only; 7–20 digits).',
+                warningDuplicate: '⚠️ This phone number has already been registered in our study. You can continue making contributions with your existing participant ID: {id}'
             },
             de: {
                 pageTitle: 'Teilnahme an mobiler Akustikforschung',
@@ -342,7 +346,9 @@
                 feedbackSuccess: 'Vielen Dank für Ihr Feedback!',
                 feedbackError: 'Feedback konnte gerade nicht gesendet werden. Bitte versuchen Sie es gleich erneut.',
                 feedbackServerUnreachable: 'Der Feedback-Server ist nicht erreichbar. Bitte öffnen Sie die Seite über den Node-Server (http://localhost:3000) und versuchen Sie es erneut.',
-                registerError: 'Die Registrierung konnte gerade nicht abgeschlossen werden. Bitte versuchen Sie es gleich erneut.'
+                registerError: 'Die Registrierung konnte gerade nicht abgeschlossen werden. Bitte versuchen Sie es gleich erneut.',
+                phoneError: 'Bitte geben Sie eine gültige Telefonnummer ein (nur Ziffern, Leerzeichen, +, – und Klammern; 7–20 Ziffern).',
+                warningDuplicate: '⚠️ Diese Telefonnummer wurde bereits in unserer Studie registriert. Sie können mit Ihrer bestehenden Teilnehmer-ID weitere Beiträge leisten: {id}'
             }
         };
 
@@ -376,7 +382,6 @@
         const SUPABASE_URL = 'https://tbfnxnfnsabajfkkkxvg.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_JbK3ufdlaTxjczSvYL0ZQw_fkSsEJpT';
         const SUPABASE_FEEDBACK_ENDPOINT = `${SUPABASE_URL}/rest/v1/feedback`;
-        const SUPABASE_PARTICIPANTS_ENDPOINT = `${SUPABASE_URL}/rest/v1/participants`;
 
         function supabaseHeaders() {
             return {
@@ -407,6 +412,18 @@
 
             const msgEl = document.getElementById('msg');
             const lang = document.documentElement.lang || 'en';
+            const phoneErrorEl = document.getElementById('phoneError');
+
+            // Phone validation: allow +, digits, spaces, hyphens, parentheses; require 7-20 digits total
+            const digitsOnly = phone.replace(/\D/g, '');
+            const phoneValid = /^[+\d][\d\s()\-+]{5,22}$/.test(phone) && digitsOnly.length >= 7 && digitsOnly.length <= 20;
+            if (!phoneValid) {
+                phoneErrorEl.textContent = translations[lang].phoneError;
+                phoneErrorEl.style.display = 'block';
+                document.getElementById('phone').focus();
+                return;
+            }
+            phoneErrorEl.style.display = 'none';
 
             // Reset any previous error styling on the message element
             msgEl.style.color = '';
@@ -416,15 +433,15 @@
             if (submitBtn) submitBtn.disabled = true;
 
             try {
-                const response = await fetch(SUPABASE_PARTICIPANTS_ENDPOINT, {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/register_or_get_participant`, {
                     method: 'POST',
                     headers: supabaseHeaders(),
                     body: JSON.stringify({
-                        participant_id: id,
-                        email: email,
-                        phone: phone,
-                        ui_language: lang,
-                        registered_at: new Date().toISOString()
+                        p_participant_id: id,
+                        p_email: email,
+                        p_phone: phone,
+                        p_ui_language: lang,
+                        p_registered_at: new Date().toISOString()
                     })
                 });
 
@@ -433,10 +450,23 @@
                     throw new Error(detail || `HTTP ${response.status}`);
                 }
 
-                document.getElementById('participantId').textContent = id;
-                this.style.display = 'none';
-                msgEl.style.display = 'block';
-                document.getElementById('instructionsBox').style.display = 'block';
+                const result = await response.json();
+
+                if (result.status === 'existing') {
+                    const dict = translations[lang] || translations.en;
+                    const warnEl = document.getElementById('duplicateWarning');
+                    warnEl.innerHTML = dict.warningDuplicate
+                        .replace('{id}', `<strong>${result.participant_id}</strong>`);
+                    warnEl.style.display = 'block';
+                    this.style.display = 'none';
+                    document.getElementById('participantId').textContent = result.participant_id;
+                    document.getElementById('instructionsBox').style.display = 'block';
+                } else {
+                    document.getElementById('participantId').textContent = result.participant_id || id;
+                    this.style.display = 'none';
+                    msgEl.style.display = 'block';
+                    document.getElementById('instructionsBox').style.display = 'block';
+                }
             } catch (err) {
                 const baseError = translations[lang].registerError;
                 const detail = err && err.message ? String(err.message) : '';
