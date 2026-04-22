@@ -64,7 +64,7 @@
     <div class="introduction">
         <h2 data-i18n="introTitle">📖 Introduction</h2>
         <p data-i18n="introP1">Thank you for your interest in our acoustic research study! We are investigating how different rooms and their properties affect voice recordings.</p>
-        <p data-i18n="introP2">As a participant, you will <strong>leave a voicemail of approximately 1 minute from each of 5 rooms in your apartment</strong> (bathroom, living room, kitchen, bedroom, and hallway), briefly describing your surroundings in each. The whole process takes about 5 minutes.</p>
+        <p data-i18n="introP2">As a participant, you will <strong>leave a voicemail of approximately 1 minute from as many rooms as possible in your apartment</strong> (bathroom, living room, kitchen, bedroom, stairway,balcony), briefly describing your surroundings in each. The whole process takes about 5 minutes.</p>
         <p data-i18n="introP3"><strong>Talking for about 1 minute is the core of the experiment.</strong> Your descriptions don’t need to be perfectly accurate — just do your best. If describing the room doesn’t take up the full minute, feel free to simply talk about anything — the weather, your favorite dish, or “What would you take to an island?” — just keep speaking naturally.</p>
         <h3 style="margin-top:1rem; margin-bottom:.5rem; color:#333; font-size:1.1rem;" data-i18n="exampleTitle">💬 Example Voicemail Message</h3>
         <blockquote style="background:#f0f4f8; border-left:3px solid #4a90d9; padding:1rem 1.2rem; border-radius:6px; color:#444; font-style:italic; line-height:1.7;" data-i18n="exampleQuote">
@@ -362,29 +362,38 @@
             document.getElementById('instructionsBox').style.display = 'block';
         });
 
+        // Supabase configuration (publishable key is safe to embed in the browser)
+        const SUPABASE_URL = 'https://tbfnxnfnsabajfkkkxvg.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_JbK3ufdlaTxjczSvYL0ZQw_fkSsEJpT';
+        const SUPABASE_FEEDBACK_ENDPOINT = `${SUPABASE_URL}/rest/v1/feedback`;
+
         document.getElementById('feedbackForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
+            // Map to snake_case columns expected by the Supabase `feedback` table
+            const ratingRaw = document.getElementById('feedbackRating').value;
             const payload = {
-                participantId: document.getElementById('feedbackParticipantId').value.trim(),
-                voicemailLanguage: document.getElementById('feedbackLanguage').value,
-                easeRating: document.getElementById('feedbackRating').value,
-                feedbackText: document.getElementById('feedbackText').value.trim(),
-                uiLanguage: document.documentElement.lang || 'en',
-                submittedAt: new Date().toISOString()
+                participant_id: document.getElementById('feedbackParticipantId').value.trim() || null,
+                voicemail_language: document.getElementById('feedbackLanguage').value || null,
+                ease_rating: ratingRaw ? parseInt(ratingRaw, 10) : null,
+                feedback_text: document.getElementById('feedbackText').value.trim(),
+                ui_language: document.documentElement.lang || 'en',
+                submitted_at: new Date().toISOString()
             };
 
             const feedbackMsg = document.getElementById('feedbackMsg');
             feedbackMsg.classList.remove('error');
             feedbackMsg.style.display = 'none';
 
-            const isFileProtocol = window.location.protocol === 'file:';
-            const feedbackApiUrl = isFileProtocol ? 'http://localhost:3000/api/feedback' : '/api/feedback';
-
             try {
-                const response = await fetch(feedbackApiUrl, {
+                const response = await fetch(SUPABASE_FEEDBACK_ENDPOINT, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`,
+                        'Prefer': 'return=minimal'
+                    },
                     body: JSON.stringify(payload)
                 });
 
@@ -392,11 +401,11 @@
                     let backendError = '';
                     try {
                         const body = await response.json();
-                        backendError = body && body.error ? String(body.error) : '';
+                        backendError = body && (body.message || body.error || body.hint) ? String(body.message || body.error || body.hint) : '';
                     } catch (_) {
                         backendError = '';
                     }
-                    throw new Error(backendError || 'Failed to submit feedback');
+                    throw new Error(backendError || `HTTP ${response.status}`);
                 }
 
                 this.reset();
@@ -406,14 +415,8 @@
             } catch (err) {
                 const lang = document.documentElement.lang || 'en';
                 const baseError = translations[lang].feedbackError;
-                const serverUnreachable = translations[lang].feedbackServerUnreachable;
                 const detail = err && err.message ? String(err.message) : '';
-
-                if (isFileProtocol) {
-                    feedbackMsg.textContent = serverUnreachable;
-                } else {
-                    feedbackMsg.textContent = detail ? `${baseError} (${detail})` : baseError;
-                }
+                feedbackMsg.textContent = detail ? `${baseError} (${detail})` : baseError;
                 feedbackMsg.classList.add('error');
                 feedbackMsg.style.display = 'block';
             }

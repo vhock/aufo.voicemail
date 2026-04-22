@@ -1,3 +1,5 @@
 .vscode/
-node_modules/
-feedback-submissions.jsonl
+
+# Supabase CLI local cache (contains pooler URL with DB password)
+supabase/.temp/
+supabase/.branches/
