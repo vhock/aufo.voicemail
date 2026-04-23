@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Participate in Mobile Acoustic Research</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='12' fill='%234a90d9'/><path d='M32 14a8 8 0 0 0-8 8v12a8 8 0 0 0 16 0V22a8 8 0 0 0-8-8zm-14 20a14 14 0 0 0 12 13.86V54h-6a2 2 0 0 0 0 4h16a2 2 0 0 0 0-4h-6v-6.14A14 14 0 0 0 46 34a2 2 0 0 0-4 0 10 10 0 0 1-20 0 2 2 0 0 0-4 0z' fill='white'/></svg>">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@25/build/css/intlTelInput.css">
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25/build/js/intlTelInputWithUtils.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
@@ -49,6 +51,11 @@
         .feedback-btn:hover { background: #3a7bc8; }
         .feedback-msg { text-align: center; margin-top: .6rem; color: green; display: none; }
         .feedback-msg.error { color: #b00020; }
+        /* intl-tel-input integration */
+        .iti { width: 100%; margin-bottom: 1.2rem; display: block; }
+        .iti input.iti__tel-input { margin-bottom: 0; width: 100%; }
+        .iti--separate-dial-code .iti__selected-dial-code { font-size: 1rem; }
+        .iti__country-list { font-size: .95rem; }
     </style>
 </head>
 <body style="flex-direction:column;">
@@ -88,8 +95,8 @@
             <input type="email" id="email" name="email" placeholder="you@example.com" data-i18n-placeholder="emailPlaceholder" required>
 
             <label for="phone" data-i18n="phoneLabel">Phone Number</label>
-            <input type="tel" id="phone" name="phone" placeholder="+1 234 567 890" data-i18n-placeholder="phonePlaceholder" required>
-            <span id="phoneError" style="display:none; color:#b00020; font-size:.85rem; margin-top:-.8rem; margin-bottom:.8rem; display:none;"></span>
+            <input type="tel" id="phone" name="phone" autocomplete="tel" required>
+            <span id="phoneError" style="display:none; color:#b00020; font-size:.85rem; margin-top:-.6rem; margin-bottom:.8rem;"></span>
 
             <button type="submit" class="register-btn" data-i18n="registerButton">Register</button>
         </form>
@@ -220,7 +227,6 @@
                 emailLabel: 'Email',
                 emailPlaceholder: 'you@example.com',
                 phoneLabel: 'Phone Number',
-                phonePlaceholder: '+1 234 567 890',
                 registerButton: 'Register',
                 msgText: 'Thank you! Your participant ID is',
                 instructionsTitle: '📋 Instructions',
@@ -277,7 +283,11 @@
                 feedbackError: 'Sorry, feedback could not be submitted right now. Please try again shortly.',
                 feedbackServerUnreachable: 'Feedback server is not reachable. Please open the page via the Node server (http://localhost:3000) and try again.',
                 registerError: 'Sorry, registration could not be completed right now. Please try again shortly.',
-                phoneError: 'Please enter a valid phone number (digits, spaces, +, –, and parentheses only; 7–20 digits).',
+                phoneError: 'Please enter a valid phone number.',
+                phoneErrorInvalidCountryCode: 'Invalid country code — please pick your country from the list.',
+                phoneErrorTooShort: 'Phone number is too short.',
+                phoneErrorTooLong: 'Phone number is too long.',
+                phoneErrorNotANumber: 'Please enter only digits.',
                 warningDuplicate: '⚠️ This phone number has already been registered in our study. You can continue making contributions with your existing participant ID: {id}'
             },
             de: {
@@ -299,7 +309,6 @@
                 emailLabel: 'E-Mail',
                 emailPlaceholder: 'sie@beispiel.de',
                 phoneLabel: 'Telefonnummer',
-                phonePlaceholder: '+49 170 1234567',
                 registerButton: 'Registrieren',
                 msgText: 'Danke! Ihre Teilnehmer-ID ist',
                 instructionsTitle: '📋 Anweisungen',
@@ -356,7 +365,11 @@
                 feedbackError: 'Feedback konnte gerade nicht gesendet werden. Bitte versuchen Sie es gleich erneut.',
                 feedbackServerUnreachable: 'Der Feedback-Server ist nicht erreichbar. Bitte öffnen Sie die Seite über den Node-Server (http://localhost:3000) und versuchen Sie es erneut.',
                 registerError: 'Die Registrierung konnte gerade nicht abgeschlossen werden. Bitte versuchen Sie es gleich erneut.',
-                phoneError: 'Bitte geben Sie eine gültige Telefonnummer ein (nur Ziffern, Leerzeichen, +, – und Klammern; 7–20 Ziffern).',
+                phoneError: 'Bitte geben Sie eine gültige Telefonnummer ein.',
+                phoneErrorInvalidCountryCode: 'Ungültige Ländervorwahl — bitte wählen Sie Ihr Land aus der Liste aus.',
+                phoneErrorTooShort: 'Die Telefonnummer ist zu kurz.',
+                phoneErrorTooLong: 'Die Telefonnummer ist zu lang.',
+                phoneErrorNotANumber: 'Bitte geben Sie nur Ziffern ein.',
                 warningDuplicate: '⚠️ Diese Telefonnummer wurde bereits in unserer Studie registriert. Sie können mit Ihrer bestehenden Teilnehmer-ID weitere Beiträge leisten: {id}'
             }
         };
@@ -385,6 +398,20 @@
             btn.addEventListener('click', function() {
                 applyLanguage(this.getAttribute('data-lang'));
             });
+        });
+
+        // Initialise the international phone input (intl-tel-input).
+        // - Country dropdown with flags + dial codes
+        // - Validation and E.164 formatting via libphonenumber (bundled in `intlTelInputWithUtils`)
+        // - Accepts numbers with or without leading 0 (national format)
+        const phoneInputEl = document.getElementById('phone');
+        const iti = window.intlTelInput(phoneInputEl, {
+            initialCountry: 'de',
+            preferredCountries: ['de', 'at', 'ch', 'gb', 'us'],
+            separateDialCode: true,
+            nationalMode: true,
+            autoPlaceholder: 'polite',
+            formatAsYouType: true
         });
 
         // Supabase configuration (publishable key is safe to embed in the browser)
@@ -416,23 +443,32 @@
             e.preventDefault();
 
             const email = document.getElementById('email').value.trim();
-            const phone = document.getElementById('phone').value.trim();
             const id = String(Math.floor(1000 + Math.random() * 9000));
 
             const msgEl = document.getElementById('msg');
             const lang = document.documentElement.lang || 'en';
             const phoneErrorEl = document.getElementById('phoneError');
 
-            // Phone validation: allow +, digits, spaces, hyphens, parentheses; require 7-20 digits total
-            const digitsOnly = phone.replace(/\D/g, '');
-            const phoneValid = /^[+\d][\d\s()\-+]{5,22}$/.test(phone) && digitsOnly.length >= 7 && digitsOnly.length <= 20;
-            if (!phoneValid) {
-                phoneErrorEl.textContent = translations[lang].phoneError;
+            // Phone validation via intl-tel-input + libphonenumber.
+            // `iti.isValidNumber()` checks both length and format for the selected country;
+            // `iti.getNumber()` returns the canonical E.164 representation (e.g. +491701234567).
+            const phoneRaw = phoneInputEl.value.trim();
+            if (!phoneRaw || !iti.isValidNumber()) {
+                const errCode = iti.getValidationError();
+                const dict = translations[lang] || translations.en;
+                const errMap = {
+                    1: dict.phoneErrorInvalidCountryCode,
+                    2: dict.phoneErrorTooShort,
+                    3: dict.phoneErrorTooLong,
+                    4: dict.phoneErrorNotANumber
+                };
+                phoneErrorEl.textContent = errMap[errCode] || dict.phoneError;
                 phoneErrorEl.style.display = 'block';
-                document.getElementById('phone').focus();
+                phoneInputEl.focus();
                 return;
             }
             phoneErrorEl.style.display = 'none';
+            const phone = iti.getNumber(); // E.164, e.g. +491701234567
 
             // Reset any previous error styling on the message element
             msgEl.style.color = '';
