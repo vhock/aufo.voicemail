@@ -66,14 +66,14 @@
 
     <div class="site-header">
         <h1 data-i18n="siteTitle">🎙️ VoiceMail Research</h1>
-        <p data-i18n="siteSubtitle">Support our acoustic research by leaving short voicemails from various rooms in your apartment and surrounding areas, briefly describing your surroundings. It only takes about 5–10 minutes — and helps us understand how room acoustics affect phone call audio.</p>
+        <p data-i18n="siteSubtitle">Support our acoustic research by leaving short voicemails from various rooms in your apartment and surrounding areas, briefly describing your surroundings. It only takes about 5–10 minutes and helps us understand how room acoustics affect phone call audio.</p>
     </div>
 
     <div class="introduction">
         <h2 data-i18n="introTitle">📖 Introduction</h2>
         <p data-i18n="introP1">Thank you for your interest in our acoustic research study! Have you ever been on a phone call with a friend where you could hear, solely from the sound, that they were calling from a bathroom or from a railway station? That is due to the characteristic reverberation many rooms have and which we have learned to recognise. We are investigating how much of this reverberation is actually transmitted across various mobile phone models during phone calls.</p>
         <p data-i18n="introP2">As a participant, you will <strong>leave a voicemail of approximately 1-2 minutes from as many rooms as possible in your apartment and the surrounding areas</strong> (such as the bathroom, living room, kitchen, bedroom, hallway, balcony, stairway or even inside your car), briefly describing your surroundings in addition to performing small changes like opening or closing doors and windows. The whole process should take no longer than 5 to 10 minutes.</p>
-        <p data-i18n="introP3"><strong>Talking for about 1-2 minutes per room is the core of the experiment.</strong> Your descriptions don't need to be perfectly accurate — just do your best. If describing the room doesn't take up the full time, feel free to simply talk about anything — the weather, your favorite dish, or "What would you take to an island?" — just keep speaking naturally.</p>
+        <p data-i18n="introP3"><strong>Talking for about 1-2 minutes per room is the core of the experiment.</strong> Your descriptions don't need to be perfectly accurate, just do your best. If describing the room and its sound doesn't take up the full time, feel free to simply talk about anything — the weather, your favorite dish, or "What would you take to an island?"  just keep speaking naturally.</p>
         <h3 style="margin-top:1rem; margin-bottom:.5rem; color:#333; font-size:1.1rem;" data-i18n="exampleTitle">💬 Example Voicemail Message</h3>
         <p style="margin-top:.6rem; margin-bottom:.3rem; font-weight:600; color:#333;" data-i18n="exampleLabel1">🛁 Example 1 — Bathroom</p>
         <blockquote style="background:#f0f4f8; border-left:3px solid #4a90d9; padding:1rem 1.2rem; border-radius:6px; color:#444; font-style:italic; line-height:1.7;" data-i18n="exampleQuote">
@@ -126,7 +126,7 @@
                 <li data-i18n="i8">Estimate and mention the <strong>size of the room</strong> (e.g. "approximately 3 by 4 meters, ceiling height about 2.5 meters"). A rough estimate is fine.</li>
                 <li data-i18n="i9">Describe the <strong>surface materials</strong> — floors, walls, and ceiling (e.g. tiles, carpet, hardwood, concrete, wallpaper).</li>
                 <li data-i18n="i10">Describe any <strong>other features</strong> you notice — furniture, windows, curtains, appliances, etc.</li>
-                <li data-i18n="i11"><strong>For acoustic variation, walk around the room while talking.</strong> Then, if the room has doors or windows, open them — say out loud what you did (e.g. "I just opened the door" or "I just opened the window") — and walk around again, briefly describing how the room acoustics sound to you now (e.g. "it sounds a bit more open now", "there is more echo near the wall", "the sound is much drier with the window open").</li>
+                <li data-i18n="i11"><strong>After describing the room, walk around and look for spots where the acoustics change</strong> — for example close to a wall, in a corner, in the middle of the room, or next to a hard surface. <strong>Narrate what you are doing and what you hear</strong> (e.g. "I'm walking to the wall now — it sounds different here", "in the corner it feels narrower"). Then, if the room has doors or windows, open them, say out loud what you did (e.g. "I just opened the window"), and walk around again while describing how it sounds now. <strong>Don't worry if you can't put the change into acoustic terms</strong> — saying "it sounds the same" or "it sounds different" is perfectly fine.</li>
                 <li data-i18n="i12"><strong>Talking for about 1-2 minutes is the core of the experiment.</strong> If your room description doesn't fill the full time, just keep talking about anything — the weather, your favorite dish, or "What would you take to an island?" The important thing is to keep speaking naturally.</li>
                 <li data-i18n="i13">Hang up, then move to the next room and call again.</li>
             </ul>
@@ -188,14 +188,14 @@
                 <option value="both" data-i18n="feedbackLanguageBoth">Both</option>
             </select>
 
-            <label for="feedbackRating" data-i18n="feedbackRatingLabel">How easy was the process? (1 = hard, 5 = easy)</label>
+            <label for="feedbackRating" data-i18n="feedbackRatingLabel">How easy was the process? (1 = easy, 5 = hard)</label>
             <select id="feedbackRating" name="easeRating" required>
                 <option value="" data-i18n="feedbackRatingPlaceholder">Please select</option>
-                <option value="1">1</option>
+                <option value="1" data-i18n="feedbackRating1">1 — 🌸🦋</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
-                <option value="5">5</option>
+                <option value="5" data-i18n="feedbackRating5">5 — 😡💢</option>
             </select>
 
             <label for="feedbackText" data-i18n="feedbackTextLabel">Your feedback</label>
@@ -248,7 +248,7 @@
                 i8: 'Estimate and mention the <strong>size of the room</strong> (e.g. "approximately 3 by 4 meters, ceiling height about 2.5 meters"). A rough estimate is fine.',
                 i9: 'Describe the <strong>surface materials</strong> — floors, walls, and ceiling (e.g. tiles, carpet, hardwood, concrete, wallpaper).',
                 i10: 'Describe any <strong>other features</strong> you notice — furniture, windows, curtains, appliances, etc.',
-                i11: '<strong>For acoustic variation, walk around the room while talking.</strong> Then, if the room has doors or windows, open them — say out loud what you did (e.g. "I just opened the door" or "I just opened the window") — and walk around again, briefly describing how the room acoustics sound to you now (e.g. "it sounds a bit more open now", "there is more echo near the wall", "the sound is much drier with the window open").',
+                i11: '<strong>After describing the room, walk around and look for spots where the acoustics change</strong> — for example close to a wall, in a corner, in the middle of the room, or next to a hard surface. <strong>Narrate what you are doing and what you hear</strong> (e.g. "I\'m walking to the wall now — it sounds different here", "in the corner it feels narrower"). Then, if the room has doors or windows, open them, say out loud what you did (e.g. "I just opened the window"), and walk around again while describing how it sounds now. <strong>Don\'t worry if you can\'t put the change into acoustic terms</strong> — saying "it sounds the same" or "it sounds different" is perfectly fine.',
                 i12: '<strong>Talking for about 1-2 minutes is the core of the experiment.</strong> If your room description doesn\'t fill the full time, just keep talking about anything — the weather, your favorite dish, or "What would you take to an island?" The important thing is to keep speaking naturally.',
                 i13: 'Hang up, then move to the next room and call again.',
                 faqTitle: 'FAQ',
@@ -274,8 +274,10 @@
                 feedbackLanguageEnglish: 'English',
                 feedbackLanguageGerman: 'German',
                 feedbackLanguageBoth: 'Both',
-                feedbackRatingLabel: 'How easy was the process? (1 = hard, 5 = easy)',
+                feedbackRatingLabel: 'How easy was the process? (1 = easy, 5 = hard)',
                 feedbackRatingPlaceholder: 'Please select',
+                feedbackRating1: '1 — 🌸🦋',
+                feedbackRating5: '5 — 😡💢',
                 feedbackTextLabel: 'Your feedback',
                 feedbackTextPlaceholder: 'What worked well? What should we improve?',
                 feedbackSubmit: 'Submit feedback',
@@ -330,7 +332,7 @@
                 i8: 'Schätzen und nennen Sie die <strong>Größe des Raums</strong> (z. B. „ungefähr 3 mal 4 Meter, Deckenhöhe etwa 2,5 Meter"). Eine grobe Schätzung ist ausreichend.',
                 i9: 'Beschreiben Sie die <strong>Oberflächenmaterialien</strong> — Boden, Wände und Decke (z. B. Fliesen, Teppich, Parkett, Beton, Tapete).',
                 i10: 'Beschreiben Sie <strong>weitere Merkmale</strong>, die Ihnen auffallen — Möbel, Fenster, Vorhänge, Geräte usw.',
-                i11: '<strong>Für akustische Variation gehen Sie beim Sprechen im Raum umher.</strong> Falls der Raum Türen oder Fenster hat, öffnen Sie diese anschließend — sagen Sie laut, was Sie gemacht haben (z. B. „Ich habe gerade die Tür geöffnet" oder „Ich habe gerade das Fenster geöffnet") — und gehen Sie noch einmal umher, während Sie kurz beschreiben, wie sich die Raumakustik für Sie jetzt anhört (z. B. „klingt jetzt etwas offener", „in der Nähe der Wand höre ich mehr Hall", „mit geöffnetem Fenster ist der Klang viel trockener").',
+                i11: '<strong>Gehen Sie nach der Raumbeschreibung im Raum umher und suchen Sie Stellen, an denen sich die Akustik verändert</strong> — z. B. nahe einer Wand, in einer Ecke, in der Mitte des Raums oder dicht an einer harten Oberfläche. <strong>Erzählen Sie dabei, was Sie tun und was Sie hören</strong> (z. B. „Ich gehe jetzt zur Wand — hier klingt es anders“, „in der Ecke wirkt es enger“). Falls der Raum Türen oder Fenster hat, öffnen Sie diese anschließend, sagen Sie laut, was Sie gemacht haben (z. B. „Ich habe gerade das Fenster geöffnet“), und gehen Sie erneut umher, während Sie beschreiben, wie es jetzt klingt. <strong>Es ist völlig in Ordnung, wenn Sie die Veränderung nicht akustisch genau beschreiben können</strong> — „klingt gleich“ oder „klingt anders“ reicht völlig aus.',
                 i12: '<strong>Etwa 1-2 Minuten zu sprechen ist der Kern des Experiments.</strong> Wenn Ihre Raumbeschreibung die Zeit nicht füllt, sprechen Sie einfach über etwas anderes weiter — das Wetter, Ihr Lieblingsgericht oder „Was würden Sie auf eine Insel mitnehmen?" Wichtig ist, natürlich weiterzusprechen.',
                 i13: 'Legen Sie auf, gehen Sie in den nächsten Raum und rufen Sie erneut an.',
                 faqTitle: 'FAQ',
@@ -356,8 +358,10 @@
                 feedbackLanguageEnglish: 'Englisch',
                 feedbackLanguageGerman: 'Deutsch',
                 feedbackLanguageBoth: 'Beide',
-                feedbackRatingLabel: 'Wie einfach war der Ablauf? (1 = schwer, 5 = einfach)',
+                feedbackRatingLabel: 'Wie einfach war der Ablauf? (1 = einfach, 5 = schwer)',
                 feedbackRatingPlaceholder: 'Bitte auswählen',
+                feedbackRating1: '1 — 🌸🦋',
+                feedbackRating5: '5 — 😡💢',
                 feedbackTextLabel: 'Ihr Feedback',
                 feedbackTextPlaceholder: 'Was lief gut? Was sollten wir verbessern?',
                 feedbackSubmit: 'Feedback senden',
