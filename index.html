@@ -565,6 +565,7 @@
                 }
 
                 this.reset();
+                this.style.display = 'none';
                 feedbackMsg.textContent = translations[document.documentElement.lang || 'en'].feedbackSuccess;
                 feedbackMsg.classList.remove('error');
                 feedbackMsg.style.display = 'block';
