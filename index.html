@@ -73,6 +73,17 @@
         .site-footer { width: 100%; max-width: 700px; text-align: center; margin-top: 3rem; padding: 1rem 0 .4rem; color: #889; font-size: .85rem; line-height: 1.5; }
         .site-footer a { color: #4a7bc8; text-decoration: none; margin: 0 .35rem; }
         .site-footer a:hover { text-decoration: underline; }
+        .legal-section { max-width: 700px; width: 100%; margin-top: 2.5rem; background: #fff; border-radius: 8px; padding: 1.6rem 1.8rem; box-shadow: 0 2px 8px rgba(0,0,0,.06); color: #444; line-height: 1.6; font-size: .95rem; }
+        .legal-section h2 { color: #333; font-size: 1.3rem; margin-bottom: .8rem; }
+        .legal-section h3 { color: #333; font-size: 1.05rem; margin-top: 1.2rem; margin-bottom: .4rem; }
+        .legal-section p, .legal-section li { margin-bottom: .5rem; }
+        .legal-section ul { padding-left: 1.2rem; }
+        .legal-section .todo { background: #fff8e1; border-left: 3px solid #f9a825; padding: .4rem .7rem; border-radius: 4px; font-style: italic; color: #6d4c00; }
+        .consent-row { display: flex; align-items: flex-start; gap: .6rem; margin: .2rem 0 1rem; font-size: .9rem; color: #444; line-height: 1.5; }
+        .consent-row input[type="checkbox"] { width: auto; margin: .25rem 0 0; flex: 0 0 auto; }
+        .consent-row label { font-weight: 400; color: inherit; margin: 0; font-size: inherit; }
+        .privacy-pre-form { font-size: .85rem; color: #5a6b80; margin-bottom: 1rem; line-height: 1.5; }
+        .privacy-pre-form a { color: #4a7bc8; }
         /* intl-tel-input integration */
         .iti { width: 100%; margin-bottom: 1.2rem; display: block; }
         .iti input.iti__tel-input { margin-bottom: 0; width: 100%; }
@@ -116,9 +127,10 @@
 
     <div class="card">
         <h1 data-i18n="participateTitle">Participate</h1>
+        <p class="privacy-pre-form" data-i18n="privacyPreForm">Before registering, please review our <a href="#privacySection">Privacy Policy</a>. The data you submit is processed only for the research purposes described there. You can withdraw your consent at any time using the <a href="#deletionSection">data deletion form</a> below.</p>
         <form id="contactForm">
-            <label for="email" data-i18n="emailLabel">Email</label>
-            <input type="email" id="email" name="email" placeholder="you@example.com" data-i18n-placeholder="emailPlaceholder" autocomplete="email" maxlength="254" required>
+            <label for="email" data-i18n="emailLabel">Email <span class="field-hint" style="display:inline; color:#5a6b80; font-size:.8rem; font-weight:400;">(optional)</span></label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" data-i18n-placeholder="emailPlaceholder" autocomplete="email" maxlength="254">
 
             <label for="phone" data-i18n="phoneLabel">Phone Number</label>
             <input type="tel" id="phone" name="phone" autocomplete="tel" inputmode="tel" required>
@@ -127,6 +139,12 @@
 
             <label for="phoneModel" data-i18n="phoneModelLabel">Phone Model</label>
             <input type="text" id="phoneModel" name="phoneModel" placeholder="e.g. Samsung Galaxy A54" data-i18n-placeholder="phoneModelPlaceholder" autocomplete="off" maxlength="128" required>
+
+            <div class="consent-row">
+                <input type="checkbox" id="consentBox" name="consent" required>
+                <label for="consentBox" data-i18n="consentLabel">I have read the <a href="#privacySection">Privacy Policy</a> and consent to the processing of my phone number, phone model, voicemail recordings, and (if provided) email address for the research purposes described therein. I understand that I can withdraw this consent at any time without giving reasons.</label>
+            </div>
+            <span id="consentError" class="field-error" role="alert" aria-live="assertive"></span>
 
             <button type="submit" class="register-btn" data-i18n="registerButton">Register</button>
         </form>
@@ -244,12 +262,100 @@
         <p class="feedback-msg" id="deletionMsg" role="status" aria-live="polite"></p>
     </div>
 
+    <section class="legal-section" id="privacySection" aria-labelledby="privacyHeading">
+        <h2 id="privacyHeading" data-i18n="privacyHeading">🔒 Privacy Policy (according to Art. 13 GDPR)</h2>
+
+        <h3 data-i18n="privacyControllerTitle">1. Controller</h3>
+        <p data-i18n="privacyController">Responsible for the processing of personal data on this website is:</p>
+        <p class="todo" data-i18n="privacyControllerDetails">[TODO: Insert full controller name and postal address — e.g. Prof. Dr. …, Audio Forensics Lab, Universität Bremen, Bibliothekstraße 1, 28359 Bremen, Germany. Email: …@uni-bremen.de. Telephone: …]</p>
+
+        <h3 data-i18n="privacyDpoTitle">2. Data Protection Officer</h3>
+        <p class="todo" data-i18n="privacyDpo">[TODO: Insert contact details of your institution’s Data Protection Officer — typically the central DSB of Universität Bremen, e.g. “Datenschutzbeauftragte/r der Universität Bremen, Bibliothekstraße 1, 28359 Bremen, datenschutz@uni-bremen.de”.]</p>
+
+        <h3 data-i18n="privacyDataTitle">3. Data we collect and process</h3>
+        <ul>
+            <li data-i18n="privacyData1"><strong>Registration:</strong> phone number (mandatory — used to match incoming voicemails to your participant record), phone model (mandatory — research-relevant metadata), email address (optional), interface language, technical timestamp of registration, and a randomly generated participant ID.</li>
+            <li data-i18n="privacyData2"><strong>Voicemails:</strong> the audio recordings you leave on +49 421 989 690 30, plus call metadata provided by our PBX (caller phone number, call timestamp, call duration).</li>
+            <li data-i18n="privacyData3"><strong>Feedback (optional):</strong> the participant ID you enter, the language used for the recordings, an ease-of-use rating, your free-text feedback, the interface language, and a submission timestamp.</li>
+            <li data-i18n="privacyData4"><strong>Deletion requests:</strong> the phone number and/or participant ID you submit, plus the timestamp of the request and a counter to prevent abuse.</li>
+            <li data-i18n="privacyData5"><strong>Server logs:</strong> our hosting providers (see section 6) automatically log technical data such as IP address, user agent, and request time. These logs are kept by the providers for security and operational purposes only and are not linked to your participant record by us.</li>
+        </ul>
+        <p data-i18n="privacyDataNote">Your voice may be considered personal data under Art. 4 No. 1 GDPR. We do not use the recordings for biometric identification within the meaning of Art. 9 (1) GDPR.</p>
+
+        <h3 data-i18n="privacyPurposeTitle">4. Purposes and legal basis</h3>
+        <ul>
+            <li data-i18n="privacyPurpose1"><strong>Research participation</strong> (matching voicemails to participants, analysing how room acoustics affect mobile phone audio): processing is based on your <strong>explicit consent</strong> under Art. 6 (1)(a) GDPR, given via the consent checkbox on the registration form.</li>
+            <li data-i18n="privacyPurpose2"><strong>Operating and securing the website</strong> (including the deletion-request and feedback forms): processing is based on our <strong>legitimate interest</strong> in providing a functional, secure service under Art. 6 (1)(f) GDPR.</li>
+            <li data-i18n="privacyPurpose3"><strong>Scientific publication of aggregated, anonymised results</strong>: based on Art. 6 (1)(e) and Art. 89 GDPR (research in the public interest). Published results will not contain identifying personal data.</li>
+        </ul>
+
+        <h3 data-i18n="privacyRetentionTitle">5. Retention periods</h3>
+        <ul>
+            <li data-i18n="privacyRetention1"><strong>Phone number, email, phone model:</strong> deleted at the latest after the recordings linked to your participant ID have been processed and pseudonymised, typically within <strong>6 months</strong> of your registration.</li>
+            <li data-i18n="privacyRetention2"><strong>Voicemail recordings:</strong> stored in pseudonymised form (linked only to the random participant ID, not to your phone number) for the duration of the research project and any required archiving period under good scientific practice (typically <strong>10 years</strong> after publication, per DFG guidelines).</li>
+            <li data-i18n="privacyRetention3"><strong>Feedback entries:</strong> stored for the duration of the research project; the optional participant ID field can be left blank if you prefer.</li>
+            <li data-i18n="privacyRetention4"><strong>Deletion-request flags:</strong> the affected participant row is hard-deleted automatically <strong>24 hours</strong> after the request is recorded.</li>
+        </ul>
+
+        <h3 data-i18n="privacyProcessorsTitle">6. Recipients / processors</h3>
+        <ul>
+            <li data-i18n="privacyProcessor1"><strong>Supabase (database hosting):</strong> Supabase Inc., 970 Toa Payoh North #07-04, Singapore 318992, with EU data hosted by Amazon Web Services EMEA SARL in the AWS region <em>eu-north-1</em> (Stockholm, Sweden). A Data Processing Agreement under Art. 28 GDPR is in place.</li>
+            <li data-i18n="privacyProcessor2"><strong>3CX (telephony / voicemail PBX):</strong> 3CX Ltd., operating the on-premises PBX that records and stores voicemails before we download them.</li>
+            <li data-i18n="privacyProcessor3"><strong>jsDelivr (Content Delivery Network):</strong> this page loads the open-source library <em>intl-tel-input</em> from <code>cdn.jsdelivr.net</code> (Cloudflare / Fastly). Loading the script transmits your IP address and user-agent to that CDN. Legal basis: Art. 6 (1)(f) GDPR — legitimate interest in providing reliable phone-number validation. We are working on self-hosting this asset to remove this third-party request.</li>
+        </ul>
+
+        <h3 data-i18n="privacyTransferTitle">7. Transfers to third countries</h3>
+        <p data-i18n="privacyTransfer">Personal data submitted via the registration, feedback, and deletion forms is stored in the EU (AWS eu-north-1, Stockholm). The CDN request mentioned above may be served from servers outside the EU; the CDN provider relies on the EU Standard Contractual Clauses for any such transfer.</p>
+
+        <h3 data-i18n="privacyRightsTitle">8. Your rights</h3>
+        <p data-i18n="privacyRightsIntro">Under the GDPR you have, in particular, the following rights:</p>
+        <ul>
+            <li data-i18n="privacyRight1"><strong>Right of access</strong> (Art. 15) — you can request a copy of the data we hold about you.</li>
+            <li data-i18n="privacyRight2"><strong>Right to rectification</strong> (Art. 16) — you can request correction of inaccurate data.</li>
+            <li data-i18n="privacyRight3"><strong>Right to erasure</strong> (Art. 17) — you can request deletion at any time, easily via the <a href="#deletionSection">data deletion form</a> on this page.</li>
+            <li data-i18n="privacyRight4"><strong>Right to restriction of processing</strong> (Art. 18).</li>
+            <li data-i18n="privacyRight5"><strong>Right to data portability</strong> (Art. 20) — receive your data in a structured, commonly used, machine-readable format.</li>
+            <li data-i18n="privacyRight6"><strong>Right to object</strong> (Art. 21) to processing based on legitimate interest.</li>
+            <li data-i18n="privacyRight7"><strong>Right to withdraw consent</strong> (Art. 7 (3)) at any time without giving reasons. Withdrawal does not affect the lawfulness of processing carried out before the withdrawal.</li>
+            <li data-i18n="privacyRight8"><strong>Right to lodge a complaint</strong> with a supervisory authority (Art. 77) — in particular, the data protection authority of the federal state in which you reside or in which the controller is established. For the controller above this is the <em>Landesbeauftragte für Datenschutz und Informationsfreiheit der Freien Hansestadt Bremen</em>, Arndtstraße 1, 27570 Bremerhaven (https://www.datenschutz.bremen.de).</li>
+        </ul>
+
+        <h3 data-i18n="privacyVoluntaryTitle">9. Voluntary nature</h3>
+        <p data-i18n="privacyVoluntary">Participation in this research study and provision of the data described above is entirely voluntary. There are no negative consequences if you choose not to participate or to withdraw later.</p>
+
+        <h3 data-i18n="privacyCookiesTitle">10. Cookies and tracking</h3>
+        <p data-i18n="privacyCookies">This website does <strong>not</strong> set any cookies, does <strong>not</strong> use web analytics, and does <strong>not</strong> contain advertising or social-media trackers.</p>
+
+        <h3 data-i18n="privacyChangesTitle">11. Changes to this policy</h3>
+        <p data-i18n="privacyChanges">We may update this policy if our processing practices change. The current version is dated <strong>27 April 2026</strong> (v1).</p>
+    </section>
+
+    <section class="legal-section" id="imprintSection" aria-labelledby="imprintHeading">
+        <h2 id="imprintHeading" data-i18n="imprintHeading">📜 Imprint (Impressum)</h2>
+        <p data-i18n="imprintIntro">Information pursuant to § 5 DDG (formerly TMG) and § 18 (2) MStV:</p>
+
+        <h3 data-i18n="imprintProviderTitle">Provider</h3>
+        <p class="todo" data-i18n="imprintProvider">[TODO: Insert legal provider — e.g. “Universität Bremen, Bibliothekstraße 1, 28359 Bremen, Germany. Represented by the Rector Prof. Dr. …. Körperschaft des öffentlichen Rechts. USt-IdNr.: DE….” Add the responsible chair / lab if relevant.]</p>
+
+        <h3 data-i18n="imprintContactTitle">Contact</h3>
+        <p class="todo" data-i18n="imprintContact">[TODO: Insert contact email and phone for project enquiries, e.g. audio-forensics@uni-bremen.de, +49 421 218 …]</p>
+
+        <h3 data-i18n="imprintResponsibleTitle">Responsible for content (§ 18 (2) MStV)</h3>
+        <p class="todo" data-i18n="imprintResponsible">[TODO: Name and full postal address of the natural person editorially responsible for this site.]</p>
+
+        <h3 data-i18n="imprintDisputeTitle">EU online dispute resolution</h3>
+        <p data-i18n="imprintDispute">The European Commission provides a platform for online dispute resolution at <a href="https://ec.europa.eu/consumers/odr/" rel="noopener noreferrer" target="_blank">https://ec.europa.eu/consumers/odr/</a>. We are not obliged and not willing to participate in dispute resolution proceedings before a consumer arbitration board.</p>
+
+        <h3 data-i18n="imprintLiabilityTitle">Liability for content and links</h3>
+        <p data-i18n="imprintLiability">As a service provider we are responsible for our own content on these pages in accordance with general legislation pursuant to § 7 (1) DDG. According to §§ 8 to 10 DDG, however, we are not obliged as a service provider to monitor transmitted or stored third-party information or to investigate circumstances that indicate illegal activity. External links are checked at the time they are set; we have no influence on subsequent changes to linked content.</p>
+    </section>
+
     <footer class="site-footer">
         <p>
             <span data-i18n="footerOrg">Audio Forensics Lab — University of Bremen</span><br>
-            <a href="#" data-i18n="footerImprint">Imprint</a>
+            <a href="#imprintSection" data-i18n="footerImprint">Imprint</a>
             <span aria-hidden="true">·</span>
-            <a href="#" data-i18n="footerPrivacy">Privacy Policy</a>
+            <a href="#privacySection" data-i18n="footerPrivacy">Privacy Policy</a>
             <span aria-hidden="true">·</span>
             <a href="#deletionSection" data-i18n="footerDeletion">Request Data Deletion</a>
         </p>
@@ -273,7 +379,6 @@
                 introP4: 'All data is handled confidentially and used for scientific purposes only.',
                 introP5: 'To get started, <strong>register below</strong> with your email and the <strong>phone number you will be calling from</strong>. Your participant ID and detailed instructions will appear <strong>immediately on this page</strong> - no need to wait for an email or SMS.',
                 participateTitle: 'Participate',
-                emailLabel: 'Email',
                 emailPlaceholder: 'you@example.com',
                 phoneLabel: 'Phone Number',
                 phoneHint: '<strong>Important:</strong> please register with the same phone number you will be calling from.',
@@ -358,7 +463,67 @@
                 footerOrg: 'Audio Forensics Lab — University of Bremen',
                 footerImprint: 'Imprint',
                 footerPrivacy: 'Privacy Policy',
-                footerDeletion: 'Request Data Deletion'
+                footerDeletion: 'Request Data Deletion',
+                privacyPreForm: 'Before registering, please review our <a href="#privacySection">Privacy Policy</a>. The data you submit is processed only for the research purposes described there. You can withdraw your consent at any time using the <a href="#deletionSection">data deletion form</a> below.',
+                emailLabel: 'Email <span class="field-hint" style="display:inline; color:#5a6b80; font-size:.8rem; font-weight:400;">(optional)</span>',
+                consentLabel: 'I have read the <a href="#privacySection">Privacy Policy</a> and consent to the processing of my phone number, phone model, voicemail recordings, and (if provided) email address for the research purposes described therein. I understand that I can withdraw this consent at any time without giving reasons.',
+                consentRequired: 'Please confirm that you have read the Privacy Policy and consent to the processing.',
+                privacyHeading: '🔒 Privacy Policy (according to Art. 13 GDPR)',
+                privacyControllerTitle: '1. Controller',
+                privacyController: 'Responsible for the processing of personal data on this website is:',
+                privacyControllerDetails: '[TODO: Insert full controller name and postal address — e.g. Prof. Dr. …, Audio Forensics Lab, Universität Bremen, Bibliothekstraße 1, 28359 Bremen, Germany. Email: …@uni-bremen.de. Telephone: …]',
+                privacyDpoTitle: '2. Data Protection Officer',
+                privacyDpo: '[TODO: Insert contact details of your institution’s Data Protection Officer — typically the central DSB of Universität Bremen, e.g. “Datenschutzbeauftragte/r der Universität Bremen, Bibliothekstraße 1, 28359 Bremen, datenschutz@uni-bremen.de”.]',
+                privacyDataTitle: '3. Data we collect and process',
+                privacyData1: '<strong>Registration:</strong> phone number (mandatory — used to match incoming voicemails to your participant record), phone model (mandatory — research-relevant metadata), email address (optional), interface language, technical timestamp of registration, and a randomly generated participant ID.',
+                privacyData2: '<strong>Voicemails:</strong> the audio recordings you leave on +49 421 989 690 30, plus call metadata provided by our PBX (caller phone number, call timestamp, call duration).',
+                privacyData3: '<strong>Feedback (optional):</strong> the participant ID you enter, the language used for the recordings, an ease-of-use rating, your free-text feedback, the interface language, and a submission timestamp.',
+                privacyData4: '<strong>Deletion requests:</strong> the phone number and/or participant ID you submit, plus the timestamp of the request and a counter to prevent abuse.',
+                privacyData5: '<strong>Server logs:</strong> our hosting providers (see section 6) automatically log technical data such as IP address, user agent, and request time. These logs are kept by the providers for security and operational purposes only and are not linked to your participant record by us.',
+                privacyDataNote: 'Your voice may be considered personal data under Art. 4 No. 1 GDPR. We do not use the recordings for biometric identification within the meaning of Art. 9 (1) GDPR.',
+                privacyPurposeTitle: '4. Purposes and legal basis',
+                privacyPurpose1: '<strong>Research participation</strong> (matching voicemails to participants, analysing how room acoustics affect mobile phone audio): processing is based on your <strong>explicit consent</strong> under Art. 6 (1)(a) GDPR, given via the consent checkbox on the registration form.',
+                privacyPurpose2: '<strong>Operating and securing the website</strong> (including the deletion-request and feedback forms): processing is based on our <strong>legitimate interest</strong> in providing a functional, secure service under Art. 6 (1)(f) GDPR.',
+                privacyPurpose3: '<strong>Scientific publication of aggregated, anonymised results</strong>: based on Art. 6 (1)(e) and Art. 89 GDPR (research in the public interest). Published results will not contain identifying personal data.',
+                privacyRetentionTitle: '5. Retention periods',
+                privacyRetention1: '<strong>Phone number, email, phone model:</strong> deleted at the latest after the recordings linked to your participant ID have been processed and pseudonymised, typically within <strong>6 months</strong> of your registration.',
+                privacyRetention2: '<strong>Voicemail recordings:</strong> stored in pseudonymised form (linked only to the random participant ID, not to your phone number) for the duration of the research project and any required archiving period under good scientific practice (typically <strong>10 years</strong> after publication, per DFG guidelines).',
+                privacyRetention3: '<strong>Feedback entries:</strong> stored for the duration of the research project; the optional participant ID field can be left blank if you prefer.',
+                privacyRetention4: '<strong>Deletion-request flags:</strong> the affected participant row is hard-deleted automatically <strong>24 hours</strong> after the request is recorded.',
+                privacyProcessorsTitle: '6. Recipients / processors',
+                privacyProcessor1: '<strong>Supabase (database hosting):</strong> Supabase Inc., 970 Toa Payoh North #07-04, Singapore 318992, with EU data hosted by Amazon Web Services EMEA SARL in the AWS region <em>eu-north-1</em> (Stockholm, Sweden). A Data Processing Agreement under Art. 28 GDPR is in place.',
+                privacyProcessor2: '<strong>3CX (telephony / voicemail PBX):</strong> 3CX Ltd., operating the on-premises PBX that records and stores voicemails before we download them.',
+                privacyProcessor3: '<strong>jsDelivr (Content Delivery Network):</strong> this page loads the open-source library <em>intl-tel-input</em> from <code>cdn.jsdelivr.net</code> (Cloudflare / Fastly). Loading the script transmits your IP address and user-agent to that CDN. Legal basis: Art. 6 (1)(f) GDPR — legitimate interest in providing reliable phone-number validation. We are working on self-hosting this asset to remove this third-party request.',
+                privacyTransferTitle: '7. Transfers to third countries',
+                privacyTransfer: 'Personal data submitted via the registration, feedback, and deletion forms is stored in the EU (AWS eu-north-1, Stockholm). The CDN request mentioned above may be served from servers outside the EU; the CDN provider relies on the EU Standard Contractual Clauses for any such transfer.',
+                privacyRightsTitle: '8. Your rights',
+                privacyRightsIntro: 'Under the GDPR you have, in particular, the following rights:',
+                privacyRight1: '<strong>Right of access</strong> (Art. 15) — you can request a copy of the data we hold about you.',
+                privacyRight2: '<strong>Right to rectification</strong> (Art. 16) — you can request correction of inaccurate data.',
+                privacyRight3: '<strong>Right to erasure</strong> (Art. 17) — you can request deletion at any time, easily via the <a href="#deletionSection">data deletion form</a> on this page.',
+                privacyRight4: '<strong>Right to restriction of processing</strong> (Art. 18).',
+                privacyRight5: '<strong>Right to data portability</strong> (Art. 20) — receive your data in a structured, commonly used, machine-readable format.',
+                privacyRight6: '<strong>Right to object</strong> (Art. 21) to processing based on legitimate interest.',
+                privacyRight7: '<strong>Right to withdraw consent</strong> (Art. 7 (3)) at any time without giving reasons. Withdrawal does not affect the lawfulness of processing carried out before the withdrawal.',
+                privacyRight8: '<strong>Right to lodge a complaint</strong> with a supervisory authority (Art. 77) — in particular, the data protection authority of the federal state in which you reside or in which the controller is established. For the controller above this is the <em>Landesbeauftragte für Datenschutz und Informationsfreiheit der Freien Hansestadt Bremen</em>, Arndtstraße 1, 27570 Bremerhaven (https://www.datenschutz.bremen.de).',
+                privacyVoluntaryTitle: '9. Voluntary nature',
+                privacyVoluntary: 'Participation in this research study and provision of the data described above is entirely voluntary. There are no negative consequences if you choose not to participate or to withdraw later.',
+                privacyCookiesTitle: '10. Cookies and tracking',
+                privacyCookies: 'This website does <strong>not</strong> set any cookies, does <strong>not</strong> use web analytics, and does <strong>not</strong> contain advertising or social-media trackers.',
+                privacyChangesTitle: '11. Changes to this policy',
+                privacyChanges: 'We may update this policy if our processing practices change. The current version is dated <strong>27 April 2026</strong> (v1).',
+                imprintHeading: '📜 Imprint (Impressum)',
+                imprintIntro: 'Information pursuant to § 5 DDG (formerly TMG) and § 18 (2) MStV:',
+                imprintProviderTitle: 'Provider',
+                imprintProvider: '[TODO: Insert legal provider — e.g. “Universität Bremen, Bibliothekstraße 1, 28359 Bremen, Germany. Represented by the Rector Prof. Dr. …. Körperschaft des öffentlichen Rechts. USt-IdNr.: DE….” Add the responsible chair / lab if relevant.]',
+                imprintContactTitle: 'Contact',
+                imprintContact: '[TODO: Insert contact email and phone for project enquiries, e.g. audio-forensics@uni-bremen.de, +49 421 218 …]',
+                imprintResponsibleTitle: 'Responsible for content (§ 18 (2) MStV)',
+                imprintResponsible: '[TODO: Name and full postal address of the natural person editorially responsible for this site.]',
+                imprintDisputeTitle: 'EU online dispute resolution',
+                imprintDispute: 'The European Commission provides a platform for online dispute resolution at <a href="https://ec.europa.eu/consumers/odr/" rel="noopener noreferrer" target="_blank">https://ec.europa.eu/consumers/odr/</a>. We are not obliged and not willing to participate in dispute resolution proceedings before a consumer arbitration board.',
+                imprintLiabilityTitle: 'Liability for content and links',
+                imprintLiability: 'As a service provider we are responsible for our own content on these pages in accordance with general legislation pursuant to § 7 (1) DDG. According to §§ 8 to 10 DDG, however, we are not obliged as a service provider to monitor transmitted or stored third-party information or to investigate circumstances that indicate illegal activity. External links are checked at the time they are set; we have no influence on subsequent changes to linked content.'
             },
             de: {
                 pageTitle: 'Teilnahme an mobiler Akustikforschung',
@@ -376,7 +541,6 @@
                 introP4: 'Alle Daten werden vertraulich behandelt und ausschließlich zu wissenschaftlichen Zwecken verwendet.',
                 introP5: 'Um zu starten, <strong>registrieren Sie sich unten</strong> mit Ihrer E-Mail-Adresse und der <strong>Telefonnummer, von der Sie anrufen werden</strong>. Ihre Teilnehmenden-ID und die detaillierten Anweisungen erscheinen <strong>sofort auf dieser Seite</strong> - Sie müssen nicht auf eine E-Mail oder SMS warten.',
                 participateTitle: 'Teilnehmen',
-                emailLabel: 'E-Mail',
                 emailPlaceholder: 'guenther.jauch@beispiel.de',
                 phoneLabel: 'Telefonnummer',
                 phoneHint: '<strong>Wichtig:</strong> Bitte registrieren Sie sich mit der Telefonnummer, von der Sie auch anrufen werden.',
@@ -461,7 +625,67 @@
                 footerOrg: 'Audio Forensics Lab — Universität Bremen',
                 footerImprint: 'Impressum',
                 footerPrivacy: 'Datenschutzerklärung',
-                footerDeletion: 'Datenlöschung beantragen'
+                footerDeletion: 'Datenlöschung beantragen',
+                privacyPreForm: 'Bitte lesen Sie vor der Registrierung unsere <a href="#privacySection">Datenschutzerklärung</a>. Die von Ihnen übermittelten Daten werden ausschließlich für die dort beschriebenen Forschungszwecke verarbeitet. Sie können Ihre Einwilligung jederzeit widerrufen, indem Sie das <a href="#deletionSection">Formular zur Datenlöschung</a> weiter unten verwenden.',
+                emailLabel: 'E-Mail <span class="field-hint" style="display:inline; color:#5a6b80; font-size:.8rem; font-weight:400;">(optional)</span>',
+                consentLabel: 'Ich habe die <a href="#privacySection">Datenschutzerklärung</a> gelesen und willige in die Verarbeitung meiner Telefonnummer, meines Telefonmodells, meiner Voicemail-Aufnahmen sowie (sofern angegeben) meiner E-Mail-Adresse zu den dort beschriebenen Forschungszwecken ein. Mir ist bekannt, dass ich diese Einwilligung jederzeit ohne Angabe von Gründen widerrufen kann.',
+                consentRequired: 'Bitte bestätigen Sie, dass Sie die Datenschutzerklärung gelesen und in die Verarbeitung eingewilligt haben.',
+                privacyHeading: '🔒 Datenschutzerklärung (gem. Art. 13 DSGVO)',
+                privacyControllerTitle: '1. Verantwortlicher',
+                privacyController: 'Verantwortlich für die Verarbeitung personenbezogener Daten auf dieser Website ist:',
+                privacyControllerDetails: '[TODO: Vollständigen Namen und Postanschrift des Verantwortlichen einfügen — z. B. Prof. Dr. …, Audio Forensics Lab, Universität Bremen, Bibliothekstraße 1, 28359 Bremen. E-Mail: …@uni-bremen.de. Telefon: …]',
+                privacyDpoTitle: '2. Datenschutzbeauftragte/r',
+                privacyDpo: '[TODO: Kontaktdaten der/des Datenschutzbeauftragten Ihrer Einrichtung einfügen — typischerweise die zentrale DSB der Universität Bremen, z. B. „Datenschutzbeauftragte/r der Universität Bremen, Bibliothekstraße 1, 28359 Bremen, datenschutz@uni-bremen.de“.]',
+                privacyDataTitle: '3. Welche Daten wir erheben und verarbeiten',
+                privacyData1: '<strong>Registrierung:</strong> Telefonnummer (Pflicht — zur Zuordnung eingehender Voicemails zu Ihrem Teilnehmer-Datensatz), Telefonmodell (Pflicht — forschungsrelevantes Metadatum), E-Mail-Adresse (optional), Oberflächensprache, technischer Zeitstempel der Registrierung sowie eine zufällig generierte Teilnehmer-ID.',
+                privacyData2: '<strong>Voicemails:</strong> die Audioaufnahmen, die Sie unter +49 421 989 690 30 hinterlassen, sowie die von unserer Telefonanlage bereitgestellten Anrufmetadaten (Anrufer-Telefonnummer, Anrufzeit, Anrufdauer).',
+                privacyData3: '<strong>Feedback (optional):</strong> die von Ihnen eingegebene Teilnehmer-ID, die Sprache der Aufnahmen, eine Bewertung der Benutzerfreundlichkeit, Ihr Freitext-Feedback, die Oberflächensprache sowie ein Übermittlungs-Zeitstempel.',
+                privacyData4: '<strong>Löschanträge:</strong> die von Ihnen übermittelte Telefonnummer und/oder Teilnehmer-ID, der Zeitstempel des Antrags sowie ein Zähler zur Missbrauchsprävention.',
+                privacyData5: '<strong>Server-Logs:</strong> unsere Hosting-Anbieter (siehe Abschnitt 6) protokollieren automatisch technische Daten wie IP-Adresse, User-Agent und Anfragezeit. Diese Logs werden ausschließlich aus Sicherheits- und Betriebsgründen bei den Anbietern aufbewahrt und werden von uns nicht mit Ihrem Teilnehmer-Datensatz verknüpft.',
+                privacyDataNote: 'Ihre Stimme kann personenbezogene Daten im Sinne von Art. 4 Nr. 1 DSGVO darstellen. Wir verwenden die Aufnahmen nicht zur biometrischen Identifizierung im Sinne von Art. 9 Abs. 1 DSGVO.',
+                privacyPurposeTitle: '4. Zwecke und Rechtsgrundlagen',
+                privacyPurpose1: '<strong>Forschungsteilnahme</strong> (Zuordnung von Voicemails zu Teilnehmenden, Analyse, wie sich Raumakustik auf Mobiltelefon-Audio auswirkt): die Verarbeitung erfolgt auf Grundlage Ihrer <strong>ausdrücklichen Einwilligung</strong> nach Art. 6 Abs. 1 lit. a DSGVO, die über das Einwilligungskästchen im Registrierungsformular erteilt wird.',
+                privacyPurpose2: '<strong>Betrieb und Absicherung der Website</strong> (einschließlich des Lösch- und Feedback-Formulars): die Verarbeitung erfolgt auf Grundlage unseres <strong>berechtigten Interesses</strong> an einem funktionsfähigen, sicheren Dienst nach Art. 6 Abs. 1 lit. f DSGVO.',
+                privacyPurpose3: '<strong>Wissenschaftliche Veröffentlichung aggregierter, anonymisierter Ergebnisse</strong>: Grundlage sind Art. 6 Abs. 1 lit. e i. V. m. Art. 89 DSGVO (Forschung im öffentlichen Interesse). Veröffentlichte Ergebnisse enthalten keine identifizierenden personenbezogenen Daten.',
+                privacyRetentionTitle: '5. Speicherdauer',
+                privacyRetention1: '<strong>Telefonnummer, E-Mail, Telefonmodell:</strong> spätestens nach Verarbeitung und Pseudonymisierung der mit Ihrer Teilnehmer-ID verknüpften Aufnahmen gelöscht, in der Regel innerhalb von <strong>6 Monaten</strong> nach Ihrer Registrierung.',
+                privacyRetention2: '<strong>Voicemail-Aufnahmen:</strong> in pseudonymisierter Form (nur mit der zufälligen Teilnehmer-ID verknüpft, nicht mit Ihrer Telefonnummer) für die Dauer des Forschungsprojekts und etwaiger Aufbewahrungsfristen nach den Regeln guter wissenschaftlicher Praxis gespeichert (in der Regel <strong>10 Jahre</strong> nach Veröffentlichung gemäß DFG-Leitlinien).',
+                privacyRetention3: '<strong>Feedback-Einträge:</strong> für die Dauer des Forschungsprojekts gespeichert; das optionale Feld „Teilnehmer-ID“ kann auf Wunsch leer bleiben.',
+                privacyRetention4: '<strong>Löschantrags-Markierungen:</strong> der betroffene Teilnehmer-Datensatz wird automatisch <strong>24 Stunden</strong> nach Erfassung des Antrags vollständig gelöscht.',
+                privacyProcessorsTitle: '6. Empfänger / Auftragsverarbeiter',
+                privacyProcessor1: '<strong>Supabase (Datenbank-Hosting):</strong> Supabase Inc., 970 Toa Payoh North #07-04, Singapur 318992; EU-Daten werden bei Amazon Web Services EMEA SARL in der AWS-Region <em>eu-north-1</em> (Stockholm, Schweden) gespeichert. Eine Auftragsverarbeitungsvereinbarung nach Art. 28 DSGVO liegt vor.',
+                privacyProcessor2: '<strong>3CX (Telefonie / Voicemail-Anlage):</strong> 3CX Ltd., betreibt die On-Premises-Telefonanlage, die Voicemails aufzeichnet und speichert, bevor wir sie herunterladen.',
+                privacyProcessor3: '<strong>jsDelivr (Content Delivery Network):</strong> diese Seite lädt die Open-Source-Bibliothek <em>intl-tel-input</em> von <code>cdn.jsdelivr.net</code> (Cloudflare / Fastly). Beim Laden des Skripts werden Ihre IP-Adresse und Ihr User-Agent an dieses CDN übermittelt. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO — berechtigtes Interesse an einer zuverlässigen Telefonnummern-Validierung. Wir arbeiten an einer Selbst-Auslieferung, um diese Drittanbieter-Anfrage zu entfernen.',
+                privacyTransferTitle: '7. Drittlandtransfers',
+                privacyTransfer: 'Personenbezogene Daten, die über das Registrierungs-, Feedback- und Löschformular übermittelt werden, werden in der EU gespeichert (AWS eu-north-1, Stockholm). Die oben genannte CDN-Anfrage kann von Servern außerhalb der EU bedient werden; der CDN-Anbieter stützt sich für solche Transfers auf die EU-Standardvertragsklauseln.',
+                privacyRightsTitle: '8. Ihre Rechte',
+                privacyRightsIntro: 'Nach der DSGVO stehen Ihnen insbesondere folgende Rechte zu:',
+                privacyRight1: '<strong>Auskunftsrecht</strong> (Art. 15) — Sie können eine Kopie der zu Ihrer Person gespeicherten Daten anfordern.',
+                privacyRight2: '<strong>Recht auf Berichtigung</strong> (Art. 16) — Sie können die Berichtigung unrichtiger Daten verlangen.',
+                privacyRight3: '<strong>Recht auf Löschung</strong> (Art. 17) — Sie können jederzeit die Löschung verlangen, einfach über das <a href="#deletionSection">Formular zur Datenlöschung</a> auf dieser Seite.',
+                privacyRight4: '<strong>Recht auf Einschränkung der Verarbeitung</strong> (Art. 18).',
+                privacyRight5: '<strong>Recht auf Datenübertragbarkeit</strong> (Art. 20) — Sie erhalten Ihre Daten in einem strukturierten, gängigen, maschinenlesbaren Format.',
+                privacyRight6: '<strong>Widerspruchsrecht</strong> (Art. 21) gegen eine auf berechtigtem Interesse beruhende Verarbeitung.',
+                privacyRight7: '<strong>Widerrufsrecht</strong> (Art. 7 Abs. 3) — Sie können Ihre Einwilligung jederzeit ohne Angabe von Gründen widerrufen. Der Widerruf berührt nicht die Rechtmäßigkeit der bis dahin erfolgten Verarbeitung.',
+                privacyRight8: '<strong>Beschwerderecht</strong> bei einer Aufsichtsbehörde (Art. 77) — insbesondere bei der Datenschutzbehörde des Bundeslandes Ihres Wohnsitzes oder des Verantwortlichen. Für den oben genannten Verantwortlichen ist dies die <em>Landesbeauftragte für Datenschutz und Informationsfreiheit der Freien Hansestadt Bremen</em>, Arndtstraße 1, 27570 Bremerhaven (https://www.datenschutz.bremen.de).',
+                privacyVoluntaryTitle: '9. Freiwilligkeit',
+                privacyVoluntary: 'Die Teilnahme an dieser Forschungsstudie sowie die Bereitstellung der oben beschriebenen Daten ist vollständig freiwillig. Eine Nichtteilnahme oder ein späterer Widerruf hat für Sie keine Nachteile.',
+                privacyCookiesTitle: '10. Cookies und Tracking',
+                privacyCookies: 'Diese Website setzt <strong>keine</strong> Cookies, verwendet <strong>keine</strong> Webanalyse und enthält <strong>keine</strong> Werbe- oder Social-Media-Tracker.',
+                privacyChangesTitle: '11. Änderungen dieser Erklärung',
+                privacyChanges: 'Bei Änderungen unserer Verarbeitungspraxis kann diese Erklärung aktualisiert werden. Stand der aktuellen Fassung: <strong>27. April 2026</strong> (v1).',
+                imprintHeading: '📜 Impressum',
+                imprintIntro: 'Angaben gemäß § 5 DDG (vormals TMG) und § 18 Abs. 2 MStV:',
+                imprintProviderTitle: 'Anbieter',
+                imprintProvider: '[TODO: Rechtsträger einfügen — z. B. „Universität Bremen, Bibliothekstraße 1, 28359 Bremen. Vertreten durch den Rektor Prof. Dr. …. Körperschaft des öffentlichen Rechts. USt-IdNr.: DE….“ Verantwortlichen Lehrstuhl / verantwortliches Labor ergänzen, falls einschlägig.]',
+                imprintContactTitle: 'Kontakt',
+                imprintContact: '[TODO: Kontakt-E-Mail und Telefon für Projektanfragen einfügen, z. B. audio-forensics@uni-bremen.de, +49 421 218 …]',
+                imprintResponsibleTitle: 'Verantwortlich für den Inhalt (§ 18 Abs. 2 MStV)',
+                imprintResponsible: '[TODO: Name und vollständige Postanschrift der natürlichen Person, die für diese Seite redaktionell verantwortlich ist.]',
+                imprintDisputeTitle: 'EU-Online-Streitbeilegung',
+                imprintDispute: 'Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung bereit: <a href="https://ec.europa.eu/consumers/odr/" rel="noopener noreferrer" target="_blank">https://ec.europa.eu/consumers/odr/</a>. Wir sind nicht verpflichtet und nicht bereit, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.',
+                imprintLiabilityTitle: 'Haftung für Inhalte und Links',
+                imprintLiability: 'Als Diensteanbieter sind wir gemäß § 7 Abs. 1 DDG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 DDG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Externe Links wurden zum Zeitpunkt der Setzung geprüft; auf spätere Änderungen der verlinkten Inhalte haben wir keinen Einfluss.'
             }
         };
 
@@ -596,6 +820,22 @@
             const phone = readPhone(phoneInputEl, iti, phoneErrorEl, dict);
             if (!phone) return;
 
+            // GDPR consent validation
+            const consentBox = document.getElementById('consentBox');
+            const consentError = document.getElementById('consentError');
+            if (consentError) {
+                consentError.style.display = 'none';
+                consentError.textContent = '';
+            }
+            if (!consentBox || !consentBox.checked) {
+                if (consentError) {
+                    consentError.textContent = dict.consentRequired || 'Please confirm consent.';
+                    consentError.style.display = 'block';
+                }
+                if (consentBox && typeof consentBox.focus === 'function') consentBox.focus();
+                return;
+            }
+
             // Reset any previous error styling on the message element
             msgEl.style.color = '';
             msgEl.style.display = 'none';
@@ -613,7 +853,8 @@
                         p_phone: phone,
                         p_phone_model: phoneModel,
                         p_ui_language: lang,
-                        p_registered_at: new Date().toISOString()
+                        p_registered_at: new Date().toISOString(),
+                        p_consent_version: 'v1-2026-04-27'
                     })
                 });
 
