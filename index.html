@@ -4,12 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Participate in Mobile Acoustic Research</title>
+    <meta name="description" content="Help us research how room acoustics affect mobile phone calls. Leave short voicemails from rooms in your home — takes about 5–10 minutes.">
+    <meta property="og:title" content="Participate in Mobile Acoustic Research">
+    <meta property="og:description" content="Help us research how room acoustics affect mobile phone calls. Leave short voicemails from rooms in your home — takes about 5–10 minutes.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='12' fill='%234a90d9'/><path d='M32 14a8 8 0 0 0-8 8v12a8 8 0 0 0 16 0V22a8 8 0 0 0-8-8zm-14 20a14 14 0 0 0 12 13.86V54h-6a2 2 0 0 0 0 4h16a2 2 0 0 0 0-4h-6v-6.14A14 14 0 0 0 46 34a2 2 0 0 0-4 0 10 10 0 0 1-20 0 2 2 0 0 0-4 0z' fill='white'/></svg>">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@25/build/css/intlTelInput.css">
     <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25/build/js/intlTelInputWithUtils.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 100vh; padding-bottom: 2rem; }
         .card { background: #fff; padding: 2.5rem; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,.1); width: 100%; max-width: 420px; }
         h1 { margin-bottom: 1.5rem; font-size: 1.6rem; color: #333; text-align: center; }
         label { display: block; margin-bottom: .3rem; font-weight: 600; color: #555; font-size: .9rem; }
@@ -17,11 +23,13 @@
         input:focus { outline: none; border-color: #4a90d9; }
         .register-btn { width: 100%; padding: .75rem; background: #4a90d9; color: #fff; border: none; border-radius: 6px; font-size: 1rem; cursor: pointer; transition: background .2s; }
         .register-btn:hover { background: #3a7bc8; }
+        .register-btn:disabled, .feedback-btn:disabled { background: #9bb6d4; cursor: not-allowed; }
         .msg { text-align: center; margin-top: 1rem; color: green; display: none; }
         .faq { max-width: 600px; width: 100%; margin-top: 2.5rem; }
         .faq h2 { text-align: center; color: #333; margin-bottom: 1rem; font-size: 1.4rem; }
         details { background: #fff; border-radius: 8px; margin-bottom: .6rem; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
         summary { padding: .9rem 1.2rem; cursor: pointer; font-weight: 600; color: #444; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+        summary::-webkit-details-marker { display: none; }
         summary::after { content: '+'; font-size: 1.2rem; color: #4a90d9; }
         details[open] summary::after { content: '−'; }
         details p { padding: 0 1.2rem 1rem; color: #666; line-height: 1.6; }
@@ -51,6 +59,20 @@
         .feedback-btn:hover { background: #3a7bc8; }
         .feedback-msg { text-align: center; margin-top: .6rem; color: green; display: none; }
         .feedback-msg.error { color: #b00020; }
+        /* Lifted helper classes (formerly inline styles) */
+        .field-error { display: none; color: #b00020; font-size: .85rem; margin-top: -.6rem; margin-bottom: .8rem; }
+        .field-hint { font-size: .85rem; color: #5a6b80; margin-top: -.6rem; margin-bottom: 1.2rem; }
+        .warning-box { display: none; background: #fff8e1; border-left: 4px solid #f9a825; border-radius: 6px; padding: 1rem 1.2rem; margin-top: 1rem; color: #6d4c00; }
+        .example-block { margin-top: 1rem; }
+        .example-block .example-label { margin-top: .6rem; margin-bottom: .3rem; font-weight: 600; color: #333; }
+        .example-block blockquote { background: #f0f4f8; border-left: 3px solid #4a90d9; padding: 1rem 1.2rem; border-radius: 6px; color: #444; font-style: italic; line-height: 1.7; margin-top: .4rem; }
+        .examples-hint { margin-top: 1rem; color: #5a6b80; font-size: .95rem; }
+        .example-title { margin-top: 1rem; margin-bottom: .5rem; color: #333; font-size: 1.1rem; }
+        .rooms-list { margin-top: .4rem; }
+        .deletion-or { text-align: center; margin: -.4rem 0 .8rem; }
+        .site-footer { width: 100%; max-width: 700px; text-align: center; margin-top: 3rem; padding: 1rem 0 .4rem; color: #889; font-size: .85rem; line-height: 1.5; }
+        .site-footer a { color: #4a7bc8; text-decoration: none; margin: 0 .35rem; }
+        .site-footer a:hover { text-decoration: underline; }
         /* intl-tel-input integration */
         .iti { width: 100%; margin-bottom: 1.2rem; display: block; }
         .iti input.iti__tel-input { margin-bottom: 0; width: 100%; }
@@ -58,10 +80,10 @@
         .iti__country-list { font-size: .95rem; }
     </style>
 </head>
-<body style="flex-direction:column;">
+<body>
     <div class="lang-toggle" role="group" aria-label="Language switcher">
-        <button type="button" class="lang-btn active" data-lang="en">English</button>
-        <button type="button" class="lang-btn" data-lang="de">Deutsch</button>
+        <button type="button" class="lang-btn active" data-lang="en" aria-pressed="true">English</button>
+        <button type="button" class="lang-btn" data-lang="de" aria-pressed="false">Deutsch</button>
     </div>
 
     <div class="site-header">
@@ -74,15 +96,19 @@
         <p data-i18n="introP1">Thank you for your interest in our acoustic research study! Have you ever been on a phone call with a friend where you could hear, solely from the sound, that they were calling from a bathroom or from a railway station? That is due to the characteristic reverberation many rooms have and which we have learned to recognise. We are investigating how much of this reverberation is actually transmitted across various mobile phone models during phone calls.</p>
         <p data-i18n="introP2">As a participant, you will <strong>leave a voicemail of approximately 1-2 minutes from as many rooms as possible in your apartment and the surrounding areas</strong> (such as the bathroom, living room, kitchen, bedroom, hallway, balcony, stairway or even inside your car), briefly describing your surroundings in addition to performing small changes like opening or closing doors and windows. The whole process should take no longer than 5 to 10 minutes.</p>
         <p data-i18n="introP3"><strong>Talking for about 1-2 minutes per room is the core of the experiment.</strong> Your descriptions don't need to be perfectly accurate, just do your best. If describing the room and its sound doesn't take up the full time, feel free to simply talk about anything - the weather, your favorite dish, or just read aloud from this page - just keep speaking naturally.</p>
-        <h3 style="margin-top:1rem; margin-bottom:.5rem; color:#333; font-size:1.1rem;" data-i18n="exampleTitle">💬 Example Voicemail Message</h3>
-        <p style="margin-top:.6rem; margin-bottom:.3rem; font-weight:600; color:#333;" data-i18n="exampleLabel1">🛁 Example 1 - Bathroom</p>
-        <blockquote style="background:#f0f4f8; border-left:3px solid #4a90d9; padding:1rem 1.2rem; border-radius:6px; color:#444; font-style:italic; line-height:1.7;" data-i18n="exampleQuote">
-            "Hello, this is a participant. I am in the bathroom. The door is closed. The bathroom is approximately 4 meters wide and 3 meters across, ceiling height is approximately 2.5 meters. The floor is tiled, and the walls are tiled up to a height of approx 2 meters. The rest is wallpaper. There is a sink, a toilet and a bathtub. I am walking around the room, now I am standing rather close to a wall - it sounds quite reverberant near the tiles. Okay, I just opened the door - I am walking around again, and the sound feels noticeably more open now, less echoey. There is also a small window above the bathtub; I just opened the window as well, and now the sound is even drier and a bit of street noise comes in. Hmm, what else can I say... the weather today is really nice, sunny and about 20 degrees. I think if I could take one thing to a desert island, it would probably be a good book. Anyway, I think that's about a minute, goodbye!"
-        </blockquote>
-        <p style="margin-top:1rem; margin-bottom:.3rem; font-weight:600; color:#333;" data-i18n="exampleLabel2">🛏️ Example 2 - Bedroom</p>
-        <blockquote style="background:#f0f4f8; border-left:3px solid #4a90d9; padding:1rem 1.2rem; border-radius:6px; color:#444; font-style:italic; line-height:1.7; margin-top:.8rem;" data-i18n="exampleQuote2">
-            "Hi, this is a participant. I am in my bedroom. The door is closed. The bedroom is roughly 4 by 3.5 meters, with a ceiling height of about 2.6 meters. The floor is hardwood with a large rug in the middle, the walls are painted plaster, and the ceiling is also painted. There is a queen-size bed against the long wall, two nightstands with lamps, a tall wardrobe opposite the bed, a small desk with a chair near the window, and curtains on the window. There are also a few framed pictures on the walls and a houseplant in the corner. I am walking around the room while talking - near the wardrobe it sounds a tiny bit warmer, and standing on the rug the sound feels a bit softer than near the wall. Okay, I just opened the window - I am walking around the room again, and honestly, it sounds pretty much the same to me, maybe just a little more outside noise. That's about it for the bedroom, talk to you next time, bye!"
-        </blockquote>
+        <h3 class="example-title" data-i18n="exampleTitle">💬 Example Voicemail Message</h3>
+        <div class="example-block">
+            <p class="example-label" data-i18n="exampleLabel1">🛁 Example 1 - Bathroom</p>
+            <blockquote data-i18n="exampleQuote">
+                "Hello, this is a participant. I am in the bathroom. The door is closed. The bathroom is approximately 4 meters wide and 3 meters across, ceiling height is approximately 2.5 meters. The floor is tiled, and the walls are tiled up to a height of approx 2 meters. The rest is wallpaper. There is a sink, a toilet and a bathtub. I am walking around the room, now I am standing rather close to a wall - it sounds quite reverberant near the tiles. Okay, I just opened the door - I am walking around again, and the sound feels noticeably more open now, less echoey. There is also a small window above the bathtub; I just opened the window as well, and now the sound is even drier and a bit of street noise comes in. Hmm, what else can I say... the weather today is really nice, sunny and about 20 degrees. I think if I could take one thing to a desert island, it would probably be a good book. Anyway, I think that's about a minute, goodbye!"
+            </blockquote>
+        </div>
+        <div class="example-block">
+            <p class="example-label" data-i18n="exampleLabel2">🛏️ Example 2 - Bedroom</p>
+            <blockquote data-i18n="exampleQuote2">
+                "Hi, this is a participant. I am in my bedroom. The door is closed. The bedroom is roughly 4 by 3.5 meters, with a ceiling height of about 2.6 meters. The floor is hardwood with a large rug in the middle, the walls are painted plaster, and the ceiling is also painted. There is a queen-size bed against the long wall, two nightstands with lamps, a tall wardrobe opposite the bed, a small desk with a chair near the window, and curtains on the window. There are also a few framed pictures on the walls and a houseplant in the corner. I am walking around the room while talking - near the wardrobe it sounds a tiny bit warmer, and standing on the rug the sound feels a bit softer than near the wall. Okay, I just opened the window - I am walking around the room again, and honestly, it sounds pretty much the same to me, maybe just a little more outside noise. That's about it for the bedroom, talk to you next time, bye!"
+            </blockquote>
+        </div>
         <p data-i18n="introP4">All data is handled confidentially and used for scientific purposes only.</p>
         <p data-i18n="introP5">To get started, <strong>register below</strong> with your email and phone number. Your participant ID and detailed instructions will appear <strong>immediately on this page</strong> - no need to wait for an email or SMS.</p>
      
@@ -92,26 +118,26 @@
         <h1 data-i18n="participateTitle">Participate</h1>
         <form id="contactForm">
             <label for="email" data-i18n="emailLabel">Email</label>
-            <input type="email" id="email" name="email" placeholder="you@example.com" data-i18n-placeholder="emailPlaceholder" required>
+            <input type="email" id="email" name="email" placeholder="you@example.com" data-i18n-placeholder="emailPlaceholder" autocomplete="email" maxlength="254" required>
 
             <label for="phone" data-i18n="phoneLabel">Phone Number</label>
-            <input type="tel" id="phone" name="phone" autocomplete="tel" required>
-            <span id="phoneError" style="display:none; color:#b00020; font-size:.85rem; margin-top:-.6rem; margin-bottom:.8rem;"></span>
-            <p data-i18n="phoneHint" style="font-size:.85rem; color:#b15c00; margin-top:-.6rem; margin-bottom:1.2rem;"><strong>Important:</strong> please register with the same phone number you will be calling from.</p>
+            <input type="tel" id="phone" name="phone" autocomplete="tel" inputmode="tel" required>
+            <span id="phoneError" class="field-error" role="alert" aria-live="assertive"></span>
+            <p data-i18n="phoneHint" class="field-hint"><strong>Important:</strong> please register with the same phone number you will be calling from.</p>
 
             <label for="phoneModel" data-i18n="phoneModelLabel">Phone Model</label>
-            <input type="text" id="phoneModel" name="phoneModel" placeholder="e.g. Samsung Galaxy A54" data-i18n-placeholder="phoneModelPlaceholder" maxlength="128" required>
+            <input type="text" id="phoneModel" name="phoneModel" placeholder="e.g. Samsung Galaxy A54" data-i18n-placeholder="phoneModelPlaceholder" autocomplete="off" maxlength="128" required>
 
             <button type="submit" class="register-btn" data-i18n="registerButton">Register</button>
         </form>
-        <p class="msg" id="msg"><span id="msgText" data-i18n="msgText">Thank you! Your participant ID is</span> <br> <strong id="participantId"></strong></p>
-        <div id="duplicateWarning" style="display:none; background:#fff8e1; border-left:4px solid #f9a825; border-radius:6px; padding:1rem 1.2rem; margin-top:1rem; color:#6d4c00;"></div>
+        <p class="msg" id="msg" role="status" aria-live="polite"><span id="msgText" data-i18n="msgText">Thank you! Your participant ID is</span> <br> <strong id="participantId"></strong></p>
+        <div id="duplicateWarning" class="warning-box" role="alert" aria-live="polite"></div>
         <div class="instructions" id="instructionsBox">
             <h2 data-i18n="instructionsTitle">📋 Instructions</h2>
             <ul>
                 <li data-i18n="i1">For <strong>each</strong> room, you will call our voicemail number and leave a separate voicemail (~1-2 minutes each).</li>
                 <li data-i18n="i2"><strong>You choose which rooms to record</strong> - you do not need to cover them all. The list below is just a suggestion; feel free to add your own places, such as an attic, storage room, basement, garage, or anywhere else interesting:
-                    <ul style="margin-top:.4rem;">
+                    <ul class="rooms-list">
                         <li data-i18n="room1">🛁 Bathroom</li>
                         <li data-i18n="room2">🛋️ Living room</li>
                         <li data-i18n="room3">🍳 Kitchen</li>
@@ -132,15 +158,7 @@
                 <li data-i18n="i12"><strong>Talking for about 1-2 minutes is the core of the experiment.</strong> If your room description doesn't fill the full time, just keep talking about anything - the weather, your favorite dish, or simply read aloud from this page. The important thing is to keep speaking naturally.</li>
                 <li data-i18n="i13">Once you have read and understood all of the above, <strong>call the following number</strong> to leave your first voicemail: <span class="phone">+49 421 989 690 30</span>. After hanging up, move to the next room and call the same number again.</li>
             </ul>
-            <h3 style="margin-top:1rem; margin-bottom:.5rem; color:#333; font-size:1.1rem;" data-i18n="exampleTitle">💬 Example Voicemail Message</h3>
-            <p style="margin-top:.6rem; margin-bottom:.3rem; font-weight:600; color:#333;" data-i18n="exampleLabel1">🛁 Example 1 - Bathroom</p>
-            <blockquote style="background:#f0f4f8; border-left:3px solid #4a90d9; padding:1rem 1.2rem; border-radius:6px; color:#444; font-style:italic; line-height:1.7;" data-i18n="exampleQuote">
-                "Hello, this is a participant. I am in the bathroom. The door is closed. The bathroom is approximately 4 meters wide and 3 meters across, ceiling height is approximately 2.5 meters. The floor is tiled, and the walls are tiled up to a height of approx 2 meters. The rest is wallpaper. There is a sink, a toilet and a bathtub. I am walking around the room, now I am standing rather close to a wall - it sounds quite reverberant near the tiles. Okay, I just opened the door - I am walking around again, and the sound feels noticeably more open now, less echoey. There is also a small window above the bathtub; I just opened the window as well, and now the sound is even drier and a bit of street noise comes in. Hmm, what else can I say... the weather today is really nice, sunny and about 20 degrees. I think if I could take one thing to a desert island, it would probably be a good book. Anyway, I think that's about a minute, goodbye!"
-            </blockquote>
-            <p style="margin-top:1rem; margin-bottom:.3rem; font-weight:600; color:#333;" data-i18n="exampleLabel2">🛏️ Example 2 - Bedroom</p>
-            <blockquote style="background:#f0f4f8; border-left:3px solid #4a90d9; padding:1rem 1.2rem; border-radius:6px; color:#444; font-style:italic; line-height:1.7; margin-top:.8rem;" data-i18n="exampleQuote2">
-                "Hi, this is a participant. I am in my bedroom. The door is closed. The bedroom is roughly 4 by 3.5 meters, with a ceiling height of about 2.6 meters. The floor is hardwood with a large rug in the middle, the walls are painted plaster, and the ceiling is also painted. There is a queen-size bed against the long wall, two nightstands with lamps, a tall wardrobe opposite the bed, a small desk with a chair near the window, and curtains on the window. There are also a few framed pictures on the walls and a houseplant in the corner. I am walking around the room while talking - near the wardrobe it sounds a tiny bit warmer, and standing on the rug the sound feels a bit softer than near the wall. Okay, I just opened the window - I am walking around the room again, and honestly, it sounds pretty much the same to me, maybe just a little more outside noise. That's about it for the bedroom, talk to you next time, bye!"
-            </blockquote>
+            <p data-i18n="instructionsExamplesHint" class="examples-hint">↑ See the example voicemails in the introduction at the top of the page.</p>
         </div>
     </div>
 
@@ -181,7 +199,7 @@
         <p data-i18n="feedbackIntro">If you have any feedback about the process, please share it here. This helps us improve the study experience.</p>
         <form id="feedbackForm">
             <label for="feedbackParticipantId" data-i18n="feedbackParticipantIdLabel">Participant ID (optional)</label>
-            <input type="text" id="feedbackParticipantId" name="participantId" data-i18n-placeholder="feedbackParticipantIdPlaceholder" placeholder="e.g. 1234">
+            <input type="text" id="feedbackParticipantId" name="participantId" data-i18n-placeholder="feedbackParticipantIdPlaceholder" placeholder="e.g. 1234" maxlength="64" autocomplete="off">
 
             <label for="feedbackLanguage" data-i18n="feedbackLanguageLabel">Language used for voicemail</label>
             <select id="feedbackLanguage" name="voicemailLanguage">
@@ -201,11 +219,11 @@
             </select>
 
             <label for="feedbackText" data-i18n="feedbackTextLabel">Your feedback</label>
-            <textarea id="feedbackText" name="feedbackText" data-i18n-placeholder="feedbackTextPlaceholder" placeholder="What worked well? What should we improve?" required></textarea>
+            <textarea id="feedbackText" name="feedbackText" data-i18n-placeholder="feedbackTextPlaceholder" placeholder="What worked well? What should we improve?" maxlength="4000" required></textarea>
 
             <button type="submit" class="feedback-btn" data-i18n="feedbackSubmit">Submit feedback</button>
         </form>
-        <p class="feedback-msg" id="feedbackMsg" data-i18n="feedbackSuccess">Thank you for your feedback!</p>
+        <p class="feedback-msg" id="feedbackMsg" role="status" aria-live="polite" data-i18n="feedbackSuccess">Thank you for your feedback!</p>
     </div>
 
     <div class="feedback" id="deletionSection">
@@ -213,13 +231,29 @@
         <p data-i18n="deletionIntro">If you would like us to delete the data associated with your participation, please enter the phone number you registered with and click the button below. We will flag your record for deletion.</p>
         <form id="deletionForm">
             <label for="deletionPhone" data-i18n="deletionPhoneLabel">Phone number you registered with</label>
-            <input type="tel" id="deletionPhone" name="deletionPhone" autocomplete="tel" required>
-            <span id="deletionPhoneError" style="display:none; color:#b00020; font-size:.85rem; margin-top:-.6rem; margin-bottom:.8rem;"></span>
+            <input type="tel" id="deletionPhone" name="deletionPhone" autocomplete="tel" inputmode="tel">
+            <span id="deletionPhoneError" class="field-error" role="alert" aria-live="assertive"></span>
+
+            <p data-i18n="deletionOr" class="field-hint deletion-or">— or —</p>
+
+            <label for="deletionParticipantId" data-i18n="deletionParticipantIdLabel">Participant ID (if you have one)</label>
+            <input type="text" id="deletionParticipantId" name="deletionParticipantId" maxlength="64" autocomplete="off" placeholder="e.g. P-1234" data-i18n-placeholder="deletionParticipantIdPlaceholder">
 
             <button type="submit" class="feedback-btn" data-i18n="deletionSubmit">Request deletion</button>
         </form>
-        <p class="feedback-msg" id="deletionMsg"></p>
+        <p class="feedback-msg" id="deletionMsg" role="status" aria-live="polite"></p>
     </div>
+
+    <footer class="site-footer">
+        <p>
+            <span data-i18n="footerOrg">Audio Forensics Lab — University of Bremen</span><br>
+            <a href="#" data-i18n="footerImprint">Imprint</a>
+            <span aria-hidden="true">·</span>
+            <a href="#" data-i18n="footerPrivacy">Privacy Policy</a>
+            <span aria-hidden="true">·</span>
+            <a href="#deletionSection" data-i18n="footerDeletion">Request Data Deletion</a>
+        </p>
+    </footer>
 
     <script>
         const translations = {
@@ -267,6 +301,7 @@
                 i11: '<strong>After describing the room, walk around and listen for yourself - do you notice spots where the acoustics change?</strong> Try standing close to a wall, in a corner, in the middle of the room, or next to a hard surface, and <strong>narrate what you are doing and what you hear</strong> (e.g. "I\'m walking to the wall now - it sounds different here", "in the corner it feels narrower"). Then, if the room has doors or windows, open or close them, say out loud what you did (e.g. "I just opened the window", "I just closed the door"), and <strong>walk around the room again</strong> while describing how it sounds now. <strong>Don\'t worry if you can\'t put the change into acoustic terms</strong> - saying "it sounds the same" or "it sounds different" is perfectly fine.',
                 i12: '<strong>Talking for about 1-2 minutes is the core of the experiment.</strong> If your room description doesn\'t fill the full time, just keep talking about anything - the weather, your favorite dish, or simply read aloud from this page. The important thing is to keep speaking naturally.',
                 i13: 'Once you have read and understood all of the above, <strong>call the following number</strong> to leave your first voicemail: <span class="phone">+49 421 989 690 30</span>. After hanging up, move to the next room and call the same number again.',
+                instructionsExamplesHint: '↑ See the example voicemails in the introduction at the top of the page.',
                 faqTitle: 'FAQ',
                 faqQ1: 'Does it need to be completely silent while I record?',
                 faqA1: 'No - normal background noise is perfectly fine. You do not need to wait for silence. Just speak clearly so your voice is audible.',
@@ -299,7 +334,6 @@
                 feedbackSubmit: 'Submit feedback',
                 feedbackSuccess: 'Thank you for your feedback!',
                 feedbackError: 'Sorry, feedback could not be submitted right now. Please try again shortly.',
-                feedbackServerUnreachable: 'Feedback server is not reachable. Please open the page via the Node server (http://localhost:3000) and try again.',
                 registerError: 'Sorry, registration could not be completed right now. Please try again shortly.',
                 phoneError: 'Please enter a valid phone number.',
                 phoneErrorInvalidCountryCode: 'Invalid country code - please pick your country from the list.',
@@ -314,7 +348,17 @@
                 deletionSuccess: '✅ Your deletion request has been recorded for participant ID <strong>{id}</strong>. We will remove your data shortly.',
                 deletionAlready: 'ℹ️ A deletion request for participant ID <strong>{id}</strong> has already been recorded. Your data will be removed shortly.',
                 deletionNotFound: '⚠️ We could not find a registration for this phone number. Please double-check the number you registered with.',
-                deletionError: 'Sorry, the deletion request could not be submitted right now. Please try again shortly.'
+                deletionError: 'Sorry, the deletion request could not be submitted right now. Please try again shortly.',
+                deletionConfirm: 'Are you sure you want to request deletion of all data associated with this phone number? This cannot be undone.',
+                deletionOr: '— or —',
+                deletionParticipantIdLabel: 'Participant ID (if you have one)',
+                deletionParticipantIdPlaceholder: 'e.g. P-1234',
+                deletionMissingInput: 'Please enter either a phone number or a participant ID.',
+                deletionRateLimited: '⚠️ Too many deletion attempts for participant ID {id}. If you believe this is an error, please contact us directly.',
+                footerOrg: 'Audio Forensics Lab — University of Bremen',
+                footerImprint: 'Imprint',
+                footerPrivacy: 'Privacy Policy',
+                footerDeletion: 'Request Data Deletion'
             },
             de: {
                 pageTitle: 'Teilnahme an mobiler Akustikforschung',
@@ -333,7 +377,7 @@
                 introP5: 'Um zu starten, <strong>registrieren Sie sich unten</strong> mit Ihrer E-Mail-Adresse und der <strong>Telefonnummer, von der Sie anrufen werden</strong>. Ihre Teilnehmenden-ID und die detaillierten Anweisungen erscheinen <strong>sofort auf dieser Seite</strong> - Sie müssen nicht auf eine E-Mail oder SMS warten.',
                 participateTitle: 'Teilnehmen',
                 emailLabel: 'E-Mail',
-                emailPlaceholder: 'sie@beispiel.de',
+                emailPlaceholder: 'guenther.jauch@beispiel.de',
                 phoneLabel: 'Telefonnummer',
                 phoneHint: '<strong>Wichtig:</strong> Bitte registrieren Sie sich mit der Telefonnummer, von der Sie auch anrufen werden.',
                 phoneModelLabel: 'Handymodell',
@@ -360,6 +404,7 @@
                 i11: '<strong>Gehen Sie nach der Raumbeschreibung im Raum umher und hören Sie selbst hin - bemerken Sie Stellen, an denen sich die Akustik verändert?</strong> Probieren Sie z. B. eine Position nahe einer Wand, in einer Ecke, in der Mitte des Raums oder dicht an einer harten Oberfläche, und <strong>erzählen Sie dabei, was Sie tun und was Sie hören</strong> (z. B. „Ich gehe jetzt zur Wand - hier klingt es anders“, „in der Ecke wirkt es enger“). Falls der Raum Türen oder Fenster hat, öffnen oder schließen Sie diese anschließend, sagen Sie laut, was Sie gemacht haben (z. B. „Ich habe gerade das Fenster geöffnet“, „Ich habe gerade die Tür geschlossen“), und <strong>gehen Sie noch einmal im Raum umher</strong>, während Sie beschreiben, wie es jetzt klingt. <strong>Es ist völlig in Ordnung, wenn Sie die Veränderung nicht akustisch genau beschreiben können</strong> - „klingt gleich“ oder „klingt anders“ reicht völlig aus.',
                 i12: '<strong>Etwa 1-2 Minuten zu sprechen ist der Kern des Experiments.</strong> Wenn Ihre Raumbeschreibung die Zeit nicht füllt, sprechen Sie einfach über etwas anderes weiter. Das Wetter, Ihr Lieblingsgericht, oder lesen Sie einfach laut von dieser Seite vor. Wichtig ist, natürlich weiterzusprechen.',
                 i13: 'Sobald Sie alle obigen Punkte gelesen und verstanden haben, <strong>rufen Sie die folgende Nummer an</strong>, um Ihre erste Voicemail zu hinterlassen: <span class="phone">+49 421 989 690 30</span>. Legen Sie danach auf, gehen Sie in den nächsten Raum und rufen Sie dieselbe Nummer erneut an.',
+                instructionsExamplesHint: '↑ Beispiele für Voicemails finden Sie in der Einführung am Anfang der Seite.',
                 faqTitle: 'FAQ',
                 faqQ1: 'Muss es beim Aufnehmen völlig still sein?',
                 faqA1: 'Nein - normale Hintergrundgeräusche sind völlig in Ordnung. Sie müssen nicht auf Stille warten. Sprechen Sie einfach deutlich, damit Ihre Stimme gut hörbar ist.',
@@ -392,7 +437,6 @@
                 feedbackSubmit: 'Feedback senden',
                 feedbackSuccess: 'Vielen Dank für Ihr Feedback!',
                 feedbackError: 'Feedback konnte gerade nicht gesendet werden. Bitte versuchen Sie es gleich erneut.',
-                feedbackServerUnreachable: 'Der Feedback-Server ist nicht erreichbar. Bitte öffnen Sie die Seite über den Node-Server (http://localhost:3000) und versuchen Sie es erneut.',
                 registerError: 'Die Registrierung konnte gerade nicht abgeschlossen werden. Bitte versuchen Sie es gleich erneut.',
                 phoneError: 'Bitte geben Sie eine gültige Telefonnummer ein.',
                 phoneErrorInvalidCountryCode: 'Ungültige Ländervorwahl - bitte wählen Sie Ihr Land aus der Liste aus.',
@@ -407,7 +451,17 @@
                 deletionSuccess: '✅ Ihr Löschantrag für die Teilnehmer-ID <strong>{id}</strong> wurde erfasst. Wir werden Ihre Daten in Kürze entfernen.',
                 deletionAlready: 'ℹ️ Für die Teilnehmer-ID <strong>{id}</strong> wurde bereits ein Löschantrag erfasst. Ihre Daten werden in Kürze entfernt.',
                 deletionNotFound: '⚠️ Für diese Telefonnummer konnten wir keine Registrierung finden. Bitte überprüfen Sie die Nummer, mit der Sie sich registriert haben.',
-                deletionError: 'Der Löschantrag konnte derzeit leider nicht übermittelt werden. Bitte versuchen Sie es in Kürze erneut.'
+                deletionError: 'Der Löschantrag konnte derzeit leider nicht übermittelt werden. Bitte versuchen Sie es in Kürze erneut.',
+                deletionConfirm: 'Möchten Sie wirklich die Löschung aller mit dieser Telefonnummer verknüpften Daten beantragen? Dies kann nicht rückgängig gemacht werden.',
+                deletionOr: '— oder —',
+                deletionParticipantIdLabel: 'Teilnehmer-ID (falls vorhanden)',
+                deletionParticipantIdPlaceholder: 'z. B. P-1234',
+                deletionMissingInput: 'Bitte geben Sie entweder eine Telefonnummer oder eine Teilnehmer-ID ein.',
+                deletionRateLimited: '⚠️ Zu viele Löschversuche für Teilnehmer-ID {id}. Falls dies ein Fehler ist, kontaktieren Sie uns bitte direkt.',
+                footerOrg: 'Audio Forensics Lab — Universität Bremen',
+                footerImprint: 'Impressum',
+                footerPrivacy: 'Datenschutzerklärung',
+                footerDeletion: 'Datenlöschung beantragen'
             }
         };
 
@@ -417,6 +471,7 @@
             document.title = dict.pageTitle;
 
             document.querySelectorAll('[data-i18n]').forEach(el => {
+                if (el.hasAttribute('data-i18n-locked')) return;
                 const key = el.getAttribute('data-i18n');
                 if (dict[key]) el.innerHTML = dict[key];
             });
@@ -427,7 +482,9 @@
             });
 
             document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+                const isActive = btn.getAttribute('data-lang') === lang;
+                btn.classList.toggle('active', isActive);
+                btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
             });
         }
 
@@ -438,23 +495,15 @@
         });
 
         // Initialise the international phone input (intl-tel-input).
-        // - Country dropdown with flags + dial codes
+        // - Locked to Germany only (no country dropdown)
         // - Validation and E.164 formatting via libphonenumber (bundled in `intlTelInputWithUtils`)
         // - Accepts numbers with or without leading 0 (national format)
+        // If the CDN script fails to load, fall back to the raw <input> + a basic regex check
+        // so the rest of the page stays functional.
         const phoneInputEl = document.getElementById('phone');
-        const iti = window.intlTelInput(phoneInputEl, {
-            initialCountry: 'de',
-            onlyCountries: ['de'],
-            allowDropdown: false,
-            separateDialCode: true,
-            nationalMode: true,
-            autoPlaceholder: 'polite',
-            formatAsYouType: true
-        });
-
-        // Same setup for the data-deletion request form.
         const deletionPhoneEl = document.getElementById('deletionPhone');
-        const deletionIti = window.intlTelInput(deletionPhoneEl, {
+        const ITI_LOADED = typeof window.intlTelInput === 'function';
+        const ITI_OPTS = {
             initialCountry: 'de',
             onlyCountries: ['de'],
             allowDropdown: false,
@@ -462,7 +511,50 @@
             nationalMode: true,
             autoPlaceholder: 'polite',
             formatAsYouType: true
-        });
+        };
+        const iti = ITI_LOADED ? window.intlTelInput(phoneInputEl, ITI_OPTS) : null;
+        const deletionIti = ITI_LOADED ? window.intlTelInput(deletionPhoneEl, ITI_OPTS) : null;
+
+        // Lightweight fallback validator if intl-tel-input could not load.
+        // German mobile/landline numbers in E.164 are between 10 and 15 digits including +49.
+        const FALLBACK_DE_PHONE_RE = /^\+?49[1-9]\d{6,12}$/;
+        function fallbackValidate(rawValue) {
+            const digits = rawValue.replace(/[^0-9+]/g, '').replace(/^00/, '+');
+            const normalized = digits.startsWith('+')
+                ? digits
+                : (digits.startsWith('49') ? '+' + digits
+                    : '+49' + digits.replace(/^0/, ''));
+            return FALLBACK_DE_PHONE_RE.test(normalized) ? normalized : null;
+        }
+        function readPhone(inputEl, itiInstance, errorEl, dict) {
+            const raw = inputEl.value.trim();
+            if (itiInstance) {
+                if (!raw || !itiInstance.isValidNumber()) {
+                    const errCode = itiInstance.getValidationError();
+                    const errMap = {
+                        1: dict.phoneErrorInvalidCountryCode,
+                        2: dict.phoneErrorTooShort,
+                        3: dict.phoneErrorTooLong,
+                        4: dict.phoneErrorNotANumber
+                    };
+                    errorEl.textContent = errMap[errCode] || dict.phoneError;
+                    errorEl.style.display = 'block';
+                    inputEl.focus();
+                    return null;
+                }
+                errorEl.style.display = 'none';
+                return itiInstance.getNumber();
+            }
+            const normalized = fallbackValidate(raw);
+            if (!normalized) {
+                errorEl.textContent = dict.phoneError;
+                errorEl.style.display = 'block';
+                inputEl.focus();
+                return null;
+            }
+            errorEl.style.display = 'none';
+            return normalized;
+        }
 
         // Supabase configuration (publishable key is safe to embed in the browser)
         const SUPABASE_URL = 'https://tbfnxnfnsabajfkkkxvg.supabase.co';
@@ -494,36 +586,20 @@
 
             const email = document.getElementById('email').value.trim();
             const phoneModel = document.getElementById('phoneModel').value.trim();
-            const id = String(Math.floor(1000 + Math.random() * 9000));
 
             const msgEl = document.getElementById('msg');
             const lang = document.documentElement.lang || 'en';
+            const dict = translations[lang] || translations.en;
             const phoneErrorEl = document.getElementById('phoneError');
 
-            // Phone validation via intl-tel-input + libphonenumber.
-            // `iti.isValidNumber()` checks both length and format for the selected country;
-            // `iti.getNumber()` returns the canonical E.164 representation (e.g. +491701234567).
-            const phoneRaw = phoneInputEl.value.trim();
-            if (!phoneRaw || !iti.isValidNumber()) {
-                const errCode = iti.getValidationError();
-                const dict = translations[lang] || translations.en;
-                const errMap = {
-                    1: dict.phoneErrorInvalidCountryCode,
-                    2: dict.phoneErrorTooShort,
-                    3: dict.phoneErrorTooLong,
-                    4: dict.phoneErrorNotANumber
-                };
-                phoneErrorEl.textContent = errMap[errCode] || dict.phoneError;
-                phoneErrorEl.style.display = 'block';
-                phoneInputEl.focus();
-                return;
-            }
-            phoneErrorEl.style.display = 'none';
-            const phone = iti.getNumber(); // E.164, e.g. +491701234567
+            // Phone validation via intl-tel-input + libphonenumber (or fallback regex).
+            const phone = readPhone(phoneInputEl, iti, phoneErrorEl, dict);
+            if (!phone) return;
 
             // Reset any previous error styling on the message element
             msgEl.style.color = '';
             msgEl.style.display = 'none';
+            msgEl.removeAttribute('data-i18n-locked');
 
             const submitBtn = this.querySelector('button[type="submit"]');
             if (submitBtn) submitBtn.disabled = true;
@@ -533,7 +609,6 @@
                     method: 'POST',
                     headers: supabaseHeaders(),
                     body: JSON.stringify({
-                        p_participant_id: id,
                         p_email: email,
                         p_phone: phone,
                         p_phone_model: phoneModel,
@@ -550,7 +625,6 @@
                 const result = await response.json();
 
                 if (result.status === 'existing') {
-                    const dict = translations[lang] || translations.en;
                     const warnEl = document.getElementById('duplicateWarning');
                     warnEl.innerHTML = dict.warningDuplicate
                         .replace('{id}', `<strong>${result.participant_id}</strong>`);
@@ -559,17 +633,18 @@
                     document.getElementById('participantId').textContent = result.participant_id;
                     document.getElementById('instructionsBox').style.display = 'block';
                 } else {
-                    document.getElementById('participantId').textContent = result.participant_id || id;
+                    document.getElementById('participantId').textContent = result.participant_id || '';
                     this.style.display = 'none';
                     msgEl.style.display = 'block';
                     document.getElementById('instructionsBox').style.display = 'block';
                 }
             } catch (err) {
-                const baseError = translations[lang].registerError;
+                const baseError = dict.registerError;
                 const detail = err && err.message ? String(err.message) : '';
                 msgEl.innerHTML = detail ? `${baseError} (${detail})` : baseError;
                 msgEl.style.color = '#b00020';
                 msgEl.style.display = 'block';
+                msgEl.setAttribute('data-i18n-locked', '1');
             } finally {
                 if (submitBtn) submitBtn.disabled = false;
             }
@@ -592,42 +667,40 @@
             const feedbackMsg = document.getElementById('feedbackMsg');
             feedbackMsg.classList.remove('error');
             feedbackMsg.style.display = 'none';
+            feedbackMsg.removeAttribute('data-i18n-locked');
+
+            const submitBtn = this.querySelector('button[type="submit"]');
+            if (submitBtn) submitBtn.disabled = true;
 
             try {
                 const response = await fetch(SUPABASE_FEEDBACK_ENDPOINT, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'apikey': SUPABASE_KEY,
-                        'Authorization': `Bearer ${SUPABASE_KEY}`,
-                        'Prefer': 'return=minimal'
-                    },
+                    headers: supabaseHeaders(),
                     body: JSON.stringify(payload)
                 });
 
                 if (!response.ok) {
-                    let backendError = '';
-                    try {
-                        const body = await response.json();
-                        backendError = body && (body.message || body.error || body.hint) ? String(body.message || body.error || body.hint) : '';
-                    } catch (_) {
-                        backendError = '';
-                    }
-                    throw new Error(backendError || `HTTP ${response.status}`);
+                    const detail = await extractSupabaseError(response);
+                    throw new Error(detail || `HTTP ${response.status}`);
                 }
 
                 this.reset();
                 this.style.display = 'none';
-                feedbackMsg.textContent = translations[document.documentElement.lang || 'en'].feedbackSuccess;
+                feedbackMsg.textContent = (translations[document.documentElement.lang || 'en'] || translations.en).feedbackSuccess;
                 feedbackMsg.classList.remove('error');
                 feedbackMsg.style.display = 'block';
+                // The success message text is dynamic; keep i18n attribute working but
+                // the element already has data-i18n="feedbackSuccess" so re-rendering is fine.
             } catch (err) {
                 const lang = document.documentElement.lang || 'en';
-                const baseError = translations[lang].feedbackError;
+                const baseError = (translations[lang] || translations.en).feedbackError;
                 const detail = err && err.message ? String(err.message) : '';
                 feedbackMsg.textContent = detail ? `${baseError} (${detail})` : baseError;
                 feedbackMsg.classList.add('error');
                 feedbackMsg.style.display = 'block';
+                feedbackMsg.setAttribute('data-i18n-locked', '1');
+            } finally {
+                if (submitBtn) submitBtn.disabled = false;
             }
         });
 
@@ -643,22 +716,26 @@
             deletionMsg.style.display = 'none';
             deletionPhoneError.style.display = 'none';
 
-            // Validate phone number using the second intl-tel-input instance.
-            const phoneRaw = deletionPhoneEl.value.trim();
-            if (!phoneRaw || !deletionIti.isValidNumber()) {
-                const errCode = deletionIti.getValidationError();
-                const errMap = {
-                    1: dict.phoneErrorInvalidCountryCode,
-                    2: dict.phoneErrorTooShort,
-                    3: dict.phoneErrorTooLong,
-                    4: dict.phoneErrorNotANumber
-                };
-                deletionPhoneError.textContent = errMap[errCode] || dict.phoneError;
-                deletionPhoneError.style.display = 'block';
-                deletionPhoneEl.focus();
+            const participantIdRaw = (document.getElementById('deletionParticipantId').value || '').trim();
+            const phoneRaw = (deletionPhoneEl.value || '').trim();
+
+            // Need at least one identifier.
+            if (!phoneRaw && !participantIdRaw) {
+                deletionMsg.textContent = dict.deletionMissingInput;
+                deletionMsg.classList.add('error');
+                deletionMsg.style.display = 'block';
                 return;
             }
-            const phone = deletionIti.getNumber(); // E.164
+
+            // Validate phone only if the user actually entered one.
+            let phone = null;
+            if (phoneRaw) {
+                phone = readPhone(deletionPhoneEl, deletionIti, deletionPhoneError, dict);
+                if (!phone) return;
+            }
+
+            // Confirm with the user before sending the deletion request.
+            if (!window.confirm(dict.deletionConfirm)) return;
 
             const submitBtn = this.querySelector('button[type="submit"]');
             if (submitBtn) submitBtn.disabled = true;
@@ -667,7 +744,10 @@
                 const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/request_participant_deletion`, {
                     method: 'POST',
                     headers: supabaseHeaders(),
-                    body: JSON.stringify({ p_phone: phone })
+                    body: JSON.stringify({
+                        p_phone: phone,
+                        p_participant_id: participantIdRaw || null
+                    })
                 });
 
                 if (!response.ok) {
@@ -685,6 +765,12 @@
                     deletionMsg.innerHTML = dict.deletionAlready.replace('{id}', result.participant_id || '');
                     this.reset();
                     this.style.display = 'none';
+                } else if (result.status === 'rate_limited') {
+                    deletionMsg.innerHTML = dict.deletionRateLimited.replace('{id}', result.participant_id || '');
+                    deletionMsg.classList.add('error');
+                } else if (result.status === 'invalid_input') {
+                    deletionMsg.textContent = dict.deletionMissingInput;
+                    deletionMsg.classList.add('error');
                 } else {
                     // 'not_found' or anything unexpected
                     deletionMsg.textContent = dict.deletionNotFound;
