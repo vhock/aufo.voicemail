@@ -79,6 +79,13 @@
         .legal-section p, .legal-section li { margin-bottom: .5rem; }
         .legal-section ul { padding-left: 1.2rem; }
         .legal-section .todo { background: #fff8e1; border-left: 3px solid #f9a825; padding: .4rem .7rem; border-radius: 4px; font-style: italic; color: #6d4c00; }
+        .legal-section > summary { cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: .8rem; user-select: none; outline: none; }
+        .legal-section > summary::-webkit-details-marker { display: none; }
+        .legal-section > summary h2 { margin: 0; }
+        .legal-section > summary::after { content: '▸'; font-size: 1rem; color: #5a6b80; transition: transform .2s ease; flex: 0 0 auto; }
+        .legal-section[open] > summary::after { transform: rotate(90deg); }
+        .legal-section > summary:focus-visible { box-shadow: 0 0 0 2px #4a90e2; border-radius: 4px; }
+        .legal-section[open] > summary { margin-bottom: .8rem; }
         .consent-row { display: flex; align-items: flex-start; gap: .6rem; margin: .2rem 0 1rem; font-size: .9rem; color: #444; line-height: 1.5; }
         .consent-row input[type="checkbox"] { width: auto; margin: .25rem 0 0; flex: 0 0 auto; }
         .consent-row label { font-weight: 400; color: inherit; margin: 0; font-size: inherit; }
@@ -262,8 +269,8 @@
         <p class="feedback-msg" id="deletionMsg" role="status" aria-live="polite"></p>
     </div>
 
-    <section class="legal-section" id="privacySection" aria-labelledby="privacyHeading">
-        <h2 id="privacyHeading" data-i18n="privacyHeading">🔒 Privacy Policy (according to Art. 13 GDPR)</h2>
+    <details class="legal-section" id="privacySection" aria-labelledby="privacyHeading">
+        <summary><h2 id="privacyHeading" data-i18n="privacyHeading">🔒 Privacy Policy (according to Art. 13 GDPR)</h2></summary>
 
         <h3 data-i18n="privacyControllerTitle">1. Controller</h3>
         <p data-i18n="privacyController">Responsible for the processing of personal data on this website is:</p>
@@ -328,10 +335,10 @@
 
         <h3 data-i18n="privacyChangesTitle">11. Changes to this policy</h3>
         <p data-i18n="privacyChanges">We may update this policy if our processing practices change. The current version is dated <strong>27 April 2026</strong> (v1).</p>
-    </section>
+    </details>
 
-    <section class="legal-section" id="imprintSection" aria-labelledby="imprintHeading">
-        <h2 id="imprintHeading" data-i18n="imprintHeading">📜 Imprint (Impressum)</h2>
+    <details class="legal-section" id="imprintSection" aria-labelledby="imprintHeading">
+        <summary><h2 id="imprintHeading" data-i18n="imprintHeading">📜 Imprint (Impressum)</h2></summary>
         <p data-i18n="imprintIntro">Information pursuant to § 5 DDG (formerly TMG) and § 18 (2) MStV:</p>
 
         <h3 data-i18n="imprintProviderTitle">Provider</h3>
@@ -348,7 +355,7 @@
 
         <h3 data-i18n="imprintLiabilityTitle">Liability for content and links</h3>
         <p data-i18n="imprintLiability">As a service provider we are responsible for our own content on these pages in accordance with general legislation pursuant to § 7 (1) DDG. According to §§ 8 to 10 DDG, however, we are not obliged as a service provider to monitor transmitted or stored third-party information or to investigate circumstances that indicate illegal activity. External links are checked at the time they are set; we have no influence on subsequent changes to linked content.</p>
-    </section>
+    </details>
 
     <footer class="site-footer">
         <p>
@@ -1028,6 +1035,32 @@
                 if (submitBtn) submitBtn.disabled = false;
             }
         });
+
+        // Auto-open the collapsible Privacy / Imprint sections when the user navigates
+        // to them via a hash link (footer, consent text, etc.). Required so that the legal
+        // information remains "unmittelbar erreichbar" (§ 5 DDG / Art. 13 GDPR) with a
+        // single click, even though it is collapsed by default to keep the page compact.
+        function openLegalFromHash() {
+            const hash = window.location.hash;
+            if (!hash) return;
+            const target = document.querySelector(hash);
+            if (target && target.tagName === 'DETAILS') {
+                target.open = true;
+                // Re-scroll after opening so the heading is properly in view.
+                requestAnimationFrame(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+            }
+        }
+        window.addEventListener('hashchange', openLegalFromHash);
+        document.addEventListener('click', (ev) => {
+            const link = ev.target.closest('a[href^="#"]');
+            if (!link) return;
+            const id = link.getAttribute('href').slice(1);
+            if (!id) return;
+            const target = document.getElementById(id);
+            if (target && target.tagName === 'DETAILS') target.open = true;
+        });
+        // Run once on initial load (in case the page is opened directly with a hash).
+        window.addEventListener('load', openLegalFromHash);
 
         applyLanguage('en');
     </script>
