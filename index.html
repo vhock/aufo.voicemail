@@ -9,97 +9,288 @@
     <meta property="og:description" content="Help us research how room acoustics affect mobile phone calls. Leave short voicemails from rooms in your home — takes about 5–10 minutes.">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary">
+    <meta name="theme-color" content="#1b4670">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='12' fill='%234a90d9'/><path d='M32 14a8 8 0 0 0-8 8v12a8 8 0 0 0 16 0V22a8 8 0 0 0-8-8zm-14 20a14 14 0 0 0 12 13.86V54h-6a2 2 0 0 0 0 4h16a2 2 0 0 0 0-4h-6v-6.14A14 14 0 0 0 46 34a2 2 0 0 0-4 0 10 10 0 0 1-20 0 2 2 0 0 0-4 0z' fill='white'/></svg>">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@25/build/css/intlTelInput.css">
     <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25/build/js/intlTelInputWithUtils.min.js"></script>
     <style>
+        /* ---------- Design tokens ---------- */
+        :root {
+            --navy-900: #0e2740;
+            --navy-800: #153452;
+            --navy-700: #1b4670;
+            --teal-600: #0b8e9b;
+            --teal-500: #00a5b5;
+            --ink: #13263c;
+            --text: #475a6e;
+            --muted: #6c7f93;
+            --line: #e4eaf1;
+            --line-strong: #c9d6e3;
+            --surface: #fff;
+            --bg: #f5f7fa;
+            --bg-soft: #eef3f8;
+            --ok-bg: #e9f6ef; --ok-line: #bde3cf; --ok-ink: #1a6b45;
+            --err-bg: #fdecef; --err-line: #f6ccd4; --err-ink: #9b1c31;
+            --warn-bg: #fff8e6; --warn-line: #f0c75e; --warn-ink: #6d4c00;
+            --radius: 14px;
+            --radius-sm: 10px;
+            --shadow-sm: 0 1px 2px rgba(14,39,64,.05), 0 1px 3px rgba(14,39,64,.05);
+            --shadow-md: 0 1px 2px rgba(14,39,64,.04), 0 8px 24px rgba(14,39,64,.07);
+            --shadow-lg: 0 2px 6px rgba(14,39,64,.05), 0 18px 44px rgba(14,39,64,.10);
+            --focus-ring: 0 0 0 3px rgba(0,165,181,.32);
+            --maxw: 720px;
+            --form-maxw: 460px;
+            --pad: clamp(1.25rem, 4.5vw, 2rem);
+            --gap: clamp(1.5rem, 4vw, 2.25rem);
+        }
+
+        /* ---------- Base ---------- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 100vh; padding-bottom: 2rem; }
-        .card { background: #fff; padding: 2.5rem; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,.1); width: 100%; max-width: 420px; }
-        h1 { margin-bottom: 1.5rem; font-size: 1.6rem; color: #333; text-align: center; }
-        label { display: block; margin-bottom: .3rem; font-weight: 600; color: #555; font-size: .9rem; }
-        input { width: 100%; padding: .65rem .8rem; margin-bottom: 1.2rem; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; transition: border-color .2s; }
-        input:focus { outline: none; border-color: #4a90d9; }
-        .register-btn { width: 100%; padding: .75rem; background: #4a90d9; color: #fff; border: none; border-radius: 6px; font-size: 1rem; cursor: pointer; transition: background .2s; }
-        .register-btn:hover { background: #3a7bc8; }
-        .register-btn:disabled, .feedback-btn:disabled { background: #9bb6d4; cursor: not-allowed; }
-        .msg { text-align: center; margin-top: 1rem; color: green; display: none; }
-        .faq { max-width: 600px; width: 100%; margin-top: 2.5rem; }
-        .faq h2 { text-align: center; color: #333; margin-bottom: 1rem; font-size: 1.4rem; }
-        details { background: #fff; border-radius: 8px; margin-bottom: .6rem; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
-        summary { padding: .9rem 1.2rem; cursor: pointer; font-weight: 600; color: #444; list-style: none; display: flex; justify-content: space-between; align-items: center; }
-        summary::-webkit-details-marker { display: none; }
-        summary::after { content: '+'; font-size: 1.2rem; color: #4a90d9; }
-        details[open] summary::after { content: '−'; }
-        details p { padding: 0 1.2rem 1rem; color: #666; line-height: 1.6; }
-        .instructions { margin-top: 1.5rem; border-top: 1px solid #e0e0e0; padding-top: 1.2rem; display: none; }
-        .instructions h2 { color: #333; font-size: 1.3rem; margin-bottom: .8rem; }
-        .instructions ul { padding-left: 1.2rem; color: #555; line-height: 1.8; }
-        .instructions ul li { margin-bottom: .4rem; }
-        .instructions .phone { font-size: 1.2rem; font-weight: 700; color: #4a90d9; }
-        .introduction { max-width: 600px; width: 100%; margin-top: 2.5rem; background: #fff; border-left: 4px solid #34a853; border-radius: 8px; padding: 1.5rem 1.8rem; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
-        .introduction h2 { color: #333; font-size: 1.3rem; margin-bottom: .8rem; }
-        .introduction p { color: #555; line-height: 1.7; margin-bottom: .8rem; }
-        .introduction ul { padding-left: 1.2rem; color: #555; line-height: 1.8; }
-        .introduction ul li { margin-bottom: .3rem; }
-        .site-header { width: 100%; max-width: 700px; text-align: center; margin-top: 2rem; margin-bottom: .5rem; }
-        .site-header h1 { font-size: 2rem; color: #333; margin-bottom: .6rem; }
-        .site-header p { color: #666; font-size: 1.05rem; line-height: 1.6; max-width: 550px; margin: 0 auto; }
-        .site-logo { width: 100%; max-width: 700px; display: flex; justify-content: flex-end; align-items: center; gap: 1.25rem; padding: 0 1rem; margin-top: 1.5rem; }
+        html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; color-scheme: light; }
+        body {
+            font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+            color: var(--text);
+            background-color: var(--bg);
+            background-image: linear-gradient(180deg, #e7eef6 0, rgba(245,247,250,0) 420px);
+            background-repeat: no-repeat;
+            -webkit-font-smoothing: antialiased;
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+            min-height: 100vh;
+            padding: 0 1rem 3rem;
+        }
+        img { max-width: 100%; }
+        a { color: var(--navy-700); }
+        :focus-visible { outline: 2px solid var(--teal-500); outline-offset: 2px; }
+
+        /* ---------- Masthead ---------- */
+        .site-logo {
+            width: 100%; max-width: var(--maxw);
+            display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center;
+            gap: clamp(.9rem, 3vw, 1.4rem);
+            margin-top: clamp(1.25rem, 4vw, 2rem);
+        }
         .site-logo img { height: auto; display: block; }
-        .site-logo .logo-hsb { width: 170px; max-width: 34vw; }
-        .site-logo .logo-marinom { width: 160px; max-width: 32vw; }
-        .lang-toggle { width: 100%; max-width: 700px; display: flex; justify-content: flex-end; padding: 0 1rem; margin-top: .8rem; }
-        .lang-btn { border: 1px solid #cfd5df; background: #fff; color: #444; padding: .4rem .75rem; border-radius: 6px; margin-left: .5rem; cursor: pointer; font-size: .9rem; }
-        .lang-btn.active { background: #4a90d9; border-color: #4a90d9; color: #fff; }
-        select, textarea { width: 100%; padding: .65rem .8rem; margin-bottom: 1.2rem; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; transition: border-color .2s; font-family: inherit; }
-        select:focus, textarea:focus { outline: none; border-color: #4a90d9; }
-        textarea { min-height: 120px; resize: vertical; }
-        .feedback { max-width: 600px; width: 100%; margin-top: 2.5rem; background: #fff; border-radius: 8px; padding: 1.5rem 1.8rem; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
-        .feedback h2 { color: #333; font-size: 1.3rem; margin-bottom: .8rem; }
-        .feedback p { color: #666; line-height: 1.6; margin-bottom: .8rem; }
-        .feedback-btn { width: 100%; padding: .75rem; background: #4a90d9; color: #fff; border: none; border-radius: 6px; font-size: 1rem; cursor: pointer; transition: background .2s; }
-        .feedback-btn:hover { background: #3a7bc8; }
-        .feedback-msg { text-align: center; margin-top: .6rem; color: green; display: none; }
-        .feedback-msg.error { color: #b00020; }
-        /* Lifted helper classes (formerly inline styles) */
-        .field-error { display: none; color: #b00020; font-size: .85rem; margin-top: -.6rem; margin-bottom: .8rem; }
-        .field-hint { font-size: .85rem; color: #5a6b80; margin-top: -.6rem; margin-bottom: 1.2rem; }
-        .warning-box { display: none; background: #fff8e1; border-left: 4px solid #f9a825; border-radius: 6px; padding: 1rem 1.2rem; margin-top: 1rem; color: #6d4c00; }
+        .site-logo .logo-hsb { width: clamp(118px, 26vw, 170px); }
+        .site-logo .logo-marinom { width: clamp(111px, 24.5vw, 160px); }
+        .lang-toggle {
+            width: 100%; max-width: var(--maxw);
+            display: flex; justify-content: flex-end; gap: .4rem;
+            margin-top: .9rem;
+        }
+        .lang-btn {
+            min-height: 38px; padding: .4rem .9rem;
+            border: 1px solid var(--line-strong); border-radius: 999px;
+            background: var(--surface); color: var(--text);
+            font-family: inherit; font-size: .85rem; font-weight: 600;
+            cursor: pointer; transition: background .15s, color .15s, border-color .15s;
+        }
+        .lang-btn:hover { border-color: var(--teal-500); color: var(--navy-700); }
+        .lang-btn.active { background: var(--navy-700); border-color: var(--navy-700); color: #fff; }
+
+        .site-header {
+            width: 100%; max-width: var(--maxw); text-align: center;
+            margin: clamp(2rem, 6vw, 3rem) 0 .25rem;
+        }
+        .site-header h1 {
+            font-size: clamp(1.75rem, 6vw, 2.4rem); line-height: 1.15; letter-spacing: -.02em;
+            color: var(--ink); margin-bottom: .75rem;
+        }
+        .site-header p {
+            color: var(--muted); font-size: clamp(.98rem, 2.6vw, 1.08rem); line-height: 1.65;
+            max-width: 560px; margin: 0 auto;
+        }
+
+        /* ---------- Shared surfaces ---------- */
+        .card, .introduction, .feedback, .legal-section {
+            width: 100%; max-width: var(--maxw);
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            padding: var(--pad);
+            margin-top: var(--gap);
+        }
+        h2 { color: var(--ink); letter-spacing: -.01em; line-height: 1.3; }
+        .introduction h2, .feedback h2, .faq h2, .legal-section h2 {
+            font-size: clamp(1.15rem, 3.4vw, 1.35rem);
+        }
+
+        /* ---------- Introduction ---------- */
+        .introduction { border-top: 3px solid var(--teal-500); }
+        .introduction h2 { margin-bottom: .9rem; }
+        .introduction p { color: var(--text); line-height: 1.7; margin-bottom: .9rem; }
+        .introduction ul { padding-left: 1.2rem; color: var(--text); line-height: 1.8; }
+        .introduction ul li { margin-bottom: .3rem; }
+        .example-title { margin: 1.6rem 0 .5rem; color: var(--ink); font-size: 1.08rem; }
         .example-block { margin-top: 1rem; }
-        .example-block .example-label { margin-top: .6rem; margin-bottom: .3rem; font-weight: 600; color: #333; }
-        .example-block blockquote { background: #f0f4f8; border-left: 3px solid #4a90d9; padding: 1rem 1.2rem; border-radius: 6px; color: #444; font-style: italic; line-height: 1.7; margin-top: .4rem; }
-        .examples-hint { margin-top: 1rem; color: #5a6b80; font-size: .95rem; }
-        .example-title { margin-top: 1rem; margin-bottom: .5rem; color: #333; font-size: 1.1rem; }
-        .rooms-list { margin-top: .4rem; }
-        .deletion-or { text-align: center; margin: -.4rem 0 .8rem; }
-        .site-footer { width: 100%; max-width: 700px; text-align: center; margin-top: 3rem; padding: 1rem 0 .4rem; color: #889; font-size: .85rem; line-height: 1.5; }
-        .site-footer a { color: #4a7bc8; text-decoration: none; margin: 0 .35rem; }
-        .site-footer a:hover { text-decoration: underline; }
-        .legal-section { max-width: 700px; width: 100%; margin-top: 2.5rem; background: #fff; border-radius: 8px; padding: 1.6rem 1.8rem; box-shadow: 0 2px 8px rgba(0,0,0,.06); color: #444; line-height: 1.6; font-size: .95rem; }
-        .legal-section h2 { color: #333; font-size: 1.3rem; margin-bottom: .8rem; }
-        .legal-section h3 { color: #333; font-size: 1.05rem; margin-top: 1.2rem; margin-bottom: .4rem; }
-        .legal-section p, .legal-section li { margin-bottom: .5rem; }
-        .legal-section ul { padding-left: 1.2rem; }
-        .legal-section .todo { background: #fff8e1; border-left: 3px solid #f9a825; padding: .4rem .7rem; border-radius: 4px; font-style: italic; color: #6d4c00; }
-        .legal-section > summary { cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: .8rem; user-select: none; outline: none; }
-        .legal-section > summary::-webkit-details-marker { display: none; }
+        .example-block .example-label { margin-bottom: .4rem; font-weight: 600; color: var(--ink); font-size: .95rem; }
+        .example-block blockquote {
+            background: var(--bg-soft); border-left: 3px solid var(--teal-500);
+            padding: 1rem 1.15rem; border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            color: var(--text); font-style: italic; line-height: 1.7;
+        }
+        .examples-hint { margin-top: 1rem; color: var(--muted); font-size: .92rem; }
+
+        /* ---------- Registration card ---------- */
+        .card { position: relative; overflow: hidden; box-shadow: var(--shadow-lg); }
+        .card::before {
+            content: ''; position: absolute; inset: 0 0 auto 0; height: 4px;
+            background: linear-gradient(90deg, var(--navy-700), var(--teal-500));
+        }
+        .card h1 {
+            font-size: clamp(1.35rem, 4.2vw, 1.6rem); color: var(--ink);
+            text-align: center; letter-spacing: -.01em; margin-bottom: 1.25rem;
+        }
+        .card form, .card .privacy-pre-form, .card .msg, .card .warning-box {
+            max-width: var(--form-maxw); margin-left: auto; margin-right: auto;
+        }
+        .privacy-pre-form { font-size: .86rem; color: var(--muted); line-height: 1.55; margin-bottom: 1.25rem; }
+
+        /* ---------- Form controls ---------- */
+        label { display: block; margin-bottom: .4rem; font-weight: 600; color: var(--ink); font-size: .875rem; }
+        .label-optional { font-weight: 400; color: var(--muted); font-size: .8rem; }
+        input, select, textarea {
+            width: 100%; min-height: 46px; padding: .65rem .85rem; margin-bottom: 1.1rem;
+            border: 1px solid var(--line-strong); border-radius: var(--radius-sm);
+            background: var(--surface); color: var(--ink);
+            font-family: inherit; font-size: 1rem;
+            transition: border-color .15s, box-shadow .15s;
+        }
+        input::placeholder, textarea::placeholder { color: #9aabbd; }
+        input:focus, select:focus, textarea:focus {
+            outline: none; border-color: var(--teal-500); box-shadow: var(--focus-ring);
+        }
+        select {
+            appearance: none; -webkit-appearance: none; padding-right: 2.5rem; cursor: pointer;
+            background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' fill='none' stroke='%236c7f93' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: right 1rem center; background-size: 12px 8px;
+        }
+        textarea { min-height: 130px; resize: vertical; line-height: 1.6; }
+        .register-btn, .feedback-btn {
+            width: 100%; min-height: 48px; padding: .8rem 1.25rem;
+            background: var(--navy-700); color: #fff;
+            border: none; border-radius: var(--radius-sm);
+            font-family: inherit; font-size: 1rem; font-weight: 600; letter-spacing: .01em;
+            cursor: pointer; box-shadow: 0 1px 2px rgba(14,39,64,.2);
+            transition: background .18s, transform .18s, box-shadow .18s;
+        }
+        .register-btn:hover, .feedback-btn:hover { background: var(--navy-800); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(14,39,64,.18); }
+        .register-btn:active, .feedback-btn:active { transform: translateY(0); box-shadow: 0 1px 2px rgba(14,39,64,.2); }
+        .register-btn:disabled, .feedback-btn:disabled {
+            background: #a9bacb; cursor: not-allowed; transform: none; box-shadow: none;
+        }
+        .consent-row { display: flex; align-items: flex-start; gap: .65rem; margin: .25rem 0 1.1rem; font-size: .875rem; color: var(--text); line-height: 1.55; }
+        .consent-row input[type="checkbox"] { width: 1.15rem; height: 1.15rem; min-height: 0; margin: .15rem 0 0; flex: 0 0 auto; accent-color: var(--navy-700); cursor: pointer; }
+        .consent-row label { font-weight: 400; color: inherit; margin: 0; font-size: inherit; cursor: pointer; }
+        .field-error { display: none; color: var(--err-ink); font-size: .85rem; margin: -.7rem 0 .9rem; }
+        .field-hint { font-size: .85rem; color: var(--muted); line-height: 1.5; margin: -.7rem 0 1.1rem; }
+        .deletion-or { text-align: center; color: var(--muted); margin: -.3rem 0 .9rem; }
+
+        /* ---------- Status messages ---------- */
+        .msg, .feedback-msg {
+            display: none; text-align: center; line-height: 1.6;
+            margin-top: 1rem; padding: .9rem 1rem;
+            border: 1px solid var(--ok-line); border-radius: var(--radius-sm);
+            background: var(--ok-bg); color: var(--ok-ink);
+        }
+        .msg.error, .feedback-msg.error {
+            background: var(--err-bg); border-color: var(--err-line); color: var(--err-ink);
+        }
+        .msg strong { font-size: 1.25rem; letter-spacing: .04em; }
+        .warning-box {
+            display: none; background: var(--warn-bg); border: 1px solid var(--warn-line);
+            border-left-width: 4px; border-radius: var(--radius-sm);
+            padding: 1rem 1.15rem; margin-top: 1rem; color: var(--warn-ink); line-height: 1.6;
+        }
+
+        /* ---------- Instructions ---------- */
+        .instructions { display: none; margin-top: 1.75rem; border-top: 1px solid var(--line); padding-top: 1.5rem; }
+        .instructions h2 { font-size: 1.2rem; margin-bottom: .9rem; }
+        .instructions ul { padding-left: 1.25rem; color: var(--text); line-height: 1.75; }
+        .instructions ul li { margin-bottom: .55rem; }
+        .rooms-list { margin-top: .5rem; }
+        .rooms-list li { margin-bottom: .2rem; }
+        a.phone, .instructions .phone {
+            display: flex; align-items: center; justify-content: center;
+            width: fit-content; max-width: 100%;
+            min-height: 48px; margin: .9rem auto; padding: .6rem 1.5rem;
+            background: var(--navy-700); color: #fff; border-radius: 999px;
+            font-size: 1.1rem; font-weight: 700; letter-spacing: .03em;
+            text-decoration: none; white-space: nowrap;
+            box-shadow: 0 1px 2px rgba(14,39,64,.2); transition: background .18s, transform .18s;
+        }
+        a.phone:hover { background: var(--navy-800); transform: translateY(-1px); }
+
+        /* ---------- FAQ ---------- */
+        .faq { width: 100%; max-width: var(--maxw); margin-top: var(--gap); }
+        .faq h2 { text-align: center; margin-bottom: 1.1rem; }
+        .faq details {
+            background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-sm); margin-bottom: .6rem;
+            transition: box-shadow .18s, border-color .18s;
+        }
+        .faq details[open] { border-color: #d6e2ee; box-shadow: var(--shadow-md); }
+        .faq summary { min-height: 54px; }
+        .faq details p { padding: 0 1.15rem 1.1rem; color: var(--text); line-height: 1.7; }
+        summary {
+            padding: .95rem 1.15rem; cursor: pointer; font-weight: 600; color: var(--ink);
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+            gap: .9rem; user-select: none;
+        }
+        summary::-webkit-details-marker { display: none; }
+        summary::after {
+            content: ''; flex: 0 0 auto;
+            width: .5rem; height: .5rem; margin-right: .2rem;
+            border-right: 2px solid var(--teal-500); border-bottom: 2px solid var(--teal-500);
+            transform: rotate(45deg); transition: transform .2s ease;
+        }
+        details[open] > summary::after { transform: rotate(-135deg); }
+        summary:focus-visible { outline: 2px solid var(--teal-500); outline-offset: -2px; border-radius: var(--radius-sm); }
+
+        /* ---------- Feedback / deletion ---------- */
+        .feedback h2 { margin-bottom: .75rem; }
+        .feedback > p:not(.feedback-msg) { color: var(--muted); line-height: 1.65; margin-bottom: 1.1rem; }
+
+        /* ---------- Legal sections ---------- */
+        .legal-section { color: var(--text); line-height: 1.65; font-size: .94rem; }
+        .legal-section > summary { padding: 0; }
+        .legal-section[open] > summary { margin-bottom: 1rem; }
         .legal-section > summary h2 { margin: 0; }
-        .legal-section > summary::after { content: '▸'; font-size: 1rem; color: #5a6b80; transition: transform .2s ease; flex: 0 0 auto; }
-        .legal-section[open] > summary::after { transform: rotate(90deg); }
-        .legal-section > summary:focus-visible { box-shadow: 0 0 0 2px #4a90e2; border-radius: 4px; }
-        .legal-section[open] > summary { margin-bottom: .8rem; }
-        .consent-row { display: flex; align-items: flex-start; gap: .6rem; margin: .2rem 0 1rem; font-size: .9rem; color: #444; line-height: 1.5; }
-        .consent-row input[type="checkbox"] { width: auto; margin: .25rem 0 0; flex: 0 0 auto; }
-        .consent-row label { font-weight: 400; color: inherit; margin: 0; font-size: inherit; }
-        .privacy-pre-form { font-size: .85rem; color: #5a6b80; margin-bottom: 1rem; line-height: 1.5; }
-        .privacy-pre-form a { color: #4a7bc8; }
-        /* intl-tel-input integration */
-        .iti { width: 100%; margin-bottom: 1.2rem; display: block; }
+        .legal-section h3 { color: var(--ink); font-size: 1.02rem; margin: 1.4rem 0 .4rem; }
+        .legal-section p, .legal-section li { margin-bottom: .5rem; }
+        .legal-section ul { padding-left: 1.3rem; }
+        .legal-section .todo {
+            background: var(--warn-bg); border-left: 3px solid var(--warn-line);
+            padding: .5rem .8rem; border-radius: var(--radius-sm); font-style: italic; color: var(--warn-ink);
+        }
+
+        /* ---------- Footer ---------- */
+        .site-footer {
+            width: 100%; max-width: var(--maxw); text-align: center;
+            margin-top: clamp(2.5rem, 7vw, 3.5rem); padding-top: 1.5rem;
+            border-top: 1px solid var(--line);
+            color: var(--muted); font-size: .85rem; line-height: 2;
+        }
+        .site-footer a { color: var(--navy-700); text-decoration: none; padding: .25rem .4rem; border-radius: 6px; }
+        .site-footer a:hover { text-decoration: underline; }
+
+        /* ---------- intl-tel-input integration ---------- */
+        .iti { width: 100%; margin-bottom: 1.1rem; display: block; }
         .iti input.iti__tel-input { margin-bottom: 0; width: 100%; }
         .iti--separate-dial-code .iti__selected-dial-code { font-size: 1rem; }
         .iti__country-list { font-size: .95rem; }
+
+        /* ---------- Small screens ---------- */
+        @media (max-width: 480px) {
+            .site-logo { justify-content: space-between; gap: .75rem; }
+            .msg strong { font-size: 1.15rem; }
+            a.phone, .instructions .phone { width: 100%; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+        }
     </style>
 </head>
 <body>
@@ -142,14 +333,13 @@
         </div>
         <p data-i18n="introP4">All data is handled confidentially and used for scientific purposes only.</p>
         <p data-i18n="introP5">To get started, <strong>register below</strong> with your email and phone number. Your participant ID and detailed instructions will appear <strong>immediately on this page</strong> - no need to wait for an email or SMS.</p>
-     
     </div>
 
     <div class="card">
         <h1 data-i18n="participateTitle">Participate</h1>
         <p class="privacy-pre-form" data-i18n="privacyPreForm">Before registering, please review our <a href="#privacySection">Privacy Policy</a>. The data you submit is processed only for the research purposes described there. You can withdraw your consent at any time using the <a href="#deletionSection">data deletion form</a> below.</p>
         <form id="contactForm">
-            <label for="email" data-i18n="emailLabel">Email <span class="field-hint" style="display:inline; color:#5a6b80; font-size:.8rem; font-weight:400;">(optional)</span></label>
+            <label for="email" data-i18n="emailLabel">Email <span class="label-optional">(optional)</span></label>
             <input type="email" id="email" name="email" placeholder="you@example.com" data-i18n-placeholder="emailPlaceholder" autocomplete="email" maxlength="254">
 
             <label for="phone" data-i18n="phoneLabel">Phone Number</label>
@@ -174,7 +364,9 @@
             <h2 data-i18n="instructionsTitle">📋 Instructions</h2>
             <ul>
                 <li data-i18n="i1">For <strong>each</strong> room, you will call our voicemail number and leave a separate voicemail (~1-2 minutes each).</li>
-                <li data-i18n="i2"><strong>You choose which rooms to record</strong> - you do not need to cover them all. The list below is just a suggestion; feel free to add your own places, such as an attic, storage room, basement, garage, or anywhere else interesting:
+                <!-- applyLanguage() replaces innerHTML, so the i18n hook must sit on a
+                     span: putting it on the <li> would wipe out the nested rooms list. -->
+                <li><span data-i18n="i2"><strong>You choose which rooms to record</strong> - you do not need to cover them all. The list below is just a suggestion; feel free to add your own places, such as an attic, storage room, basement, garage, or anywhere else interesting:</span>
                     <ul class="rooms-list">
                         <li data-i18n="room1">🛁 Bathroom</li>
                         <li data-i18n="room2">🛋️ Living room</li>
@@ -194,7 +386,7 @@
                 <li data-i18n="i10">Describe any <strong>other features</strong> you notice - furniture, windows, curtains, appliances, etc.</li>
                 <li data-i18n="i11"><strong>After describing the room, walk around and listen for yourself - do you notice spots where the acoustics change?</strong> Try standing close to a wall, in a corner, in the middle of the room, or next to a hard surface, and <strong>narrate what you are doing and what you hear</strong> (e.g. "I'm walking to the wall now - it sounds different here", "in the corner it feels narrower"). Then, if the room has doors or windows, open or close them, say out loud what you did (e.g. "I just opened the window", "I just closed the door"), and <strong>walk around the room again</strong> while describing how it sounds now. <strong>Don't worry if you can't put the change into acoustic terms</strong> - saying "it sounds the same" or "it sounds different" is perfectly fine.</li>
                 <li data-i18n="i12"><strong>Talking for about 1-2 minutes is the core of the experiment.</strong> If your room description doesn't fill the full time, just keep talking about anything - the weather, your favorite dish, or simply read aloud from this page. The important thing is to keep speaking naturally.</li>
-                <li data-i18n="i13">Once you have read and understood all of the above, <strong>call the following number</strong> to leave your first voicemail: <span class="phone">0421 989 690 30</span>. After hanging up, move to the next room and call the same number again.</li>
+                <li data-i18n="i13">Once you have read and understood all of the above, <strong>call the following number</strong> to leave your first voicemail: <a class="phone" href="tel:+4942198969030">0421 989 690 30</a>After hanging up, move to the next room and call the same number again.</li>
             </ul>
             <p data-i18n="instructionsExamplesHint" class="examples-hint">↑ See the example voicemails in the introduction at the top of the page.</p>
         </div>
@@ -425,7 +617,7 @@
                 i10: 'Describe any <strong>other features</strong> you notice - furniture, windows, curtains, appliances, etc.',
                 i11: '<strong>After describing the room, walk around and listen for yourself - do you notice spots where the acoustics change?</strong> Try standing close to a wall, in a corner, in the middle of the room, or next to a hard surface, and <strong>narrate what you are doing and what you hear</strong> (e.g. "I\'m walking to the wall now - it sounds different here", "in the corner it feels narrower"). Then, if the room has doors or windows, open or close them, say out loud what you did (e.g. "I just opened the window", "I just closed the door"), and <strong>walk around the room again</strong> while describing how it sounds now. <strong>Don\'t worry if you can\'t put the change into acoustic terms</strong> - saying "it sounds the same" or "it sounds different" is perfectly fine.',
                 i12: '<strong>Talking for about 1-2 minutes is the core of the experiment.</strong> If your room description doesn\'t fill the full time, just keep talking about anything - the weather, your favorite dish, or simply read aloud from this page. The important thing is to keep speaking naturally.',
-                i13: 'Once you have read and understood all of the above, <strong>call the following number</strong> to leave your first voicemail: <span class="phone">0421 989 690 30</span>. After hanging up, move to the next room and call the same number again.',
+                i13: 'Once you have read and understood all of the above, <strong>call the following number</strong> to leave your first voicemail: <a class="phone" href="tel:+4942198969030">0421 989 690 30</a>After hanging up, move to the next room and call the same number again.',
                 instructionsExamplesHint: '↑ See the example voicemails in the introduction at the top of the page.',
                 faqTitle: 'FAQ',
                 faqQ1: 'Does it need to be completely silent while I record?',
@@ -480,16 +672,17 @@
                 deletionParticipantIdPlaceholder: 'e.g. P-1234',
                 deletionMissingInput: 'Please enter either a phone number or a participant ID.',
                 deletionRateLimited: '⚠️ Too many deletion attempts for participant ID {id}. If you believe this is an error, please contact us directly.',
-                footerOrg: 'marinom GmbH    ',
+                footerOrg: 'marinom GmbH',
                 footerImprint: 'Imprint',
                 footerPrivacy: 'Privacy Policy',
                 footerDeletion: 'Request Data Deletion',
                 privacyPreForm: 'Before registering, please review our <a href="#privacySection">Privacy Policy</a>. The data you submit is processed only for the research purposes described there. You can withdraw your consent at any time using the <a href="#deletionSection">data deletion form</a> below.',
-                emailLabel: 'Email <span class="field-hint" style="display:inline; color:#5a6b80; font-size:.8rem; font-weight:400;">(optional)</span>',
+                emailLabel: 'Email <span class="label-optional">(optional)</span>',
                 consentLabel: 'I have read the <a href="#privacySection">Privacy Policy</a> and consent to the processing of my phone number, phone model, voicemail recordings, and (if provided) email address for the research purposes described therein. I understand that I can withdraw this consent at any time without giving reasons.',
                 consentRequired: 'Please confirm that you have read the Privacy Policy and consent to the processing.',
                 privacyHeading: '🔒 Privacy Policy (according to Art. 13 GDPR)',
                 privacyControllerTitle: '1. Controller',
+                privacyDpoTitle: '2. Data Protection Officer',
                 privacyController: 'Responsible for the processing of personal data on this website is:',
                 privacyControllerDetails: 'Vincent Hock, marinom GmbH, Wilhelm-Herbst-Straße 5, 28359 Bremen-Horn-Lehe, v.hock@marinom.de',
                 privacyDpo: '[Thomas Böttner, marinom GmbH, Wilhelm-Herbst-Straße 5, 28359 Bremen-Horn-Lehe, t.boettner@marinom.de]',
@@ -586,7 +779,7 @@
                 i10: 'Beschreiben Sie <strong>weitere Merkmale</strong>, die Ihnen auffallen - Möbel, Fenster, Vorhänge, Geräte usw.',
                 i11: '<strong>Gehen Sie nach der Raumbeschreibung im Raum umher und hören Sie selbst hin - bemerken Sie Stellen, an denen sich die Akustik verändert?</strong> Probieren Sie z. B. eine Position nahe einer Wand, in einer Ecke, in der Mitte des Raums oder dicht an einer harten Oberfläche, und <strong>erzählen Sie dabei, was Sie tun und was Sie hören</strong> (z. B. „Ich gehe jetzt zur Wand - hier klingt es anders“, „in der Ecke wirkt es enger“). Falls der Raum Türen oder Fenster hat, öffnen oder schließen Sie diese anschließend, sagen Sie laut, was Sie gemacht haben (z. B. „Ich habe gerade das Fenster geöffnet“, „Ich habe gerade die Tür geschlossen“), und <strong>gehen Sie noch einmal im Raum umher</strong>, während Sie beschreiben, wie es jetzt klingt. <strong>Es ist völlig in Ordnung, wenn Sie die Veränderung nicht akustisch genau beschreiben können</strong> - „klingt gleich“ oder „klingt anders“ reicht völlig aus.',
                 i12: '<strong>Etwa 1-2 Minuten zu sprechen ist der Kern des Experiments.</strong> Wenn Ihre Raumbeschreibung die Zeit nicht füllt, sprechen Sie einfach über etwas anderes weiter. Das Wetter, Ihr Lieblingsgericht, oder lesen Sie einfach laut von dieser Seite vor. Wichtig ist, natürlich weiterzusprechen.',
-                i13: 'Sobald Sie alle obigen Punkte gelesen und verstanden haben, <strong>rufen Sie die folgende Nummer an</strong>, um Ihre erste Voicemail zu hinterlassen: <span class="phone">0421 989 690 30</span>. Legen Sie danach auf, gehen Sie in den nächsten Raum und rufen Sie dieselbe Nummer erneut an.',
+                i13: 'Sobald Sie alle obigen Punkte gelesen und verstanden haben, <strong>rufen Sie die folgende Nummer an</strong>, um Ihre erste Voicemail zu hinterlassen: <a class="phone" href="tel:+4942198969030">0421 989 690 30</a>Legen Sie danach auf, gehen Sie in den nächsten Raum und rufen Sie dieselbe Nummer erneut an.',
                 instructionsExamplesHint: '↑ Beispiele für Voicemails finden Sie in der Einführung am Anfang der Seite.',
                 faqTitle: 'FAQ',
                 faqQ1: 'Muss es beim Aufnehmen völlig still sein?',
@@ -641,12 +834,12 @@
                 deletionParticipantIdPlaceholder: 'z. B. P-1234',
                 deletionMissingInput: 'Bitte geben Sie entweder eine Telefonnummer oder eine Teilnehmer-ID ein.',
                 deletionRateLimited: '⚠️ Zu viele Löschversuche für Teilnehmer-ID {id}. Falls dies ein Fehler ist, kontaktieren Sie uns bitte direkt.',
-                footerOrg: 'Audio Forensics Lab — Universität Bremen',
+                footerOrg: 'marinom GmbH',
                 footerImprint: 'Impressum',
                 footerPrivacy: 'Datenschutzerklärung',
                 footerDeletion: 'Datenlöschung beantragen',
                 privacyPreForm: 'Bitte lesen Sie vor der Registrierung unsere <a href="#privacySection">Datenschutzerklärung</a>. Die von Ihnen übermittelten Daten werden ausschließlich für die dort beschriebenen Forschungszwecke verarbeitet. Sie können Ihre Einwilligung jederzeit widerrufen, indem Sie das <a href="#deletionSection">Formular zur Datenlöschung</a> weiter unten verwenden.',
-                emailLabel: 'E-Mail <span class="field-hint" style="display:inline; color:#5a6b80; font-size:.8rem; font-weight:400;">(optional)</span>',
+                emailLabel: 'E-Mail <span class="label-optional">(optional)</span>',
                 consentLabel: 'Ich habe die <a href="#privacySection">Datenschutzerklärung</a> gelesen und willige in die Verarbeitung meiner Telefonnummer, meines Telefonmodells, meiner Voicemail-Aufnahmen sowie (sofern angegeben) meiner E-Mail-Adresse zu den dort beschriebenen Forschungszwecken ein. Mir ist bekannt, dass ich diese Einwilligung jederzeit ohne Angabe von Gründen widerrufen kann.',
                 consentRequired: 'Bitte bestätigen Sie, dass Sie die Datenschutzerklärung gelesen und in die Verarbeitung eingewilligt haben.',
                 privacyHeading: '🔒 Datenschutzerklärung (gem. Art. 13 DSGVO)',
@@ -856,7 +1049,7 @@
             }
 
             // Reset any previous error styling on the message element
-            msgEl.style.color = '';
+            msgEl.classList.remove('error');
             msgEl.style.display = 'none';
             msgEl.removeAttribute('data-i18n-locked');
 
@@ -902,7 +1095,7 @@
                 const baseError = dict.registerError;
                 const detail = err && err.message ? String(err.message) : '';
                 msgEl.innerHTML = detail ? `${baseError} (${detail})` : baseError;
-                msgEl.style.color = '#b00020';
+                msgEl.classList.add('error');
                 msgEl.style.display = 'block';
                 msgEl.setAttribute('data-i18n-locked', '1');
             } finally {
