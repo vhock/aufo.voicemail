@@ -102,46 +102,59 @@
         }
 
         /* ---------- Hero scene ---------- */
-        .scene {
-            width: 100%; max-width: var(--maxw); margin-top: var(--gap);
-            display: grid; grid-template-columns: 1fr; gap: clamp(1.4rem, 3.5vw, 1.75rem);
+        /* The stage carries the room; the bubble floats inside it with its tail
+           on the walker's head. Its background matches the SVG wall so the two
+           read as one picture. */
+        .scene { width: 100%; max-width: var(--maxw); margin-top: var(--gap); }
+        .scene-stage {
+            position: relative; aspect-ratio: 720 / 820; background: #eaf1f7;
+            border: 1px solid var(--line); border-radius: var(--radius);
+            box-shadow: var(--shadow-md); overflow: hidden;
         }
-        .scene-art, .scene-bubble {
+        .scene-stage svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+        .scene-stage text { font-family: inherit; }
+        .scene-bubble {
+            position: absolute; left: 3.5%; right: 3.5%; bottom: 41%;
             background: var(--surface); border: 1px solid var(--line);
-            border-radius: var(--radius); box-shadow: var(--shadow-md);
+            border-radius: var(--radius); box-shadow: var(--shadow-lg);
+            padding: clamp(.85rem, 3vw, 1.3rem) clamp(1rem, 3.4vw, 1.5rem);
+            color: var(--ink); line-height: 1.6;
+            font-size: clamp(.9rem, 3.4vw, 1.05rem);
         }
-        .scene-art { overflow: hidden; }
-        .scene-art svg { display: block; width: 100%; height: auto; }
-        .scene-art text { font-family: inherit; }
-        .scene-bubble { position: relative; padding: clamp(1.1rem, 3.5vw, 1.5rem); }
+        /* two stacked triangles so the tail keeps the bubble's 1px border */
         .scene-bubble::before, .scene-bubble::after {
             content: ''; position: absolute; width: 0; height: 0; border-style: solid;
         }
-        /* stacked layout: the tail points up at the illustration */
         .scene-bubble::before {
-            top: -15px; left: 44%; border-width: 0 14px 15px;
-            border-color: transparent transparent var(--line);
+            bottom: -17px; left: 41%; border-width: 17px 13px 0;
+            border-color: var(--line) transparent transparent;
         }
         .scene-bubble::after {
-            top: -14px; left: 44%; border-width: 0 14px 15px;
-            border-color: transparent transparent var(--surface);
+            bottom: -15px; left: 41%; border-width: 16px 13px 0;
+            border-color: var(--surface) transparent transparent;
         }
-        .scene-quote { color: var(--ink); font-size: clamp(1rem, 2.7vw, 1.08rem); line-height: 1.7; }
         .scene-note {
-            margin-top: .9rem; padding-top: .9rem; border-top: 1px solid var(--line);
+            margin-top: .9rem; text-align: center;
             color: var(--muted); font-size: .88rem; line-height: 1.6;
         }
-        @media (min-width: 760px) {
-            .scene { grid-template-columns: minmax(0, 1.18fr) minmax(0, 1fr); align-items: center; }
-            /* side-by-side: the tail points back at the person */
-            .scene-bubble::before {
-                top: 44%; left: -15px; border-width: 14px 15px 14px 0;
-                border-color: transparent var(--line) transparent transparent;
-            }
-            .scene-bubble::after {
-                top: 44%; left: -14px; border-width: 14px 15px 14px 0;
-                border-color: transparent var(--surface) transparent transparent;
-            }
+        @media (min-width: 400px) {
+            .scene-stage { aspect-ratio: 720 / 740; }
+            .scene-bubble { bottom: 45.3%; }
+        }
+        @media (min-width: 480px) {
+            .scene-stage { aspect-ratio: 720 / 680; }
+            .scene-bubble { bottom: 49.3%; }
+        }
+        @media (min-width: 620px) {
+            .scene-stage { aspect-ratio: 720 / 620; }
+            .scene-bubble { bottom: 54%; }
+        }
+        @media (min-width: 700px) {
+            /* roomier screens: the bubble tucks into the top-right airspace */
+            .scene-stage { aspect-ratio: 720 / 590; }
+            .scene-bubble { left: 46%; right: 3.5%; bottom: 57%; }
+            .scene-bubble::before { left: 10px; }
+            .scene-bubble::after { left: 11px; }
         }
 
         /* ---------- Shared surfaces ---------- */
@@ -358,79 +371,82 @@
     </div>
 
     <figure class="scene">
-        <div class="scene-art">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 470" role="img" aria-labelledby="sceneTitle">
-          <title id="sceneTitle" data-i18n="sceneAlt">A person walking through their living room with a phone to their ear, describing the room while sound spreads through it.</title>
+        <div class="scene-stage">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 590" preserveAspectRatio="xMidYMax meet" role="img" aria-labelledby="sceneTitle">
+            <!-- the room sits low in the frame so the speech bubble has wall to float in -->
+            <rect x="0" y="0" width="720" height="130" fill="#eaf1f7"/>
+            <g transform="translate(0 120)">
+            <title id="sceneTitle" data-i18n="sceneAlt">A person walking through their living room with a phone to their ear, describing the room while sound spreads through it.</title>
             <defs>
             <linearGradient id="sc-win" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#cfeaf1"/><stop offset="1" stop-color="#f0f9fb"/>
+            <stop offset="0" stop-color="#cfeaf1"/><stop offset="1" stop-color="#f0f9fb"/>
             </linearGradient>
             <clipPath id="sc-head"><circle cx="330" cy="166" r="27"/></clipPath>
             <marker id="sc-arr" markerWidth="8" markerHeight="8" refX="6.5" refY="3" orient="auto">
-              <path d="M0 0.4 L0 5.6 L6.5 3 Z" fill="#6c7f93"/>
+            <path d="M0 0.4 L0 5.6 L6.5 3 Z" fill="#6c7f93"/>
             </marker>
-          </defs>
+            </defs>
 
-          <!-- room shell -->
-          <rect x="0" y="0" width="720" height="388" fill="#eaf1f7"/>
-          <rect x="0" y="388" width="720" height="82" fill="#dde7f0"/>
-          <g stroke="#cfdbe8" stroke-width="2" stroke-linecap="round">
+            <!-- room shell -->
+            <rect x="0" y="0" width="720" height="388" fill="#eaf1f7"/>
+            <rect x="0" y="388" width="720" height="82" fill="#dde7f0"/>
+            <g stroke="#cfdbe8" stroke-width="2" stroke-linecap="round">
             <line x1="0" y1="414" x2="720" y2="414"/><line x1="0" y1="442" x2="720" y2="442"/>
             <line x1="96" y1="388" x2="96" y2="414"/><line x1="306" y1="388" x2="306" y2="414"/>
             <line x1="528" y1="388" x2="528" y2="414"/><line x1="188" y1="414" x2="188" y2="442"/>
             <line x1="430" y1="414" x2="430" y2="442"/><line x1="648" y1="414" x2="648" y2="442"/>
             <line x1="64" y1="442" x2="64" y2="470"/><line x1="352" y1="442" x2="352" y2="470"/>
             <line x1="592" y1="442" x2="592" y2="470"/>
-          </g>
-          <rect x="0" y="378" width="720" height="10" fill="#c7d5e4"/>
+            </g>
+            <rect x="0" y="378" width="720" height="10" fill="#c7d5e4"/>
 
-          <!-- rug, drawn before the figure so the feet land on it -->
-          <ellipse cx="318" cy="396" rx="178" ry="22" fill="#cfe6ea"/>
-          <ellipse cx="318" cy="396" rx="178" ry="22" fill="none" stroke="#a9d4dc" stroke-width="3"/>
-          <ellipse cx="318" cy="396" rx="146" ry="14" fill="none" stroke="#a9d4dc" stroke-width="3"/>
+            <!-- rug, drawn before the figure so the feet land on it -->
+            <ellipse cx="318" cy="396" rx="178" ry="22" fill="#cfe6ea"/>
+            <ellipse cx="318" cy="396" rx="178" ry="22" fill="none" stroke="#a9d4dc" stroke-width="3"/>
+            <ellipse cx="318" cy="396" rx="146" ry="14" fill="none" stroke="#a9d4dc" stroke-width="3"/>
 
-          <!-- the room filling with sound -->
-          <g fill="none" stroke="#00a5b5" stroke-linecap="round">
+            <!-- the room filling with sound -->
+            <g fill="none" stroke="#00a5b5" stroke-linecap="round">
             <circle cx="330" cy="166" r="112" stroke-width="5" opacity=".20"/>
             <circle cx="330" cy="166" r="158" stroke-width="5" opacity=".14"/>
             <circle cx="330" cy="166" r="206" stroke-width="5" opacity=".09"/>
-          </g>
+            </g>
 
-          <!-- window + curtains -->
-          <rect x="66" y="104" width="168" height="164" rx="6" fill="#c9d6e3"/>
-          <rect x="74" y="112" width="152" height="148" rx="3" fill="url(#sc-win)"/>
-          <g stroke="#c9d6e3" stroke-width="7">
+            <!-- window + curtains -->
+            <rect x="66" y="104" width="168" height="164" rx="6" fill="#c9d6e3"/>
+            <rect x="74" y="112" width="152" height="148" rx="3" fill="url(#sc-win)"/>
+            <g stroke="#c9d6e3" stroke-width="7">
             <line x1="150" y1="112" x2="150" y2="260"/><line x1="74" y1="186" x2="226" y2="186"/>
-          </g>
-          <rect x="54" y="268" width="192" height="12" rx="4" fill="#c7d5e4"/>
-          <path d="M40 94 h30 v180 q-18 -10 -30 -4 z" fill="#0b8e9b" opacity=".85"/>
-          <path d="M230 94 h30 v176 q-12 -6 -30 4 z" fill="#0b8e9b" opacity=".85"/>
-          <rect x="32" y="86" width="236" height="12" rx="6" fill="#153452"/>
+            </g>
+            <rect x="54" y="268" width="192" height="12" rx="4" fill="#c7d5e4"/>
+            <path d="M40 94 h30 v180 q-18 -10 -30 -4 z" fill="#0b8e9b" opacity=".85"/>
+            <path d="M230 94 h30 v176 q-12 -6 -30 4 z" fill="#0b8e9b" opacity=".85"/>
+            <rect x="32" y="86" width="236" height="12" rx="6" fill="#153452"/>
 
-          <!-- framed picture -->
-          <rect x="520" y="116" width="112" height="86" rx="5" fill="#fff" stroke="#c7d5e4" stroke-width="5"/>
-          <path d="M532 190 l26 -32 18 20 22 -28 22 40 z" fill="#a9e0e6"/>
-          <circle cx="546" cy="142" r="9" fill="#ffd27a"/>
+            <!-- framed picture -->
+            <rect x="520" y="116" width="112" height="86" rx="5" fill="#fff" stroke="#c7d5e4" stroke-width="5"/>
+            <path d="M532 190 l26 -32 18 20 22 -28 22 40 z" fill="#a9e0e6"/>
+            <circle cx="546" cy="142" r="9" fill="#ffd27a"/>
 
-          <!-- sofa -->
-          <rect x="478" y="264" width="208" height="60" rx="16" fill="#1b4670"/>
-          <rect x="466" y="298" width="232" height="52" rx="16" fill="#153452"/>
-          <rect x="466" y="290" width="30" height="60" rx="14" fill="#1b4670"/>
-          <rect x="668" y="290" width="30" height="60" rx="14" fill="#1b4670"/>
-          <rect x="506" y="284" width="70" height="28" rx="8" fill="#00a5b5" opacity=".9"/>
-          <rect x="592" y="284" width="70" height="28" rx="8" fill="#00a5b5" opacity=".9"/>
-          <rect x="482" y="348" width="14" height="24" rx="5" fill="#0e2740"/>
-          <rect x="666" y="348" width="14" height="24" rx="5" fill="#0e2740"/>
+            <!-- sofa -->
+            <rect x="478" y="264" width="208" height="60" rx="16" fill="#1b4670"/>
+            <rect x="466" y="298" width="232" height="52" rx="16" fill="#153452"/>
+            <rect x="466" y="290" width="30" height="60" rx="14" fill="#1b4670"/>
+            <rect x="668" y="290" width="30" height="60" rx="14" fill="#1b4670"/>
+            <rect x="506" y="284" width="70" height="28" rx="8" fill="#00a5b5" opacity=".9"/>
+            <rect x="592" y="284" width="70" height="28" rx="8" fill="#00a5b5" opacity=".9"/>
+            <rect x="482" y="348" width="14" height="24" rx="5" fill="#0e2740"/>
+            <rect x="666" y="348" width="14" height="24" rx="5" fill="#0e2740"/>
 
-          <!-- plant -->
-          <path d="M430 326 q-32 -26 -24 -64 q25 10 28 64z" fill="#0b8e9b"/>
-          <path d="M436 326 q29 -33 19 -70 q-27 18 -27 70z" fill="#00a5b5"/>
-          <path d="M434 328 q-4 -40 4 -60" fill="none" stroke="#0e2740" stroke-width="3" stroke-linecap="round"/>
-          <path d="M412 326 h46 l-7 48 h-32z" fill="#1b4670"/>
+            <!-- plant -->
+            <path d="M430 326 q-32 -26 -24 -64 q25 10 28 64z" fill="#0b8e9b"/>
+            <path d="M436 326 q29 -33 19 -70 q-27 18 -27 70z" fill="#00a5b5"/>
+            <path d="M434 328 q-4 -40 4 -60" fill="none" stroke="#0e2740" stroke-width="3" stroke-linecap="round"/>
+            <path d="M412 326 h46 l-7 48 h-32z" fill="#1b4670"/>
 
 
-          <!-- person, mid-stride, phone at the ear -->
-          <g>
+            <!-- person, mid-stride, phone at the ear -->
+            <g>
             <!-- back leg -->
             <path d="M320 288 q-20 20 -28 44 l-12 32" fill="none" stroke="#153452" stroke-width="18" stroke-linecap="round"/>
             <ellipse cx="272" cy="372" rx="19" ry="9" fill="#0e2740" transform="rotate(-14 272 372)"/>
@@ -439,7 +455,7 @@
             <ellipse cx="368" cy="376" rx="20" ry="9" fill="#0e2740"/>
             <!-- far arm, swinging back -->
             <path d="M308 224 L292 262 L286 302" fill="none" stroke="#0a7d89" stroke-width="14"
-                  stroke-linecap="round" stroke-linejoin="round"/>
+            stroke-linecap="round" stroke-linejoin="round"/>
             <circle cx="286" cy="306" r="8.5" fill="#e3ab87"/>
             <!-- torso -->
             <path d="M306 292 q-10 -48 -6 -68 q4 -22 30 -22 q26 0 30 22 q4 20 -6 68z" fill="#0b8e9b"/>
@@ -449,39 +465,29 @@
             <g clip-path="url(#sc-head)"><ellipse cx="332" cy="148" rx="31" ry="23" fill="#243b55"/></g>
             <!-- near arm, bent up to the ear -->
             <path d="M350 226 L372 264 L356 196" fill="none" stroke="#0b8e9b" stroke-width="14"
-                  stroke-linecap="round" stroke-linejoin="round"/>
+            stroke-linecap="round" stroke-linejoin="round"/>
             <rect x="345" y="148" width="17" height="30" rx="5" fill="#0e2740" transform="rotate(13 353 163)"/>
             <circle cx="357" cy="180" r="9" fill="#e9b898"/>
-          </g>
+            </g>
 
-          <!-- voice leaving the talker -->
-          <g fill="none" stroke="#00a5b5" stroke-width="4.5" stroke-linecap="round">
-            <path d="M376 124 q18 -18 40 -4" opacity=".9"/>
-            <path d="M369 108 q30 -32 64 -10" opacity=".6"/>
-            <path d="M362 92 q42 -46 88 -16" opacity=".35"/>
-          </g>
 
-          <!-- dimensions -->
-          <g stroke="#6c7f93" stroke-width="2.5" marker-start="url(#sc-arr)" marker-end="url(#sc-arr)">
-            <line x1="26" y1="70" x2="26" y2="372"/>
+            <!-- dimensions -->
+            <g stroke="#6c7f93" stroke-width="2.5" marker-start="url(#sc-arr)" marker-end="url(#sc-arr)">
             <line x1="44" y1="452" x2="676" y2="452"/>
-          </g>
-          <g stroke="#6c7f93" stroke-width="2.5" stroke-linecap="round">
-            <line x1="14" y1="66" x2="38" y2="66"/><line x1="14" y1="376" x2="38" y2="376"/>
+            </g>
+            <g stroke="#6c7f93" stroke-width="2.5" stroke-linecap="round">
             <line x1="44" y1="440" x2="44" y2="464"/><line x1="676" y1="440" x2="676" y2="464"/>
-          </g>
-          <g font-size="26" font-weight="700" fill="#153452" text-anchor="middle">
-            <rect x="0" y="202" width="80" height="36" rx="10" fill="#eaf1f7"/>
-            <text x="40" y="227" font-size="23" data-i18n="sceneDimH">2.5 m</text>
+            </g>
+            <g font-size="26" font-weight="700" fill="#153452" text-anchor="middle">
             <rect x="312" y="434" width="92" height="36" rx="10" fill="#dde7f0"/>
             <text x="358" y="460" data-i18n="sceneDimW">5 × 4 m</text>
-          </g>
-        </svg>
+            </g>
+        
+            </g>
+            </svg>
+            <p class="scene-bubble" data-i18n="sceneQuote">"Living room, about 5 by 4 metres, ceiling 2.5. Parquet floor, big window, fabric sofa. Walking to the window now - it sounds brighter and more echoey here than by the sofa."</p>
         </div>
-        <figcaption class="scene-bubble">
-            <p class="scene-quote" data-i18n="sceneQuote">"I'm in the living room - about 5 by 4 metres, ceiling around 2.5. Parquet floor, one big window, a fabric sofa. Walking over to the window now... it sounds brighter and more echoey here than by the sofa."</p>
-            <p class="scene-note" data-i18n="sceneNote">About a minute per room, in your own words. That is all a voicemail needs to be.</p>
-        </figcaption>
+        <figcaption class="scene-note" data-i18n="sceneNote">About a minute per room, in your own words. That is all a voicemail needs to be.</figcaption>
     </figure>
 
     <div class="introduction">
@@ -750,9 +756,8 @@
                 pageTitle: 'Participate in Mobile Acoustic Research',
                 siteTitle: '🎙️ VoiceMail Research',
                 sceneAlt: 'A person walking through their living room with a phone to their ear, describing the room while sound spreads through it.',
-                sceneDimH: '2.5 m',
                 sceneDimW: '5 × 4 m',
-                sceneQuote: '"I\'m in the living room - about 5 by 4 metres, ceiling around 2.5. Parquet floor, one big window, a fabric sofa. Walking over to the window now... it sounds brighter and more echoey here than by the sofa."',
+                sceneQuote: '"Living room, about 5 by 4 metres, ceiling 2.5. Parquet floor, big window, fabric sofa. Walking to the window now - it sounds brighter and more echoey here than by the sofa."',
                 sceneNote: 'About a minute per room, in your own words. That is all a voicemail needs to be.',
                 siteSubtitle: 'Support our acoustic research by leaving short voicemails from various rooms in your apartment and surrounding areas, briefly describing your surroundings. It only takes about 5–10 minutes - and helps us understand how room acoustics affect phone call audio.',
                 introTitle: '📖 Introduction',
@@ -917,9 +922,8 @@
                 pageTitle: 'Teilnahme an mobiler Akustikforschung',
                 siteTitle: '🎙️ VoiceMail-Forschung',
                 sceneAlt: 'Eine Person geht mit dem Handy am Ohr durch ihr Wohnzimmer und beschreibt den Raum, während sich der Schall darin ausbreitet.',
-                sceneDimH: '2,5 m',
                 sceneDimW: '5 × 4 m',
-                sceneQuote: '„Ich bin im Wohnzimmer - ungefähr 5 mal 4 Meter, Decke etwa 2,5. Parkettboden, ein großes Fenster, ein Stoffsofa. Ich gehe jetzt zum Fenster ... hier klingt es heller und halliger als beim Sofa.“',
+                sceneQuote: '„Wohnzimmer, ungefähr 5 mal 4 Meter, Decke 2,5. Parkettboden, großes Fenster, Stoffsofa. Ich gehe jetzt zum Fenster - hier klingt es heller und halliger als beim Sofa.“',
                 sceneNote: 'Ungefähr eine Minute pro Raum, in Ihren eigenen Worten. Mehr muss eine Voicemail nicht sein.',
                 siteSubtitle: 'Unterstützen Sie unsere akustische Forschung, indem Sie aus verschiedenen Räumen Ihrer Wohnung und Umgebung kurze Voicemails hinterlassen und dabei kurz Ihre Umgebung beschreiben. Das dauert insgesamt nur ca. 5–10 Minuten und hilft uns zu verstehen, wie die Raumakustik den Klang von Telefongesprächen beeinflusst.',
                 introTitle: '📖 Einführung',
