@@ -529,7 +529,7 @@
 
             <div class="consent-row">
                 <input type="checkbox" id="consentBox" name="consent" required>
-                <label for="consentBox" data-i18n="consentLabel">I have read the <a href="#privacySection">Privacy Policy</a> and consent to the processing of my phone number, phone model, voicemail recordings, and (if provided) email address for the research purposes described therein. I understand that I can withdraw this consent at any time without giving reasons.</label>
+                <label for="consentBox" data-i18n="consentLabel">I have read the <a href="#privacySection">Privacy Policy</a> and consent to the processing of my phone number, phone model, voicemail recordings, and (if provided) email address for the research purposes described therein, including the sharing of my anonymised recordings with research partners who may use them only for the same purpose. I understand that I can withdraw this consent at any time without giving reasons.</label>
             </div>
             <span id="consentError" class="field-error" role="alert" aria-live="assertive"></span>
 
@@ -673,7 +673,7 @@
 
         <h3 data-i18n="privacyPurposeTitle">4. Purposes and legal basis</h3>
         <ul>
-            <li data-i18n="privacyPurpose1"><strong>Research participation</strong> (matching voicemails to participants, analysing how room acoustics affect mobile phone audio): processing is based on your <strong>explicit consent</strong> under Art. 6 (1)(a) GDPR, given via the consent checkbox on the registration form.</li>
+            <li data-i18n="privacyPurpose1"><strong>Research participation</strong> (matching voicemails to participants, analysing how room acoustics affect mobile phone audio, and sharing the anonymised recordings with research partners for the same purpose, see section 7): processing is based on your <strong>explicit consent</strong> under Art. 6 (1)(a) GDPR, given via the consent checkbox on the registration form.</li>
             <li data-i18n="privacyPurpose2"><strong>Operating and securing the website</strong> (including the deletion-request and feedback forms): processing is based on our <strong>legitimate interest</strong> in providing a functional, secure service under Art. 6 (1)(f) GDPR.</li>
             <li data-i18n="privacyPurpose3"><strong>Scientific publication of aggregated, anonymised results</strong>: based on Art. 6 (1)(e) and Art. 89 GDPR (research in the public interest). Published results will not contain identifying personal data.</li>
         </ul>
@@ -694,10 +694,17 @@
             <li data-i18n="privacyProcessor3"><strong>jsDelivr (Content Delivery Network):</strong> this page loads the open-source library <em>intl-tel-input</em> from <code>cdn.jsdelivr.net</code> (Cloudflare / Fastly). Loading the script transmits your IP address and user-agent to that CDN. Legal basis: Art. 6 (1)(f) GDPR — legitimate interest in providing reliable phone-number validation. We are working on self-hosting this asset to remove this third-party request.</li>
         </ul>
 
-        <h3 data-i18n="privacyTransferTitle">7. Transfers to third countries</h3>
+        <h3 data-i18n="privacySharingTitle">7. Sharing with third parties</h3>
+        <ul>
+            <li data-i18n="privacySharing1"><strong>Purpose limitation:</strong> your voicemail recordings are used exclusively in <strong>anonymised</strong> form, i.e. without your phone number, email address or any other information that identifies you, and solely to <strong>infer the acoustic properties</strong> of the rooms you recorded in (e.g. reverberation). The content of what you say is only used insofar as it describes the room. We do not use the recordings to identify speakers.</li>
+            <li data-i18n="privacySharing2"><strong>Sharing with research partners:</strong> we may share the anonymised recordings, together with non-identifying technical metadata such as the phone model, with third parties such as scientific research partners. Recipients are contractually bound to use the recordings <strong>only for the same purpose</strong>, the analysis of room acoustics. Any other use, in particular any attempt to identify the speakers, is not permitted.</li>
+            <li data-i18n="privacySharing3"><strong>No other disclosure:</strong> your phone number and email address are never shared with third parties, apart from the processors listed in section 6, which act solely on our instructions. We do not sell your data.</li>
+        </ul>
+
+        <h3 data-i18n="privacyTransferTitle">8. Transfers to third countries</h3>
         <p data-i18n="privacyTransfer">Personal data submitted via the registration, feedback, and deletion forms is stored in the EU (AWS eu-north-1, Stockholm). The CDN request mentioned above may be served from servers outside the EU; the CDN provider relies on the EU Standard Contractual Clauses for any such transfer.</p>
 
-        <h3 data-i18n="privacyRightsTitle">8. Your rights</h3>
+        <h3 data-i18n="privacyRightsTitle">9. Your rights</h3>
         <p data-i18n="privacyRightsIntro">Under the GDPR you have, in particular, the following rights:</p>
         <ul>
             <li data-i18n="privacyRight1"><strong>Right of access</strong> (Art. 15) — you can request a copy of the data we hold about you.</li>
@@ -710,13 +717,13 @@
             <li data-i18n="privacyRight8"><strong>Right to lodge a complaint</strong> with a supervisory authority (Art. 77) — in particular, the data protection authority of the federal state in which you reside or in which the controller is established. For the controller above this is the <em>Landesbeauftragte für Datenschutz und Informationsfreiheit der Freien Hansestadt Bremen</em>, Arndtstraße 1, 27570 Bremerhaven (https://www.datenschutz.bremen.de).</li>
         </ul>
 
-        <h3 data-i18n="privacyVoluntaryTitle">9. Voluntary nature</h3>
+        <h3 data-i18n="privacyVoluntaryTitle">10. Voluntary nature</h3>
         <p data-i18n="privacyVoluntary">Participation in this research study and provision of the data described above is entirely voluntary. There are no negative consequences if you choose not to participate or to withdraw later.</p>
 
-        <h3 data-i18n="privacyCookiesTitle">10. Cookies and tracking</h3>
+        <h3 data-i18n="privacyCookiesTitle">11. Cookies and tracking</h3>
         <p data-i18n="privacyCookies">This website does <strong>not</strong> set any cookies, does <strong>not</strong> use web analytics, and does <strong>not</strong> contain advertising or social-media trackers.</p>
 
-        <h3 data-i18n="privacyChangesTitle">11. Changes to this policy</h3>
+        <h3 data-i18n="privacyChangesTitle">12. Changes to this policy</h3>
         <p data-i18n="privacyChanges">We may update this policy if our processing practices change. The current version is dated <strong>27 April 2026</strong> (v1).</p>
     </details>
 
@@ -860,7 +867,7 @@
                 footerDeletion: 'Request Data Deletion',
                 privacyPreForm: 'Before registering, please review our <a href="#privacySection">Privacy Policy</a>. The data you submit is processed only for the research purposes described there. You can withdraw your consent at any time using the <a href="#deletionSection">data deletion form</a> below.',
                 emailLabel: 'Email <span class="label-optional">(optional)</span>',
-                consentLabel: 'I have read the <a href="#privacySection">Privacy Policy</a> and consent to the processing of my phone number, phone model, voicemail recordings, and (if provided) email address for the research purposes described therein. I understand that I can withdraw this consent at any time without giving reasons.',
+                consentLabel: 'I have read the <a href="#privacySection">Privacy Policy</a> and consent to the processing of my phone number, phone model, voicemail recordings, and (if provided) email address for the research purposes described therein, including the sharing of my anonymised recordings with research partners who may use them only for the same purpose. I understand that I can withdraw this consent at any time without giving reasons.',
                 consentRequired: 'Please confirm that you have read the Privacy Policy and consent to the processing.',
                 privacyHeading: '🔒 Privacy Policy (according to Art. 13 GDPR)',
                 privacyControllerTitle: '1. Controller',
@@ -876,7 +883,7 @@
                 privacyData5: '<strong>Server logs:</strong> our hosting providers (see section 6) automatically log technical data such as IP address, user agent, and request time. These logs are kept by the providers for security and operational purposes only and are not linked to your participant record by us.',
                 privacyDataNote: 'Your voice may be considered personal data under Art. 4 No. 1 GDPR. We do not use the recordings for biometric identification within the meaning of Art. 9 (1) GDPR.',
                 privacyPurposeTitle: '4. Purposes and legal basis',
-                privacyPurpose1: '<strong>Research participation</strong> (matching voicemails to participants, analysing how room acoustics affect mobile phone audio): processing is based on your <strong>explicit consent</strong> under Art. 6 (1)(a) GDPR, given via the consent checkbox on the registration form.',
+                privacyPurpose1: '<strong>Research participation</strong> (matching voicemails to participants, analysing how room acoustics affect mobile phone audio, and sharing the anonymised recordings with research partners for the same purpose, see section 7): processing is based on your <strong>explicit consent</strong> under Art. 6 (1)(a) GDPR, given via the consent checkbox on the registration form.',
                 privacyPurpose2: '<strong>Operating and securing the website</strong> (including the deletion-request and feedback forms): processing is based on our <strong>legitimate interest</strong> in providing a functional, secure service under Art. 6 (1)(f) GDPR.',
                 privacyPurpose3: '<strong>Scientific publication of aggregated, anonymised results</strong>: based on Art. 6 (1)(e) and Art. 89 GDPR (research in the public interest). Published results will not contain identifying personal data.',
                 privacyRetentionTitle: '5. Retention periods',
@@ -889,9 +896,13 @@
                 privacyProcessor1: '<strong>Supabase (database hosting):</strong> Supabase Inc., 970 Toa Payoh North #07-04, Singapore 318992, with EU data hosted by Amazon Web Services EMEA SARL in the AWS region <em>eu-north-1</em> (Stockholm, Sweden). A Data Processing Agreement under Art. 28 GDPR is in place.',
                 privacyProcessor2: '<strong>3CX (telephony / voicemail PBX):</strong> 3CX Ltd., operating the on-premises PBX that records and stores voicemails before we download them.',
                 privacyProcessor3: '<strong>jsDelivr (Content Delivery Network):</strong> this page loads the open-source library <em>intl-tel-input</em> from <code>cdn.jsdelivr.net</code> (Cloudflare / Fastly). Loading the script transmits your IP address and user-agent to that CDN. Legal basis: Art. 6 (1)(f) GDPR — legitimate interest in providing reliable phone-number validation. We are working on self-hosting this asset to remove this third-party request.',
-                privacyTransferTitle: '7. Transfers to third countries',
+                privacySharingTitle: '7. Sharing with third parties',
+                privacySharing1: '<strong>Purpose limitation:</strong> your voicemail recordings are used exclusively in <strong>anonymised</strong> form, i.e. without your phone number, email address or any other information that identifies you, and solely to <strong>infer the acoustic properties</strong> of the rooms you recorded in (e.g. reverberation). The content of what you say is only used insofar as it describes the room. We do not use the recordings to identify speakers.',
+                privacySharing2: '<strong>Sharing with research partners:</strong> we may share the anonymised recordings, together with non-identifying technical metadata such as the phone model, with third parties such as scientific research partners. Recipients are contractually bound to use the recordings <strong>only for the same purpose</strong>, the analysis of room acoustics. Any other use, in particular any attempt to identify the speakers, is not permitted.',
+                privacySharing3: '<strong>No other disclosure:</strong> your phone number and email address are never shared with third parties, apart from the processors listed in section 6, which act solely on our instructions. We do not sell your data.',
+                privacyTransferTitle: '8. Transfers to third countries',
                 privacyTransfer: 'Personal data submitted via the registration, feedback, and deletion forms is stored in the EU (AWS eu-north-1, Stockholm). The CDN request mentioned above may be served from servers outside the EU; the CDN provider relies on the EU Standard Contractual Clauses for any such transfer.',
-                privacyRightsTitle: '8. Your rights',
+                privacyRightsTitle: '9. Your rights',
                 privacyRightsIntro: 'Under the GDPR you have, in particular, the following rights:',
                 privacyRight1: '<strong>Right of access</strong> (Art. 15) — you can request a copy of the data we hold about you.',
                 privacyRight2: '<strong>Right to rectification</strong> (Art. 16) — you can request correction of inaccurate data.',
@@ -901,11 +912,11 @@
                 privacyRight6: '<strong>Right to object</strong> (Art. 21) to processing based on legitimate interest.',
                 privacyRight7: '<strong>Right to withdraw consent</strong> (Art. 7 (3)) at any time without giving reasons. Withdrawal does not affect the lawfulness of processing carried out before the withdrawal.',
                 privacyRight8: '<strong>Right to lodge a complaint</strong> with a supervisory authority (Art. 77) — in particular, the data protection authority of the federal state in which you reside or in which the controller is established. For the controller above this is the <em>Landesbeauftragte für Datenschutz und Informationsfreiheit der Freien Hansestadt Bremen</em>, Arndtstraße 1, 27570 Bremerhaven (https://www.datenschutz.bremen.de).',
-                privacyVoluntaryTitle: '9. Voluntary nature',
+                privacyVoluntaryTitle: '10. Voluntary nature',
                 privacyVoluntary: 'Participation in this research study and provision of the data described above is entirely voluntary. There are no negative consequences if you choose not to participate or to withdraw later.',
-                privacyCookiesTitle: '10. Cookies and tracking',
+                privacyCookiesTitle: '11. Cookies and tracking',
                 privacyCookies: 'This website does <strong>not</strong> set any cookies, does <strong>not</strong> use web analytics, and does <strong>not</strong> contain advertising or social-media trackers.',
-                privacyChangesTitle: '11. Changes to this policy',
+                privacyChangesTitle: '12. Changes to this policy',
                 privacyChanges: 'We may update this policy if our processing practices change. The current version is dated <strong>27 April 2026</strong> (v1).',
                 imprintHeading: '📜 Imprint (Impressum)',
                 imprintIntro: 'Information pursuant to § 5 DDG (formerly TMG) and § 18 (2) MStV:',
@@ -1027,7 +1038,7 @@
                 footerDeletion: 'Datenlöschung beantragen',
                 privacyPreForm: 'Bitte lesen Sie vor der Registrierung unsere <a href="#privacySection">Datenschutzerklärung</a>. Die von Ihnen übermittelten Daten werden ausschließlich für die dort beschriebenen Forschungszwecke verarbeitet. Sie können Ihre Einwilligung jederzeit widerrufen, indem Sie das <a href="#deletionSection">Formular zur Datenlöschung</a> weiter unten verwenden.',
                 emailLabel: 'E-Mail <span class="label-optional">(optional)</span>',
-                consentLabel: 'Ich habe die <a href="#privacySection">Datenschutzerklärung</a> gelesen und willige in die Verarbeitung meiner Telefonnummer, meines Telefonmodells, meiner Voicemail-Aufnahmen sowie (sofern angegeben) meiner E-Mail-Adresse zu den dort beschriebenen Forschungszwecken ein. Mir ist bekannt, dass ich diese Einwilligung jederzeit ohne Angabe von Gründen widerrufen kann.',
+                consentLabel: 'Ich habe die <a href="#privacySection">Datenschutzerklärung</a> gelesen und willige in die Verarbeitung meiner Telefonnummer, meines Telefonmodells, meiner Voicemail-Aufnahmen sowie (sofern angegeben) meiner E-Mail-Adresse zu den dort beschriebenen Forschungszwecken ein, einschließlich der Weitergabe meiner anonymisierten Aufnahmen an Forschungspartner, die diese ausschließlich zu demselben Zweck verwenden dürfen. Mir ist bekannt, dass ich diese Einwilligung jederzeit ohne Angabe von Gründen widerrufen kann.',
                 consentRequired: 'Bitte bestätigen Sie, dass Sie die Datenschutzerklärung gelesen und in die Verarbeitung eingewilligt haben.',
                 privacyHeading: '🔒 Datenschutzerklärung (gem. Art. 13 DSGVO)',
                 privacyControllerTitle: '1. Verantwortlicher',
@@ -1043,7 +1054,7 @@
                 privacyData5: '<strong>Server-Logs:</strong> unsere Hosting-Anbieter (siehe Abschnitt 6) protokollieren automatisch technische Daten wie IP-Adresse, User-Agent und Anfragezeit. Diese Logs werden ausschließlich aus Sicherheits- und Betriebsgründen bei den Anbietern aufbewahrt und werden von uns nicht mit Ihrem Teilnehmer-Datensatz verknüpft.',
                 privacyDataNote: 'Ihre Stimme kann personenbezogene Daten im Sinne von Art. 4 Nr. 1 DSGVO darstellen. Wir verwenden die Aufnahmen nicht zur biometrischen Identifizierung im Sinne von Art. 9 Abs. 1 DSGVO.',
                 privacyPurposeTitle: '4. Zwecke und Rechtsgrundlagen',
-                privacyPurpose1: '<strong>Forschungsteilnahme</strong> (Zuordnung von Voicemails zu Teilnehmenden, Analyse, wie sich Raumakustik auf Mobiltelefon-Audio auswirkt): die Verarbeitung erfolgt auf Grundlage Ihrer <strong>ausdrücklichen Einwilligung</strong> nach Art. 6 Abs. 1 lit. a DSGVO, die über das Einwilligungskästchen im Registrierungsformular erteilt wird.',
+                privacyPurpose1: '<strong>Forschungsteilnahme</strong> (Zuordnung von Voicemails zu Teilnehmenden, Analyse, wie sich Raumakustik auf Mobiltelefon-Audio auswirkt, sowie Weitergabe der anonymisierten Aufnahmen an Forschungspartner zu demselben Zweck, siehe Abschnitt 7): die Verarbeitung erfolgt auf Grundlage Ihrer <strong>ausdrücklichen Einwilligung</strong> nach Art. 6 Abs. 1 lit. a DSGVO, die über das Einwilligungskästchen im Registrierungsformular erteilt wird.',
                 privacyPurpose2: '<strong>Betrieb und Absicherung der Website</strong> (einschließlich des Lösch- und Feedback-Formulars): die Verarbeitung erfolgt auf Grundlage unseres <strong>berechtigten Interesses</strong> an einem funktionsfähigen, sicheren Dienst nach Art. 6 Abs. 1 lit. f DSGVO.',
                 privacyPurpose3: '<strong>Wissenschaftliche Veröffentlichung aggregierter, anonymisierter Ergebnisse</strong>: Grundlage sind Art. 6 Abs. 1 lit. e i. V. m. Art. 89 DSGVO (Forschung im öffentlichen Interesse). Veröffentlichte Ergebnisse enthalten keine identifizierenden personenbezogenen Daten.',
                 privacyRetentionTitle: '5. Speicherdauer',
@@ -1056,9 +1067,13 @@
                 privacyProcessor1: '<strong>Supabase (Datenbank-Hosting):</strong> Supabase Inc., 970 Toa Payoh North #07-04, Singapur 318992; EU-Daten werden bei Amazon Web Services EMEA SARL in der AWS-Region <em>eu-north-1</em> (Stockholm, Schweden) gespeichert. Eine Auftragsverarbeitungsvereinbarung nach Art. 28 DSGVO liegt vor.',
                 privacyProcessor2: '<strong>3CX (Telefonie / Voicemail-Anlage):</strong> 3CX Ltd., betreibt die On-Premises-Telefonanlage, die Voicemails aufzeichnet und speichert, bevor wir sie herunterladen.',
                 privacyProcessor3: '<strong>jsDelivr (Content Delivery Network):</strong> diese Seite lädt die Open-Source-Bibliothek <em>intl-tel-input</em> von <code>cdn.jsdelivr.net</code> (Cloudflare / Fastly). Beim Laden des Skripts werden Ihre IP-Adresse und Ihr User-Agent an dieses CDN übermittelt. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO — berechtigtes Interesse an einer zuverlässigen Telefonnummern-Validierung. Wir arbeiten an einer Selbst-Auslieferung, um diese Drittanbieter-Anfrage zu entfernen.',
-                privacyTransferTitle: '7. Drittlandtransfers',
+                privacySharingTitle: '7. Weitergabe an Dritte',
+                privacySharing1: '<strong>Zweckbindung:</strong> Ihre Voicemail-Aufnahmen werden ausschließlich in <strong>anonymisierter</strong> Form verwendet, d. h. ohne Ihre Telefonnummer, E-Mail-Adresse oder sonstige Angaben, die Sie identifizieren, und allein zur <strong>Bestimmung der akustischen Eigenschaften</strong> der Räume, in denen Sie aufgenommen haben (z. B. Nachhall). Der Inhalt Ihrer Aussagen wird nur verwendet, soweit er den Raum beschreibt. Wir nutzen die Aufnahmen nicht zur Identifizierung von Sprechenden.',
+                privacySharing2: '<strong>Weitergabe an Forschungspartner:</strong> Wir können die anonymisierten Aufnahmen, zusammen mit nicht identifizierenden technischen Metadaten wie dem Telefonmodell, an Dritte wie z. B. wissenschaftliche Kooperationspartner weitergeben. Die Empfänger sind vertraglich verpflichtet, die Aufnahmen <strong>ausschließlich zu demselben Zweck</strong> zu verwenden, nämlich zur Analyse von Raumakustik. Jede andere Nutzung, insbesondere der Versuch, Sprechende zu identifizieren, ist untersagt.',
+                privacySharing3: '<strong>Keine sonstige Weitergabe:</strong> Ihre Telefonnummer und E-Mail-Adresse werden nicht an Dritte weitergegeben, abgesehen von den in Abschnitt 6 genannten Auftragsverarbeitern, die ausschließlich nach unserer Weisung handeln. Wir verkaufen Ihre Daten nicht.',
+                privacyTransferTitle: '8. Drittlandtransfers',
                 privacyTransfer: 'Personenbezogene Daten, die über das Registrierungs-, Feedback- und Löschformular übermittelt werden, werden in der EU gespeichert (AWS eu-north-1, Stockholm). Die oben genannte CDN-Anfrage kann von Servern außerhalb der EU bedient werden; der CDN-Anbieter stützt sich für solche Transfers auf die EU-Standardvertragsklauseln.',
-                privacyRightsTitle: '8. Ihre Rechte',
+                privacyRightsTitle: '9. Ihre Rechte',
                 privacyRightsIntro: 'Nach der DSGVO stehen Ihnen insbesondere folgende Rechte zu:',
                 privacyRight1: '<strong>Auskunftsrecht</strong> (Art. 15) — Sie können eine Kopie der zu Ihrer Person gespeicherten Daten anfordern.',
                 privacyRight2: '<strong>Recht auf Berichtigung</strong> (Art. 16) — Sie können die Berichtigung unrichtiger Daten verlangen.',
@@ -1068,11 +1083,11 @@
                 privacyRight6: '<strong>Widerspruchsrecht</strong> (Art. 21) gegen eine auf berechtigtem Interesse beruhende Verarbeitung.',
                 privacyRight7: '<strong>Widerrufsrecht</strong> (Art. 7 Abs. 3) — Sie können Ihre Einwilligung jederzeit ohne Angabe von Gründen widerrufen. Der Widerruf berührt nicht die Rechtmäßigkeit der bis dahin erfolgten Verarbeitung.',
                 privacyRight8: '<strong>Beschwerderecht</strong> bei einer Aufsichtsbehörde (Art. 77) — insbesondere bei der Datenschutzbehörde des Bundeslandes Ihres Wohnsitzes oder des Verantwortlichen. Für den oben genannten Verantwortlichen ist dies die <em>Landesbeauftragte für Datenschutz und Informationsfreiheit der Freien Hansestadt Bremen</em>, Arndtstraße 1, 27570 Bremerhaven (https://www.datenschutz.bremen.de).',
-                privacyVoluntaryTitle: '9. Freiwilligkeit',
+                privacyVoluntaryTitle: '10. Freiwilligkeit',
                 privacyVoluntary: 'Die Teilnahme an dieser Forschungsstudie sowie die Bereitstellung der oben beschriebenen Daten ist vollständig freiwillig. Eine Nichtteilnahme oder ein späterer Widerruf hat für Sie keine Nachteile.',
-                privacyCookiesTitle: '10. Cookies und Tracking',
+                privacyCookiesTitle: '11. Cookies und Tracking',
                 privacyCookies: 'Diese Website setzt <strong>keine</strong> Cookies, verwendet <strong>keine</strong> Webanalyse und enthält <strong>keine</strong> Werbe- oder Social-Media-Tracker.',
-                privacyChangesTitle: '11. Änderungen dieser Erklärung',
+                privacyChangesTitle: '12. Änderungen dieser Erklärung',
                 privacyChanges: 'Bei Änderungen unserer Verarbeitungspraxis kann diese Erklärung aktualisiert werden. Stand der aktuellen Fassung: <strong>27. April 2026</strong> (v1).',
                 imprintHeading: '📜 Impressum',
                 imprintIntro: 'Angaben gemäß § 5 DDG (vormals TMG) und § 18 Abs. 2 MStV:',
