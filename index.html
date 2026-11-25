@@ -581,7 +581,7 @@
         </details>
         <details>
             <summary data-i18n="faqQ3">How is my data handled?</summary>
-            <p data-i18n="faqA3">All recordings are stored anonymously and linked only to your participant ID. Your phone number and email will be deleted after your trial has been processed. The data is used exclusively for scientific research purposes. If you would like us to delete your data sooner, please use the <a href="#deletionSection">data deletion form</a> at the bottom of this page.</p>
+            <p data-i18n="faqA3">All recordings are stored anonymously and linked only to your participant ID. Your phone number is only stored temporarily, until we have verified your participation, and is deleted immediately afterwards. Your email address will be deleted once your trial has been processed. The data is used exclusively for scientific research purposes. If you would like us to delete your data sooner, please use the <a href="#deletionSection">data deletion form</a> at the bottom of this page.</p>
         </details>
         <details>
             <summary data-i18n="faqQ4">How long does the whole process take?</summary>
@@ -663,8 +663,8 @@
 
         <h3 data-i18n="privacyDataTitle">3. Data we collect and process</h3>
         <ul>
-            <li data-i18n="privacyData1"><strong>Registration:</strong> phone number (mandatory — used to match incoming voicemails to your participant record), phone model (mandatory — research-relevant metadata), email address (optional), interface language, technical timestamp of registration, and a randomly generated participant ID.</li>
-            <li data-i18n="privacyData2"><strong>Voicemails:</strong> the audio recordings you leave on 0421 989 690 30, plus call metadata provided by our PBX (caller phone number, call timestamp, call duration).</li>
+            <li data-i18n="privacyData1"><strong>Registration:</strong> phone number (mandatory — stored <strong>only temporarily</strong> and used solely to verify your participation by matching incoming voicemails to your participant ID), phone model (mandatory — research-relevant metadata), email address (optional), interface language, technical timestamp of registration, and a randomly generated participant ID.</li>
+            <li data-i18n="privacyData2"><strong>Voicemails:</strong> the audio recordings you leave on 0421 989 690 30, plus call metadata provided by our PBX (caller phone number, call timestamp, call duration). The caller phone number is likewise stored only temporarily for this verification.</li>
             <li data-i18n="privacyData3"><strong>Feedback (optional):</strong> the participant ID you enter, the language used for the recordings, an ease-of-use rating, your free-text feedback, the interface language, and a submission timestamp.</li>
             <li data-i18n="privacyData4"><strong>Deletion requests:</strong> the phone number and/or participant ID you submit, plus the timestamp of the request and a counter to prevent abuse.</li>
             <li data-i18n="privacyData5"><strong>Server logs:</strong> our hosting providers (see section 6) automatically log technical data such as IP address, user agent, and request time. These logs are kept by the providers for security and operational purposes only and are not linked to your participant record by us.</li>
@@ -680,7 +680,8 @@
 
         <h3 data-i18n="privacyRetentionTitle">5. Retention periods</h3>
         <ul>
-            <li data-i18n="privacyRetention1"><strong>Phone number, email, phone model:</strong> deleted at the latest after the recordings linked to your participant ID have been processed and pseudonymised, typically within <strong>6 months</strong> of your registration.</li>
+            <li data-i18n="privacyRetention1"><strong>Phone number:</strong> stored only temporarily. It is kept only until we have verified that you participated (i.e. that your voicemails have arrived and been assigned to your participant ID) and is deleted immediately afterwards, both from our registration database and from the call metadata.</li>
+            <li data-i18n="privacyRetention1b"><strong>Email, phone model:</strong> deleted at the latest after the recordings linked to your participant ID have been processed and pseudonymised, typically within <strong>6 months</strong> of your registration.</li>
             <li data-i18n="privacyRetention2"><strong>Voicemail recordings:</strong> stored in pseudonymised form (linked only to the random participant ID, not to your phone number) for the duration of the research project and any required archiving period under good scientific practice (typically <strong>10 years</strong> after publication, per DFG guidelines).</li>
             <li data-i18n="privacyRetention3"><strong>Feedback entries:</strong> stored for the duration of the research project; the optional participant ID field can be left blank if you prefer.</li>
             <li data-i18n="privacyRetention4"><strong>Deletion-request flags:</strong> the affected participant row is hard-deleted automatically <strong>24 hours</strong> after the request is recorded.</li>
@@ -806,7 +807,7 @@
                 faqQ2: 'Do I need to know the exact dimensions of my rooms?',
                 faqA2: 'Not at all. A rough estimate is enough (e.g. "about 3 by 4 meters"). You don\'t need to measure anything - just describe what you see and estimate as best you can.',
                 faqQ3: 'How is my data handled?',
-                faqA3: 'All recordings are stored anonymously and linked only to your participant ID. Your phone number and email will be deleted after your trial has been processed. The data is used exclusively for scientific research purposes. If you would like us to delete your data sooner, please use the <a href="#deletionSection">data deletion form</a> at the bottom of this page.',
+                faqA3: 'All recordings are stored anonymously and linked only to your participant ID. Your phone number is only stored temporarily, until we have verified your participation, and is deleted immediately afterwards. Your email address will be deleted once your trial has been processed. The data is used exclusively for scientific research purposes. If you would like us to delete your data sooner, please use the <a href="#deletionSection">data deletion form</a> at the bottom of this page.',
                 faqQ4: 'How long does the whole process take?',
                 faqA4: 'Each voicemail should be about 1-2 minutes long. Depending on how many rooms you record, the total time is approximately 5 to 10 minutes.',
                 faqQ5: 'What if I forgot to mention something?',
@@ -868,8 +869,8 @@
                 privacyControllerDetails: 'Vincent Hock, marinom GmbH, Wilhelm-Herbst-Straße 5, 28359 Bremen-Horn-Lehe, v.hock@marinom.de',
                 privacyDpo: '[Thomas Böttner, marinom GmbH, Wilhelm-Herbst-Straße 5, 28359 Bremen-Horn-Lehe, t.boettner@marinom.de]',
                 privacyDataTitle: '3. Data we collect and process',
-                privacyData1: '<strong>Registration:</strong> phone number (mandatory — used to match incoming voicemails to your participant record), phone model (mandatory — research-relevant metadata), email address (optional), interface language, technical timestamp of registration, and a randomly generated participant ID.',
-                privacyData2: '<strong>Voicemails:</strong> the audio recordings you leave on 0421 989 690 30, plus call metadata provided by our PBX (caller phone number, call timestamp, call duration).',
+                privacyData1: '<strong>Registration:</strong> phone number (mandatory — stored <strong>only temporarily</strong> and used solely to verify your participation by matching incoming voicemails to your participant ID), phone model (mandatory — research-relevant metadata), email address (optional), interface language, technical timestamp of registration, and a randomly generated participant ID.',
+                privacyData2: '<strong>Voicemails:</strong> the audio recordings you leave on 0421 989 690 30, plus call metadata provided by our PBX (caller phone number, call timestamp, call duration). The caller phone number is likewise stored only temporarily for this verification.',
                 privacyData3: '<strong>Feedback (optional):</strong> the participant ID you enter, the language used for the recordings, an ease-of-use rating, your free-text feedback, the interface language, and a submission timestamp.',
                 privacyData4: '<strong>Deletion requests:</strong> the phone number and/or participant ID you submit, plus the timestamp of the request and a counter to prevent abuse.',
                 privacyData5: '<strong>Server logs:</strong> our hosting providers (see section 6) automatically log technical data such as IP address, user agent, and request time. These logs are kept by the providers for security and operational purposes only and are not linked to your participant record by us.',
@@ -879,7 +880,8 @@
                 privacyPurpose2: '<strong>Operating and securing the website</strong> (including the deletion-request and feedback forms): processing is based on our <strong>legitimate interest</strong> in providing a functional, secure service under Art. 6 (1)(f) GDPR.',
                 privacyPurpose3: '<strong>Scientific publication of aggregated, anonymised results</strong>: based on Art. 6 (1)(e) and Art. 89 GDPR (research in the public interest). Published results will not contain identifying personal data.',
                 privacyRetentionTitle: '5. Retention periods',
-                privacyRetention1: '<strong>Phone number, email, phone model:</strong> deleted at the latest after the recordings linked to your participant ID have been processed and pseudonymised, typically within <strong>6 months</strong> of your registration.',
+                privacyRetention1: '<strong>Phone number:</strong> stored only temporarily. It is kept only until we have verified that you participated (i.e. that your voicemails have arrived and been assigned to your participant ID) and is deleted immediately afterwards, both from our registration database and from the call metadata.',
+                privacyRetention1b: '<strong>Email, phone model:</strong> deleted at the latest after the recordings linked to your participant ID have been processed and pseudonymised, typically within <strong>6 months</strong> of your registration.',
                 privacyRetention2: '<strong>Voicemail recordings:</strong> stored in pseudonymised form (linked only to the random participant ID, not to your phone number) for the duration of the research project and any required archiving period under good scientific practice (typically <strong>10 years</strong> after publication, per DFG guidelines).',
                 privacyRetention3: '<strong>Feedback entries:</strong> stored for the duration of the research project; the optional participant ID field can be left blank if you prefer.',
                 privacyRetention4: '<strong>Deletion-request flags:</strong> the affected participant row is hard-deleted automatically <strong>24 hours</strong> after the request is recorded.',
@@ -972,7 +974,7 @@
                 faqQ2: 'Muss ich die exakten Maße meiner Räume kennen?',
                 faqA2: 'Nein. Eine grobe Schätzung reicht aus (z. B. „etwa 3 mal 4 Meter"). Sie müssen nichts ausmessen - beschreiben Sie einfach, was Sie sehen, so gut Sie können.',
                 faqQ3: 'Wie werden meine Daten behandelt?',
-                faqA3: 'Alle Aufnahmen werden anonym gespeichert und nur mit Ihrer Teilnehmer-ID verknüpft. Ihre Telefonnummer und E-Mail-Adresse werden gelöscht, sobald Ihr Durchlauf verarbeitet wurde. Die Daten werden ausschließlich für wissenschaftliche Forschungszwecke verwendet. Wenn Sie möchten, dass wir Ihre Daten früher löschen, nutzen Sie bitte das <a href="#deletionSection">Formular zur Datenlöschung</a> am Ende dieser Seite.',
+                faqA3: 'Alle Aufnahmen werden anonym gespeichert und nur mit Ihrer Teilnehmer-ID verknüpft. Ihre Telefonnummer wird nur vorübergehend gespeichert, bis wir Ihre Teilnahme überprüft haben, und danach umgehend gelöscht. Ihre E-Mail-Adresse wird gelöscht, sobald Ihr Durchlauf verarbeitet wurde. Die Daten werden ausschließlich für wissenschaftliche Forschungszwecke verwendet. Wenn Sie möchten, dass wir Ihre Daten früher löschen, nutzen Sie bitte das <a href="#deletionSection">Formular zur Datenlöschung</a> am Ende dieser Seite.',
                 faqQ4: 'Wie lange dauert der gesamte Ablauf?',
                 faqA4: 'Jede Voicemail sollte etwa 1-2 Minuten dauern. Je nachdem, wie viele Räume Sie aufnehmen, beträgt der gesamte Zeitaufwand ungefähr 5 bis 10 Minuten.',
                 faqQ5: 'Was ist, wenn ich etwas vergessen habe?',
@@ -1034,8 +1036,8 @@
                 privacyDpoTitle: '2. Datenschutzbeauftragte/r',
                 privacyDpo: 'Thomas Böttner, marinom GmbH, Wilhelm-Herbst-Straße 5, 28359 Bremen-Horn-Lehe, t.boettner@marinom.de',
                 privacyDataTitle: '3. Welche Daten wir erheben und verarbeiten',
-                privacyData1: '<strong>Registrierung:</strong> Telefonnummer (Pflicht — zur Zuordnung eingehender Voicemails zu Ihrem Teilnehmer-Datensatz), Telefonmodell (Pflicht — forschungsrelevantes Metadatum), E-Mail-Adresse (optional), Oberflächensprache, technischer Zeitstempel der Registrierung sowie eine zufällig generierte Teilnehmer-ID.',
-                privacyData2: '<strong>Voicemails:</strong> die Audioaufnahmen, die Sie unter 0421 989 690 30 hinterlassen, sowie die von unserer Telefonanlage bereitgestellten Anrufmetadaten (Anrufer-Telefonnummer, Anrufzeit, Anrufdauer).',
+                privacyData1: '<strong>Registrierung:</strong> Telefonnummer (Pflicht — wird <strong>nur vorübergehend</strong> gespeichert und ausschließlich verwendet, um Ihre Teilnahme durch Zuordnung eingehender Voicemails zu Ihrer Teilnehmer-ID zu überprüfen), Telefonmodell (Pflicht — forschungsrelevantes Metadatum), E-Mail-Adresse (optional), Oberflächensprache, technischer Zeitstempel der Registrierung sowie eine zufällig generierte Teilnehmer-ID.',
+                privacyData2: '<strong>Voicemails:</strong> die Audioaufnahmen, die Sie unter 0421 989 690 30 hinterlassen, sowie die von unserer Telefonanlage bereitgestellten Anrufmetadaten (Anrufer-Telefonnummer, Anrufzeit, Anrufdauer). Auch die Anrufer-Telefonnummer wird nur vorübergehend für diese Überprüfung gespeichert.',
                 privacyData3: '<strong>Feedback (optional):</strong> die von Ihnen eingegebene Teilnehmer-ID, die Sprache der Aufnahmen, eine Bewertung der Benutzerfreundlichkeit, Ihr Freitext-Feedback, die Oberflächensprache sowie ein Übermittlungs-Zeitstempel.',
                 privacyData4: '<strong>Löschanträge:</strong> die von Ihnen übermittelte Telefonnummer und/oder Teilnehmer-ID, der Zeitstempel des Antrags sowie ein Zähler zur Missbrauchsprävention.',
                 privacyData5: '<strong>Server-Logs:</strong> unsere Hosting-Anbieter (siehe Abschnitt 6) protokollieren automatisch technische Daten wie IP-Adresse, User-Agent und Anfragezeit. Diese Logs werden ausschließlich aus Sicherheits- und Betriebsgründen bei den Anbietern aufbewahrt und werden von uns nicht mit Ihrem Teilnehmer-Datensatz verknüpft.',
@@ -1045,7 +1047,8 @@
                 privacyPurpose2: '<strong>Betrieb und Absicherung der Website</strong> (einschließlich des Lösch- und Feedback-Formulars): die Verarbeitung erfolgt auf Grundlage unseres <strong>berechtigten Interesses</strong> an einem funktionsfähigen, sicheren Dienst nach Art. 6 Abs. 1 lit. f DSGVO.',
                 privacyPurpose3: '<strong>Wissenschaftliche Veröffentlichung aggregierter, anonymisierter Ergebnisse</strong>: Grundlage sind Art. 6 Abs. 1 lit. e i. V. m. Art. 89 DSGVO (Forschung im öffentlichen Interesse). Veröffentlichte Ergebnisse enthalten keine identifizierenden personenbezogenen Daten.',
                 privacyRetentionTitle: '5. Speicherdauer',
-                privacyRetention1: '<strong>Telefonnummer, E-Mail, Telefonmodell:</strong> spätestens nach Verarbeitung und Pseudonymisierung der mit Ihrer Teilnehmer-ID verknüpften Aufnahmen gelöscht, in der Regel innerhalb von <strong>6 Monaten</strong> nach Ihrer Registrierung.',
+                privacyRetention1: '<strong>Telefonnummer:</strong> wird nur vorübergehend gespeichert. Sie wird nur so lange aufbewahrt, bis wir Ihre Teilnahme überprüft haben (d. h. Ihre Voicemails eingegangen und Ihrer Teilnehmer-ID zugeordnet sind), und danach umgehend gelöscht – sowohl aus unserer Registrierungsdatenbank als auch aus den Anrufmetadaten.',
+                privacyRetention1b: '<strong>E-Mail, Telefonmodell:</strong> spätestens nach Verarbeitung und Pseudonymisierung der mit Ihrer Teilnehmer-ID verknüpften Aufnahmen gelöscht, in der Regel innerhalb von <strong>6 Monaten</strong> nach Ihrer Registrierung.',
                 privacyRetention2: '<strong>Voicemail-Aufnahmen:</strong> in pseudonymisierter Form (nur mit der zufälligen Teilnehmer-ID verknüpft, nicht mit Ihrer Telefonnummer) für die Dauer des Forschungsprojekts und etwaiger Aufbewahrungsfristen nach den Regeln guter wissenschaftlicher Praxis gespeichert (in der Regel <strong>10 Jahre</strong> nach Veröffentlichung gemäß DFG-Leitlinien).',
                 privacyRetention3: '<strong>Feedback-Einträge:</strong> für die Dauer des Forschungsprojekts gespeichert; das optionale Feld „Teilnehmer-ID“ kann auf Wunsch leer bleiben.',
                 privacyRetention4: '<strong>Löschantrags-Markierungen:</strong> der betroffene Teilnehmer-Datensatz wird automatisch <strong>24 Stunden</strong> nach Erfassung des Antrags vollständig gelöscht.',
