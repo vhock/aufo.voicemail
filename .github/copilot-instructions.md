@@ -15,30 +15,34 @@ Browser (index.html)
    │   POST JSON  (REST + RPC calls)
    ▼
 Supabase REST  https://tbfnxnfnsabajfkkkxvg.supabase.co
-   │   anon RLS policy: INSERT only on public.feedback;
-   │   anon EXECUTE on RPCs register_or_get_participant, request_participant_deletion
+   │   anon RLS policy: INSERT only on public.feedback and public.participations;
+   │   anon EXECUTE on RPC request_recording_deletion
    ▼
-Postgres tables  public.feedback, public.participants   (managed via supabase/migrations/*.sql)
+Postgres tables  public.feedback, public.participations   (managed via supabase/migrations/*.sql)
+                 (legacy public.participants + its RPCs still exist but are unused by the page)
 ```
 
 - The page formerly had a Node.js backend (`server.js`, `package.json`, `feedback-submissions.jsonl`). **It has been removed.** Do not reintroduce a local server unless explicitly asked. If you see references to `/api/feedback`, `localhost:3000`, `feedback-submissions.jsonl`, or `npm start` — they're stale.
 - Project ref: `tbfnxnfnsabajfkkkxvg`. Publishable (anon) key is embedded in [index.html](../index.html) and is safe to commit (RLS enforces what `anon` can do).
 - DB schema is owned by the repo: source of truth is [supabase/migrations](../supabase/migrations). Apply with `supabase db push`.
-- **Two write paths** the browser uses today:
+- **Minimal-data design (privacy policy v2)**: participation only requires the phone model. No email, no phone number, no participant ID are collected. Caller numbers from the PBX are replaced by a keyed hash (HMAC-SHA256, hex, over the E.164 number; key in Supabase Vault as `phone_hash_key`). The deletion form posts the normalised number to `rpc/request_recording_deletion`, which hashes it server-side and stores only the hash in `public.deletion_requests`. `normalizePhone()` in the page and the pipeline's hashing must use the same E.164 format or requests won't match. Don't reintroduce identifying fields without being asked.
+- **Write paths** the browser uses today (both plain inserts, `Prefer: return=minimal`):
+  - `POST /rest/v1/participations` → `phone_model`, `ui_language`, `consent_version` (anon has column-level INSERT on exactly these; `consented_at` is server-side `default now()`).
   - `POST /rest/v1/feedback` → direct table insert into `public.feedback`.
-  - `POST /rest/v1/rpc/<name>` → `security definer` RPCs for everything that needs to read/update existing rows (registration, deletion request). Prefer the RPC pattern when the operation needs more than a plain insert; it lets us keep `select`/`update` off the anon role.
+  - `POST /rest/v1/rpc/enter_raffle` → `{ p_email, p_phone, p_ui_language }`; stores email + `phone_hash()` in `public.raffle_entries` (one entry per number); returns `status: 'entered' | 'already' | 'invalid_input'`. Shown only after a valid "Finished" click.
+  - `POST /rest/v1/rpc/request_recording_deletion` → `{ p_phone }` (E.164); returns `status: 'recorded' | 'already' | 'invalid_input'`.
+  - If an operation ever needs to read/update existing rows, use a `security definer` RPC instead of granting `select`/`update` to anon.
 
 ## Frontend conventions
 
 - **i18n**: every user-visible string has a `data-i18n="key"` (or `data-i18n-placeholder="key"`) attribute and an entry under both `en` and `de` in the `translations` dict at the bottom of [index.html](../index.html). When adding UI, **always add both languages** and the `data-i18n*` attribute. `applyLanguage(lang)` walks the DOM and swaps text/placeholders. Default lang is `en`; toggle buttons live in the header.
-- **Inline HTML in translations**: i18n values may contain markup (`<strong>`, `<a href="#…">`) — `applyLanguage` uses `el.innerHTML`. When rendering a translation from JS, use `innerHTML` (not `textContent`) if the string is allowed to contain markup, and use `.replace('{id}', value)` for placeholders (see the deletion handler).
+- **Inline HTML in translations**: i18n values may contain markup (`<strong>`, `<a href="#…">`) — `applyLanguage` uses `el.innerHTML`. When rendering a translation from JS, use `innerHTML` (not `textContent`) if the string is allowed to contain markup, and use `.replace('{id}', value)` for placeholders (placeholders like `{id}`).
 - **`data-i18n-locked`**: when JS replaces a `[data-i18n]` element's content with a *dynamic* string (e.g. an error message that includes a backend detail), set `el.setAttribute('data-i18n-locked', '1')` so `applyLanguage` skips it on the next language switch. Clear with `removeAttribute('data-i18n-locked')` when re-entering a clean state. Used by `#msg` and `#feedbackMsg`.
-- **Phone-input loading guard**: `intl-tel-input` is loaded synchronously in `<head>` (do **not** add `defer` — the inline body script reads `window.intlTelInput` at parse time and would race with a deferred load). The `ITI_LOADED` flag + `FALLBACK_DE_PHONE_RE` (`/^\+?49[1-9]\d{6,12}$/`) keep all forms working if the CDN is blocked.
-- **`readPhone(inputEl, itiInstance, errorEl, dict)` helper**: returns the validated E.164 phone string or `null` (and renders the appropriate error). Use it from any new form that asks for a German phone number — don't re-implement validation.
+- **No third-party requests**: the page loads nothing from external servers (the former `intl-tel-input` CDN dependency was removed with the phone field). The privacy policy states this — keep it true or update the policy.
+- **Consent version**: `CONSENT_VERSION` in the script must match the policy version in `privacyChanges`. Bump both when the privacy policy changes.
 - **Single-file rule**: keep CSS in the `<style>` block and JS in the `<script>` block at the bottom. The user previously deleted a separate `style.css` — do not re-extract assets unless asked.
-- **Form payload → snake_case**: the `feedbackForm` submit handler maps camelCase form fields to the snake_case columns Supabase expects (`participant_id`, `voicemail_language`, `ease_rating`, `feedback_text`, `ui_language`, `submitted_at`). `received_at` is filled by Postgres `default now()`. Don't change column casing.
-- **Phone input**: uses `intl-tel-input@25` (loaded via CDN) with `intlTelInputWithUtils` for libphonenumber validation. The site is German-only (`onlyCountries: ['de']`, `allowDropdown: false`). Each phone field needs its own `intlTelInput` instance — see `iti` (registration) and `deletionIti` (deletion request) for the canonical setup.
-- **Error UX**: surfaces the backend error message in parentheses after the localized base error (e.g. `feedbackError`, `registerError`, `deletionError`). Successful submit shows the corresponding `*Success` key. All message keys must exist in **both** `en` and `de` dicts.
+- **Form payload → snake_case**: the `feedbackForm` submit handler maps camelCase form fields to the snake_case columns Supabase expects (`voicemail_language`, `ease_rating`, `feedback_text`, `ui_language`, `submitted_at`). `received_at` is filled by Postgres `default now()`. Don't change column casing.
+- **Error UX**: surfaces the backend error message in parentheses after the localized base error (e.g. `feedbackError`, `registerError`). Successful submit shows the corresponding `*Success` key. All message keys must exist in **both** `en` and `de` dicts.
 - **Anchor links between sections**: when an FAQ entry or instruction needs to point to another section of the same page, give the target `<div>` an `id` and link via `<a href="#that-id">…</a>` inside the translation string. Existing example: FAQ "How is my data handled?" → `#deletionSection`.
 
 ## Database conventions
@@ -104,4 +108,3 @@ Postgres tables  public.feedback, public.participants   (managed via supabase/mi
 - Do **not** wire the form to a new backend without removing the Supabase fetch first; only one storage destination at a time.
 - Do **not** add `select` or `update` policies for `anon` on `public.feedback` or `public.participants` — submissions must not be readable/mutable by anonymous visitors. Mediate any such access through a `security definer` RPC instead.
 - Do **not** call `supabase db push` without `--password '<pw>'` in a non-interactive shell — it will hang on the password prompt.
-- Do **not** add a second phone field without giving it its own `intlTelInput` instance and reusing the same German-only options.

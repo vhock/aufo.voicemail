@@ -11,8 +11,6 @@
     <meta name="twitter:card" content="summary">
     <meta name="theme-color" content="#1b4670">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='12' fill='%234a90d9'/><path d='M32 14a8 8 0 0 0-8 8v12a8 8 0 0 0 16 0V22a8 8 0 0 0-8-8zm-14 20a14 14 0 0 0 12 13.86V54h-6a2 2 0 0 0 0 4h16a2 2 0 0 0 0-4h-6v-6.14A14 14 0 0 0 46 34a2 2 0 0 0-4 0 10 10 0 0 1-20 0 2 2 0 0 0-4 0z' fill='white'/></svg>">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@25/build/css/intlTelInput.css">
-    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25/build/js/intlTelInputWithUtils.min.js"></script>
     <style>
         /* ---------- Design tokens ---------- */
         :root {
@@ -198,7 +196,7 @@
             font-size: clamp(1.35rem, 4.2vw, 1.6rem); color: var(--ink);
             text-align: center; letter-spacing: -.01em; margin-bottom: 1.25rem;
         }
-        .card form, .card .privacy-pre-form, .card .msg, .card .warning-box {
+        .card form, .card .privacy-pre-form, .card .msg {
             max-width: var(--form-maxw); margin-left: auto; margin-right: auto;
         }
         .privacy-pre-form { font-size: .86rem; color: var(--muted); line-height: 1.55; margin-bottom: 1.25rem; }
@@ -223,7 +221,7 @@
             background-repeat: no-repeat; background-position: right 1rem center; background-size: 12px 8px;
         }
         textarea { min-height: 130px; resize: vertical; line-height: 1.6; }
-        .register-btn, .feedback-btn {
+        .participate-btn, .feedback-btn {
             width: 100%; min-height: 48px; padding: .8rem 1.25rem;
             background: var(--navy-700); color: #fff;
             border: none; border-radius: var(--radius-sm);
@@ -231,9 +229,9 @@
             cursor: pointer; box-shadow: 0 1px 2px rgba(14,39,64,.2);
             transition: background .18s, transform .18s, box-shadow .18s;
         }
-        .register-btn:hover, .feedback-btn:hover { background: var(--navy-800); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(14,39,64,.18); }
-        .register-btn:active, .feedback-btn:active { transform: translateY(0); box-shadow: 0 1px 2px rgba(14,39,64,.2); }
-        .register-btn:disabled, .feedback-btn:disabled {
+        .participate-btn:hover, .feedback-btn:hover { background: var(--navy-800); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(14,39,64,.18); }
+        .participate-btn:active, .feedback-btn:active { transform: translateY(0); box-shadow: 0 1px 2px rgba(14,39,64,.2); }
+        .participate-btn:disabled, .feedback-btn:disabled {
             background: #a9bacb; cursor: not-allowed; transform: none; box-shadow: none;
         }
         .consent-row { display: flex; align-items: flex-start; gap: .65rem; margin: .25rem 0 1.1rem; font-size: .875rem; color: var(--text); line-height: 1.55; }
@@ -241,7 +239,6 @@
         .consent-row label { font-weight: 400; color: inherit; margin: 0; font-size: inherit; cursor: pointer; }
         .field-error { display: none; color: var(--err-ink); font-size: .85rem; margin: -.7rem 0 .9rem; }
         .field-hint { font-size: .85rem; color: var(--muted); line-height: 1.5; margin: -.7rem 0 1.1rem; }
-        .deletion-or { text-align: center; color: var(--muted); margin: -.3rem 0 .9rem; }
 
         /* ---------- Status messages ---------- */
         .msg, .feedback-msg {
@@ -253,18 +250,38 @@
         .msg.error, .feedback-msg.error {
             background: var(--err-bg); border-color: var(--err-line); color: var(--err-ink);
         }
-        .msg strong { font-size: 1.25rem; letter-spacing: .04em; }
-        .warning-box {
-            display: none; background: var(--warn-bg); border: 1px solid var(--warn-line);
-            border-left-width: 4px; border-radius: var(--radius-sm);
-            padding: 1rem 1.15rem; margin-top: 1rem; color: var(--warn-ink); line-height: 1.6;
-        }
 
         /* ---------- Instructions ---------- */
         .instructions { display: none; margin-top: 1.75rem; border-top: 1px solid var(--line); padding-top: 1.5rem; }
         .instructions h2 { font-size: 1.2rem; margin-bottom: .9rem; }
         .instructions ul { padding-left: 1.25rem; color: var(--text); line-height: 1.75; }
         .instructions ul li { margin-bottom: .55rem; }
+        .finish { max-width: var(--form-maxw); margin: 1.75rem auto 0; }
+        .finish-warning {
+            display: none; margin-top: .9rem; text-align: center;
+            color: var(--err-ink); font-weight: 600; line-height: 1.55;
+        }
+        .survey-box {
+            display: none; margin-top: 1rem; padding: 1rem 1.15rem; text-align: center; line-height: 1.6;
+            border: 1px solid var(--ok-line); border-radius: var(--radius-sm);
+            background: var(--ok-bg); color: var(--ok-ink);
+        }
+        .survey-box p + p { margin-top: .75rem; }
+        .raffle-box {
+            display: none; margin-top: 1.25rem; padding: 1.15rem 1.15rem .25rem;
+            border: 1px solid var(--line-strong); border-radius: var(--radius-sm); background: var(--bg-soft);
+        }
+        .raffle-box h3 { color: var(--ink); font-size: 1.08rem; margin-bottom: .5rem; }
+        .raffle-box > p:not(.field-hint) { color: var(--text); font-size: .92rem; line-height: 1.6; margin-bottom: 1rem; }
+        .raffle-box > p.raffle-privacy { font-size: .82rem; color: var(--muted); }
+        .raffle-box .participate-btn { margin-bottom: 1rem; }
+        .survey-box a { color: inherit; }
+        .survey-code {
+            display: inline-block; margin-top: .3rem; padding: .35rem .75rem;
+            background: var(--surface); border: 1px solid var(--ok-line); border-radius: 8px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 1.15rem; letter-spacing: .05em; color: var(--ink); user-select: all;
+        }
         .rooms-list { margin-top: .5rem; }
         .rooms-list li { margin-bottom: .2rem; }
         a.phone, .instructions .phone {
@@ -331,16 +348,9 @@
         .site-footer a { color: var(--navy-700); text-decoration: none; padding: .25rem .4rem; border-radius: 6px; }
         .site-footer a:hover { text-decoration: underline; }
 
-        /* ---------- intl-tel-input integration ---------- */
-        .iti { width: 100%; margin-bottom: 1.1rem; display: block; }
-        .iti input.iti__tel-input { margin-bottom: 0; width: 100%; }
-        .iti--separate-dial-code .iti__selected-dial-code { font-size: 1rem; }
-        .iti__country-list { font-size: .95rem; }
-
         /* ---------- Small screens ---------- */
         @media (max-width: 480px) {
             .site-logo { justify-content: space-between; gap: .75rem; }
-            .msg strong { font-size: 1.15rem; }
             a.phone, .instructions .phone { width: 100%; }
         }
 
@@ -509,34 +519,26 @@
             </blockquote>
         </div>
         <p data-i18n="introP4">All data is handled confidentially and used for scientific purposes only.</p>
-        <p data-i18n="introP5">To get started, <strong>register below</strong> with your email and phone number. Your participant ID and detailed instructions will appear <strong>immediately on this page</strong> - no need to wait for an email or SMS.</p>
+        <p data-i18n="introP5">To get started, enter your <strong>phone model</strong> below and click <strong>Participate</strong>. That is all we need - no name, email or phone number. The detailed instructions will appear <strong>immediately on this page</strong>.</p>
     </div>
 
     <div class="card">
         <h1 data-i18n="participateTitle">Participate</h1>
-        <p class="privacy-pre-form" data-i18n="privacyPreForm">Before registering, please review our <a href="#privacySection">Privacy Policy</a>. The data you submit is processed only for the research purposes described there. You can withdraw your consent at any time using the <a href="#deletionSection">data deletion form</a> below.</p>
-        <form id="contactForm">
-            <label for="email" data-i18n="emailLabel">Email <span class="label-optional">(optional)</span></label>
-            <input type="email" id="email" name="email" placeholder="you@example.com" data-i18n-placeholder="emailPlaceholder" autocomplete="email" maxlength="254">
-
-            <label for="phone" data-i18n="phoneLabel">Phone Number</label>
-            <input type="tel" id="phone" name="phone" autocomplete="tel" inputmode="tel" required>
-            <span id="phoneError" class="field-error" role="alert" aria-live="assertive"></span>
-            <p data-i18n="phoneHint" class="field-hint"><strong>Important:</strong> please register with the same phone number you will be calling from.</p>
-
+        <p class="privacy-pre-form" data-i18n="privacyPreForm">Before participating, please review our <a href="#privacySection">Privacy Policy</a>. The data you submit is processed only for the research purposes described there. You can withdraw your consent at any time using the <a href="#deletionSection">deletion form</a> below.</p>
+        <form id="participateForm">
             <label for="phoneModel" data-i18n="phoneModelLabel">Phone Model</label>
             <input type="text" id="phoneModel" name="phoneModel" placeholder="e.g. Samsung Galaxy A54" data-i18n-placeholder="phoneModelPlaceholder" autocomplete="off" maxlength="128" required>
+            <p data-i18n="phoneModelHint" class="field-hint">Please enter the model of the phone you will be calling from.</p>
 
             <div class="consent-row">
                 <input type="checkbox" id="consentBox" name="consent" required>
-                <label for="consentBox" data-i18n="consentLabel">I have read the <a href="#privacySection">Privacy Policy</a> and consent to the processing of my phone number, phone model, voicemail recordings, and (if provided) email address for the research purposes described therein, including the sharing of my anonymised recordings with research partners who may use them only for the same purpose. I understand that I can withdraw this consent at any time without giving reasons.</label>
+                <label for="consentBox" data-i18n="consentLabel">I have read the <a href="#privacySection">Privacy Policy</a> and consent to the processing of my phone model, my voicemail recordings and a keyed hash of my caller number for the research purposes described therein, including the sharing of my anonymised recordings with research partners who may use them only for the same purpose. I understand that I can withdraw this consent at any time without giving reasons.</label>
             </div>
             <span id="consentError" class="field-error" role="alert" aria-live="assertive"></span>
 
-            <button type="submit" class="register-btn" data-i18n="registerButton">Register</button>
+            <button type="submit" class="participate-btn" data-i18n="participateButton">Participate</button>
         </form>
-        <p class="msg" id="msg" role="status" aria-live="polite"><span id="msgText" data-i18n="msgText">Thank you! Your participant ID is</span> <br> <strong id="participantId"></strong></p>
-        <div id="duplicateWarning" class="warning-box" role="alert" aria-live="polite"></div>
+        <p class="msg" id="msg" role="status" aria-live="polite" data-i18n="msgText">Thank you for participating! Please read the instructions below carefully before you call.</p>
         <div class="instructions" id="instructionsBox">
             <h2 data-i18n="instructionsTitle">📋 Instructions</h2>
             <ul>
@@ -566,6 +568,33 @@
                 <li data-i18n="i13">Once you have read and understood all of the above, <strong>call the following number</strong> to leave your first voicemail: <a class="phone" href="tel:+4942198969030">0421 989 690 30</a>After hanging up, move to the next room and call the same number again.</li>
             </ul>
             <p data-i18n="instructionsExamplesHint" class="examples-hint">↑ See the example voicemails in the introduction at the top of the page.</p>
+
+            <div class="finish">
+                <button type="button" id="finishedBtn" class="participate-btn" data-i18n="finishedButton">Finished</button>
+                <p id="finishedWarning" class="finish-warning" role="alert" data-i18n="finishedTooEarly">Please ensure that you have provided at least 5 minutes of recordings.</p>
+                <div id="surveyCodeBox" class="survey-box" role="status" aria-live="polite">
+                    <p data-i18n="surveyThanks">Thank you for participating. Redeem the following Survey Code at <a href="https://www.surveycircle.com" target="_blank" rel="noopener noreferrer">https://www.surveycircle.com</a> and get free survey participants through SurveyCircle.</p>
+                    <p><span data-i18n="surveyCodeLabel">The Survey Code is:</span><br><strong id="surveyCode" class="survey-code"></strong></p>
+                </div>
+
+                <form id="raffleForm" class="raffle-box">
+                    <h3 data-i18n="raffleTitle">🎁 Raffle</h3>
+                    <p data-i18n="raffleIntro">As a thank you, you can take part in our raffle. Enter your email address so we can notify you if you win, and the phone number you called from so we can verify that you took part.</p>
+
+                    <label for="raffleEmail" data-i18n="raffleEmailLabel">Email address</label>
+                    <input type="email" id="raffleEmail" name="raffleEmail" autocomplete="email" maxlength="254" placeholder="you@example.com" data-i18n-placeholder="raffleEmailPlaceholder" required>
+                    <span id="raffleEmailError" class="field-error" role="alert" aria-live="assertive"></span>
+
+                    <label for="rafflePhone" data-i18n="rafflePhoneLabel">Phone number you called from</label>
+                    <input type="tel" id="rafflePhone" name="rafflePhone" autocomplete="tel" inputmode="tel" maxlength="32" placeholder="e.g. 0171 1234567" data-i18n-placeholder="deletionPhonePlaceholder" required>
+                    <span id="rafflePhoneError" class="field-error" role="alert" aria-live="assertive"></span>
+                    <p data-i18n="rafflePhoneHint" class="field-hint"><strong>Your phone number will not be stored.</strong> It is immediately converted into a keyed hash, which is only used to match your entry to your recordings.</p>
+
+                    <p data-i18n="rafflePrivacy" class="raffle-privacy">Your email address is used only to run the raffle and notify the winners, and is deleted once the raffle is over. Details in our <a href="#privacySection">Privacy Policy</a>.</p>
+                    <button type="submit" class="participate-btn" data-i18n="raffleSubmit">Participate in raffle</button>
+                </form>
+                <p class="msg" id="raffleMsg" role="status" aria-live="polite"></p>
+            </div>
         </div>
     </div>
 
@@ -581,7 +610,7 @@
         </details>
         <details>
             <summary data-i18n="faqQ3">How is my data handled?</summary>
-            <p data-i18n="faqA3">All recordings are stored anonymously and linked only to your participant ID. Your phone number is only stored temporarily, until we have verified your participation, and is deleted immediately afterwards. Your email address will be deleted once your trial has been processed. The data is used exclusively for scientific research purposes. If you would like us to delete your data sooner, please use the <a href="#deletionSection">data deletion form</a> at the bottom of this page.</p>
+            <p data-i18n="faqA3">We only ask for your phone model - no name, email address or phone number. The phone network transmits your caller number with each voicemail; when your recordings are processed it is replaced by a keyed hash and the number itself is deleted. The hash is only used to find and delete your recordings if you ask us to. The data is used exclusively for scientific research purposes. To withdraw, use the <a href="#deletionSection">deletion form</a> at the bottom of this page.</p>
         </details>
         <details>
             <summary data-i18n="faqQ4">How long does the whole process take?</summary>
@@ -605,9 +634,6 @@
         <h2 data-i18n="feedbackTitle">📝 Feedback</h2>
         <p data-i18n="feedbackIntro">If you have any feedback about the process, please share it here. This helps us improve the study experience.</p>
         <form id="feedbackForm">
-            <label for="feedbackParticipantId" data-i18n="feedbackParticipantIdLabel">Participant ID (optional)</label>
-            <input type="text" id="feedbackParticipantId" name="participantId" data-i18n-placeholder="feedbackParticipantIdPlaceholder" placeholder="e.g. 1234" maxlength="64" autocomplete="off">
-
             <label for="feedbackLanguage" data-i18n="feedbackLanguageLabel">Language used for voicemail</label>
             <select id="feedbackLanguage" name="voicemailLanguage">
                 <option value="english" data-i18n="feedbackLanguageEnglish">English</option>
@@ -634,17 +660,12 @@
     </div>
 
     <div class="feedback" id="deletionSection">
-        <h2 data-i18n="deletionTitle">🗑️ Request Data Deletion</h2>
-        <p data-i18n="deletionIntro">If you would like us to delete the data associated with your participation, please enter the phone number you registered with and click the button below. We will flag your record for deletion.</p>
+        <h2 data-i18n="deletionTitle">🗑️ Withdraw Consent / Request Deletion</h2>
+        <p data-i18n="deletionIntro">To withdraw your consent and have your recordings deleted, enter the phone number you called from. We never store the number itself: it is immediately converted into a keyed hash, which we compare with the hashed caller numbers stored with the recordings.</p>
         <form id="deletionForm">
-            <label for="deletionPhone" data-i18n="deletionPhoneLabel">Phone number you registered with</label>
-            <input type="tel" id="deletionPhone" name="deletionPhone" autocomplete="tel" inputmode="tel">
+            <label for="deletionPhone" data-i18n="deletionPhoneLabel">Phone number you called from</label>
+            <input type="tel" id="deletionPhone" name="deletionPhone" autocomplete="tel" inputmode="tel" maxlength="32" placeholder="e.g. 0171 1234567" data-i18n-placeholder="deletionPhonePlaceholder" required>
             <span id="deletionPhoneError" class="field-error" role="alert" aria-live="assertive"></span>
-
-            <p data-i18n="deletionOr" class="field-hint deletion-or">— or —</p>
-
-            <label for="deletionParticipantId" data-i18n="deletionParticipantIdLabel">Participant ID (if you have one)</label>
-            <input type="text" id="deletionParticipantId" name="deletionParticipantId" maxlength="64" autocomplete="off" placeholder="e.g. P-1234" data-i18n-placeholder="deletionParticipantIdPlaceholder">
 
             <button type="submit" class="feedback-btn" data-i18n="deletionSubmit">Request deletion</button>
         </form>
@@ -663,53 +684,55 @@
 
         <h3 data-i18n="privacyDataTitle">3. Data we collect and process</h3>
         <ul>
-            <li data-i18n="privacyData1"><strong>Registration:</strong> phone number (mandatory — stored <strong>only temporarily</strong> and used solely to verify your participation by matching incoming voicemails to your participant ID), phone model (mandatory — research-relevant metadata), email address (optional), interface language, technical timestamp of registration, and a randomly generated participant ID.</li>
-            <li data-i18n="privacyData2"><strong>Voicemails:</strong> the audio recordings you leave on 0421 989 690 30, plus call metadata provided by our PBX (caller phone number, call timestamp, call duration). The caller phone number is likewise stored only temporarily for this verification.</li>
-            <li data-i18n="privacyData3"><strong>Feedback (optional):</strong> the participant ID you enter, the language used for the recordings, an ease-of-use rating, your free-text feedback, the interface language, and a submission timestamp.</li>
-            <li data-i18n="privacyData4"><strong>Deletion requests:</strong> the phone number and/or participant ID you submit, plus the timestamp of the request and a counter to prevent abuse.</li>
-            <li data-i18n="privacyData5"><strong>Server logs:</strong> our hosting providers (see section 6) automatically log technical data such as IP address, user agent, and request time. These logs are kept by the providers for security and operational purposes only and are not linked to your participant record by us.</li>
+            <li data-i18n="privacyData1"><strong>Participation form:</strong> phone model (mandatory — research-relevant metadata), interface language, a technical timestamp, and the version of the privacy policy you consented to (proof of consent under Art. 7 (1) GDPR). We do <strong>not</strong> ask for your name, email address or phone number, and no participant ID is assigned.</li>
+            <li data-i18n="privacyData2"><strong>Voicemails:</strong> the audio recordings you leave on 0421 989 690 30, plus call metadata provided by our PBX (caller phone number, call timestamp, call duration). When the recordings are processed, the caller phone number is replaced by a <strong>keyed hash</strong> (HMAC-SHA256 with a secret key) and the number itself is deleted. Without the secret key, the hash cannot be traced back to your number; it is used only to find your recordings if you request deletion.</li>
+            <li data-i18n="privacyData3"><strong>Feedback (optional):</strong> the language used for the recordings, an ease-of-use rating, your free-text feedback, the interface language, and a submission timestamp.</li>
+            <li data-i18n="privacyData4"><strong>Deletion requests:</strong> the phone number you enter in the deletion form is immediately converted into the same keyed hash on our database server. Only the hash, the time of the request and a request counter are stored, never the number itself.</li>
+            <li data-i18n="privacyData5"><strong>Server logs:</strong> our hosting providers (see section 6) automatically log technical data such as IP address, user agent, and request time. These logs are kept by the providers for security and operational purposes only and are not linked by us to your participation data.</li>
+            <li data-i18n="privacyData6"><strong>Raffle (optional):</strong> your email address and a keyed hash of the phone number you called from (the number itself is not stored), plus the time of entry and the interface language.</li>
         </ul>
         <p data-i18n="privacyDataNote">Your voice may be considered personal data under Art. 4 No. 1 GDPR. We do not use the recordings for biometric identification within the meaning of Art. 9 (1) GDPR.</p>
 
         <h3 data-i18n="privacyPurposeTitle">4. Purposes and legal basis</h3>
         <ul>
-            <li data-i18n="privacyPurpose1"><strong>Research participation</strong> (matching voicemails to participants, analysing how room acoustics affect mobile phone audio, and sharing the anonymised recordings with research partners for the same purpose, see section 7): processing is based on your <strong>explicit consent</strong> under Art. 6 (1)(a) GDPR, given via the consent checkbox on the registration form.</li>
-            <li data-i18n="privacyPurpose2"><strong>Operating and securing the website</strong> (including the deletion-request and feedback forms): processing is based on our <strong>legitimate interest</strong> in providing a functional, secure service under Art. 6 (1)(f) GDPR.</li>
+            <li data-i18n="privacyPurpose1"><strong>Research participation</strong> (analysing how room acoustics affect mobile phone audio, and sharing the anonymised recordings with research partners for the same purpose, see section 7): processing is based on your <strong>explicit consent</strong> under Art. 6 (1)(a) GDPR, given via the consent checkbox on the participation form.</li>
+            <li data-i18n="privacyPurpose2"><strong>Operating and securing the website</strong> (including the feedback and deletion forms): processing is based on our <strong>legitimate interest</strong> in providing a functional, secure service under Art. 6 (1)(f) GDPR. <strong>Handling withdrawal and deletion requests</strong>: Art. 6 (1)(c) in conjunction with Art. 17 GDPR.</li>
             <li data-i18n="privacyPurpose3"><strong>Scientific publication of aggregated, anonymised results</strong>: based on Art. 6 (1)(e) and Art. 89 GDPR (research in the public interest). Published results will not contain identifying personal data.</li>
+            <li data-i18n="privacyPurpose4"><strong>Raffle</strong> (verifying via the hash that you took part, drawing the winners and notifying them by email): based on Art. 6 (1)(b) GDPR, as processing is necessary to carry out the raffle you entered.</li>
         </ul>
 
         <h3 data-i18n="privacyRetentionTitle">5. Retention periods</h3>
         <ul>
-            <li data-i18n="privacyRetention1"><strong>Phone number:</strong> stored only temporarily. It is kept only until we have verified that you participated (i.e. that your voicemails have arrived and been assigned to your participant ID) and is deleted immediately afterwards, both from our registration database and from the call metadata.</li>
-            <li data-i18n="privacyRetention1b"><strong>Email, phone model:</strong> deleted at the latest after the recordings linked to your participant ID have been processed and pseudonymised, typically within <strong>6 months</strong> of your registration.</li>
-            <li data-i18n="privacyRetention2"><strong>Voicemail recordings:</strong> stored in pseudonymised form (linked only to the random participant ID, not to your phone number) for the duration of the research project and any required archiving period under good scientific practice (typically <strong>10 years</strong> after publication, per DFG guidelines).</li>
-            <li data-i18n="privacyRetention3"><strong>Feedback entries:</strong> stored for the duration of the research project; the optional participant ID field can be left blank if you prefer.</li>
-            <li data-i18n="privacyRetention4"><strong>Deletion-request flags:</strong> the affected participant row is hard-deleted automatically <strong>24 hours</strong> after the request is recorded.</li>
+            <li data-i18n="privacyRetention1"><strong>Caller phone number (call metadata):</strong> stored in plain form only temporarily, until the recordings have been downloaded from our PBX and processed. It is then replaced by its keyed hash and deleted.</li>
+            <li data-i18n="privacyRetention1b"><strong>Phone model, interface language, timestamp:</strong> stored as non-identifying technical metadata for the duration of the research project. The consent record (policy version and timestamp) is kept as proof of consent.</li>
+            <li data-i18n="privacyRetention2"><strong>Voicemail recordings and hashed caller number:</strong> stored in pseudonymised form (linked only to the keyed hash, not to your phone number) for the duration of the research project and any required archiving period under good scientific practice (typically <strong>10 years</strong> after publication, per DFG guidelines). The hash is kept as long as the recordings, so that you can request deletion at any time.</li>
+            <li data-i18n="privacyRetention3"><strong>Feedback entries:</strong> stored for the duration of the research project. They contain no information that identifies you unless you write it into the free-text field yourself.</li>
+            <li data-i18n="privacyRetention4"><strong>Deletion requests:</strong> recordings matching the hash are deleted without undue delay, at the latest within one month (Art. 12 (3) GDPR).</li>
+            <li data-i18n="privacyRetention5"><strong>Raffle entries</strong> (email address, phone hash): deleted once the winners have been drawn and notified and the prizes handed over. To have your entry deleted sooner, write to <a href="mailto:v.hock@marinom.de">v.hock@marinom.de</a>.</li>
         </ul>
 
         <h3 data-i18n="privacyProcessorsTitle">6. Recipients / processors</h3>
         <ul>
             <li data-i18n="privacyProcessor1"><strong>Supabase (database hosting):</strong> Supabase Inc., 970 Toa Payoh North #07-04, Singapore 318992, with EU data hosted by Amazon Web Services EMEA SARL in the AWS region <em>eu-north-1</em> (Stockholm, Sweden). A Data Processing Agreement under Art. 28 GDPR is in place.</li>
             <li data-i18n="privacyProcessor2"><strong>3CX (telephony / voicemail PBX):</strong> 3CX Ltd., operating the on-premises PBX that records and stores voicemails before we download them.</li>
-            <li data-i18n="privacyProcessor3"><strong>jsDelivr (Content Delivery Network):</strong> this page loads the open-source library <em>intl-tel-input</em> from <code>cdn.jsdelivr.net</code> (Cloudflare / Fastly). Loading the script transmits your IP address and user-agent to that CDN. Legal basis: Art. 6 (1)(f) GDPR — legitimate interest in providing reliable phone-number validation. We are working on self-hosting this asset to remove this third-party request.</li>
         </ul>
 
         <h3 data-i18n="privacySharingTitle">7. Sharing with third parties</h3>
         <ul>
-            <li data-i18n="privacySharing1"><strong>Purpose limitation:</strong> your voicemail recordings are used exclusively in <strong>anonymised</strong> form, i.e. without your phone number, email address or any other information that identifies you, and solely to <strong>infer the acoustic properties</strong> of the rooms you recorded in (e.g. reverberation). The content of what you say is only used insofar as it describes the room. We do not use the recordings to identify speakers.</li>
+            <li data-i18n="privacySharing1"><strong>Purpose limitation:</strong> your voicemail recordings are used exclusively in <strong>anonymised</strong> form, i.e. without your caller phone number, its hash or any other information that identifies you, and solely to <strong>infer the acoustic properties</strong> of the rooms you recorded in (e.g. reverberation). The content of what you say is only used insofar as it describes the room. We do not use the recordings to identify speakers.</li>
             <li data-i18n="privacySharing2"><strong>Sharing with research partners:</strong> we may share the anonymised recordings, together with non-identifying technical metadata such as the phone model, with third parties such as scientific research partners. Recipients are contractually bound to use the recordings <strong>only for the same purpose</strong>, the analysis of room acoustics. Any other use, in particular any attempt to identify the speakers, is not permitted.</li>
-            <li data-i18n="privacySharing3"><strong>No other disclosure:</strong> your phone number and email address are never shared with third parties, apart from the processors listed in section 6, which act solely on our instructions. We do not sell your data.</li>
+            <li data-i18n="privacySharing3"><strong>No other disclosure:</strong> your email address, the caller phone number and its hash are never shared with third parties, apart from the processors listed in section 6, which act solely on our instructions. We do not sell your data.</li>
         </ul>
 
         <h3 data-i18n="privacyTransferTitle">8. Transfers to third countries</h3>
-        <p data-i18n="privacyTransfer">Personal data submitted via the registration, feedback, and deletion forms is stored in the EU (AWS eu-north-1, Stockholm). The CDN request mentioned above may be served from servers outside the EU; the CDN provider relies on the EU Standard Contractual Clauses for any such transfer.</p>
+        <p data-i18n="privacyTransfer">Personal data submitted via the participation, feedback, raffle and deletion forms is stored in the EU (AWS eu-north-1, Stockholm). This page does not load any resources from third-party servers.</p>
 
         <h3 data-i18n="privacyRightsTitle">9. Your rights</h3>
         <p data-i18n="privacyRightsIntro">Under the GDPR you have, in particular, the following rights:</p>
         <ul>
             <li data-i18n="privacyRight1"><strong>Right of access</strong> (Art. 15) — you can request a copy of the data we hold about you.</li>
             <li data-i18n="privacyRight2"><strong>Right to rectification</strong> (Art. 16) — you can request correction of inaccurate data.</li>
-            <li data-i18n="privacyRight3"><strong>Right to erasure</strong> (Art. 17) — you can request deletion at any time, easily via the <a href="#deletionSection">data deletion form</a> on this page.</li>
+            <li data-i18n="privacyRight3"><strong>Right to erasure</strong> (Art. 17) — you can request deletion of your recordings at any time via the <a href="#deletionSection">deletion form</a> on this page.</li>
             <li data-i18n="privacyRight4"><strong>Right to restriction of processing</strong> (Art. 18).</li>
             <li data-i18n="privacyRight5"><strong>Right to data portability</strong> (Art. 20) — receive your data in a structured, commonly used, machine-readable format.</li>
             <li data-i18n="privacyRight6"><strong>Right to object</strong> (Art. 21) to processing based on legitimate interest.</li>
@@ -724,7 +747,7 @@
         <p data-i18n="privacyCookies">This website does <strong>not</strong> set any cookies, does <strong>not</strong> use web analytics, and does <strong>not</strong> contain advertising or social-media trackers.</p>
 
         <h3 data-i18n="privacyChangesTitle">12. Changes to this policy</h3>
-        <p data-i18n="privacyChanges">We may update this policy if our processing practices change. The current version is dated <strong>27 April 2026</strong> (v1).</p>
+        <p data-i18n="privacyChanges">We may update this policy if our processing practices change. The current version is dated <strong>26 November 2026</strong> (v2).</p>
     </details>
 
     <details class="legal-section" id="imprintSection" aria-labelledby="imprintHeading">
@@ -778,15 +801,13 @@
                 exampleQuote: '"Hello, this is a participant. I am in the bathroom. The door is closed. The bathroom is approximately 4 meters wide and 3 meters across, ceiling height is approximately 2.5 meters. The floor is tiled, and the walls are tiled up to a height of approx 2 meters. The rest is wallpaper. There is a sink, a toilet and a bathtub. I am walking around the room, now I am standing rather close to a wall - it sounds quite reverberant near the tiles. Okay, I just opened the door - I am walking around again, and the sound feels noticeably more open now, less echoey. There is also a small window above the bathtub; I just opened the window as well, and now the sound is even drier and a bit of street noise comes in. Hmm, what else can I say... the weather today is really nice, sunny and about 20 degrees. I think if I could take one thing to a desert island, it would probably be a good book. Anyway, I think that\'s about a minute, goodbye!"',
                 exampleQuote2: '"Hi, this is a participant. I am in my bedroom. The door is closed. The bedroom is roughly 4 by 3.5 meters, with a ceiling height of about 2.6 meters. The floor is hardwood with a large rug in the middle, the walls are painted plaster, and the ceiling is also painted. There is a queen-size bed against the long wall, two nightstands with lamps, a tall wardrobe opposite the bed, a small desk with a chair near the window, and curtains on the window. There are also a few framed pictures on the walls and a houseplant in the corner. I am walking around the room while talking - near the wardrobe it sounds a tiny bit warmer, and standing on the rug the sound feels a bit softer than near the wall. Okay, I just opened the window - I am walking around the room again, and honestly, it sounds pretty much the same to me, maybe just a little more outside noise. That\'s about it for the bedroom, talk to you next time, bye!"',
                 introP4: 'All data is handled confidentially and used for scientific purposes only.',
-                introP5: 'To get started, <strong>register below</strong> with your email and the <strong>phone number you will be calling from</strong>. Your participant ID and detailed instructions will appear <strong>immediately on this page</strong> - no need to wait for an email or SMS.',
+                introP5: 'To get started, enter your <strong>phone model</strong> below and click <strong>Participate</strong>. That is all we need - no name, email or phone number. The detailed instructions will appear <strong>immediately on this page</strong>.',
                 participateTitle: 'Participate',
-                emailPlaceholder: 'you@example.com',
-                phoneLabel: 'Phone Number',
-                phoneHint: '<strong>Important:</strong> please register with the same phone number you will be calling from.',
                 phoneModelLabel: 'Phone Model',
                 phoneModelPlaceholder: 'e.g. Samsung Galaxy A54',
-                registerButton: 'Register',
-                msgText: 'Thank you! Your participant ID is',
+                phoneModelHint: 'Please enter the model of the phone you will be calling from.',
+                participateButton: 'Participate',
+                msgText: 'Thank you for participating! Please read the instructions below carefully before you call.',
                 instructionsTitle: '📋 Instructions',
                 i1: 'For <strong>each</strong> room, you will call our voicemail number and leave a separate voicemail (~1-2 minutes each).',
                 i2: '<strong>You choose which rooms to record</strong> - you do not need to cover them all. The list below is just a suggestion; feel free to add your own places, such as an attic, storage room, basement, garage, or anywhere else interesting:',
@@ -808,13 +829,32 @@
                 i12: '<strong>Talking for about 1-2 minutes is the core of the experiment.</strong> If your room description doesn\'t fill the full time, just keep talking about anything - the weather, your favorite dish, or simply read aloud from this page. The important thing is to keep speaking naturally.',
                 i13: 'Once you have read and understood all of the above, <strong>call the following number</strong> to leave your first voicemail: <a class="phone" href="tel:+4942198969030">0421 989 690 30</a>After hanging up, move to the next room and call the same number again.',
                 instructionsExamplesHint: '↑ See the example voicemails in the introduction at the top of the page.',
+                surveyCodeLabel: 'The Survey Code is:',
+                privacyRetention5: '<strong>Raffle entries</strong> (email address, phone hash): deleted once the winners have been drawn and notified and the prizes handed over. To have your entry deleted sooner, write to <a href="mailto:v.hock@marinom.de">v.hock@marinom.de</a>.',
+                privacyPurpose4: '<strong>Raffle</strong> (verifying via the hash that you took part, drawing the winners and notifying them by email): based on Art. 6 (1)(b) GDPR, as processing is necessary to carry out the raffle you entered.',
+                privacyData6: '<strong>Raffle (optional):</strong> your email address and a keyed hash of the phone number you called from (the number itself is not stored), plus the time of entry and the interface language.',
+                raffleError: 'Sorry, your raffle entry could not be submitted right now. Please try again shortly.',
+                raffleAlready: 'ℹ️ This phone number has already been entered in the raffle.',
+                raffleSuccess: '🎉 You are entered in the raffle. We will notify you by email if you win. Good luck!',
+                raffleSubmit: 'Participate in raffle',
+                rafflePrivacy: 'Your email address is used only to run the raffle and notify the winners, and is deleted once the raffle is over. Details in our <a href="#privacySection">Privacy Policy</a>.',
+                rafflePhoneHint: '<strong>Your phone number will not be stored.</strong> It is immediately converted into a keyed hash, which is only used to match your entry to your recordings.',
+                rafflePhoneLabel: 'Phone number you called from',
+                raffleEmailError: 'Please enter a valid email address.',
+                raffleEmailPlaceholder: 'you@example.com',
+                raffleEmailLabel: 'Email address',
+                raffleIntro: 'As a thank you, you can take part in our raffle. Enter your email address so we can notify you if you win, and the phone number you called from so we can verify that you took part.',
+                raffleTitle: '🎁 Raffle',
+                surveyThanks: 'Thank you for participating. Redeem the following Survey Code at <a href="https://www.surveycircle.com" target="_blank" rel="noopener noreferrer">https://www.surveycircle.com</a> and get free survey participants through SurveyCircle.',
+                finishedTooEarly: 'Please ensure that you have provided at least 5 minutes of recordings.',
+                finishedButton: 'Finished',
                 faqTitle: 'FAQ',
                 faqQ1: 'Does it need to be completely silent while I record?',
                 faqA1: 'No - normal background noise is perfectly fine. You do not need to wait for silence. Just speak clearly so your voice is audible.',
                 faqQ2: 'Do I need to know the exact dimensions of my rooms?',
                 faqA2: 'Not at all. A rough estimate is enough (e.g. "about 3 by 4 meters"). You don\'t need to measure anything - just describe what you see and estimate as best you can.',
                 faqQ3: 'How is my data handled?',
-                faqA3: 'All recordings are stored anonymously and linked only to your participant ID. Your phone number is only stored temporarily, until we have verified your participation, and is deleted immediately afterwards. Your email address will be deleted once your trial has been processed. The data is used exclusively for scientific research purposes. If you would like us to delete your data sooner, please use the <a href="#deletionSection">data deletion form</a> at the bottom of this page.',
+                faqA3: 'We only ask for your phone model - no name, email address or phone number. The phone network transmits your caller number with each voicemail; when your recordings are processed it is replaced by a keyed hash and the number itself is deleted. The hash is only used to find and delete your recordings if you ask us to. The data is used exclusively for scientific research purposes. To withdraw, use the <a href="#deletionSection">deletion form</a> at the bottom of this page.',
                 faqQ4: 'How long does the whole process take?',
                 faqA4: 'Each voicemail should be about 1-2 minutes long. Depending on how many rooms you record, the total time is approximately 5 to 10 minutes.',
                 faqQ5: 'What if I forgot to mention something?',
@@ -825,8 +865,6 @@
                 faqA7: 'English and German are both perfectly fine.',
                 feedbackTitle: '📝 Feedback',
                 feedbackIntro: 'If you have any feedback about the process, please share it here. This helps us improve the understandability of the task and the quality of the study.',
-                feedbackParticipantIdLabel: 'Participant ID (optional)',
-                feedbackParticipantIdPlaceholder: 'e.g. 1234',
                 feedbackLanguageLabel: 'Language used for voicemail',
                 feedbackLanguageEnglish: 'English',
                 feedbackLanguageGerman: 'German',
@@ -840,34 +878,23 @@
                 feedbackSubmit: 'Submit feedback',
                 feedbackSuccess: 'Thank you for your feedback!',
                 feedbackError: 'Sorry, feedback could not be submitted right now. Please try again shortly.',
-                registerError: 'Sorry, registration could not be completed right now. Please try again shortly.',
-                phoneError: 'Please enter a valid phone number.',
-                phoneErrorInvalidCountryCode: 'Invalid country code - please pick your country from the list.',
-                phoneErrorTooShort: 'Phone number is too short.',
-                phoneErrorTooLong: 'Phone number is too long.',
-                phoneErrorNotANumber: 'Please enter only digits.',
-                warningDuplicate: '⚠️ This phone number has already been registered in our study. You can continue making contributions with your existing participant ID: {id}',
-                deletionTitle: '🗑️ Request Data Deletion',
-                deletionIntro: 'If you would like us to delete the data associated with your participation, please enter the phone number you registered with and click the button below. We will flag your record for deletion.',
-                deletionPhoneLabel: 'Phone number you registered with',
-                deletionSubmit: 'Request deletion',
-                deletionSuccess: '✅ Your deletion request has been recorded for participant ID <strong>{id}</strong>. We will remove your data shortly.',
-                deletionAlready: 'ℹ️ A deletion request for participant ID <strong>{id}</strong> has already been recorded. Your data will be removed shortly.',
-                deletionNotFound: '⚠️ We could not find a registration for this phone number. Please double-check the number you registered with.',
+                registerError: 'Sorry, your participation could not be recorded right now. Please try again shortly.',
+                deletionTitle: '🗑️ Withdraw Consent / Request Deletion',
+                deletionIntro: 'To withdraw your consent and have your recordings deleted, enter the phone number you called from. We never store the number itself: it is immediately converted into a keyed hash, which we compare with the hashed caller numbers stored with the recordings.',
+                phoneError: 'Please enter a valid phone number (e.g. 0171 1234567 or +49 171 1234567).',
                 deletionError: 'Sorry, the deletion request could not be submitted right now. Please try again shortly.',
-                deletionConfirm: 'Are you sure you want to request deletion of all data associated with this phone number? This cannot be undone.',
-                deletionOr: '— or —',
-                deletionParticipantIdLabel: 'Participant ID (if you have one)',
-                deletionParticipantIdPlaceholder: 'e.g. P-1234',
-                deletionMissingInput: 'Please enter either a phone number or a participant ID.',
-                deletionRateLimited: '⚠️ Too many deletion attempts for participant ID {id}. If you believe this is an error, please contact us directly.',
+                deletionAlready: 'ℹ️ A deletion request for this phone number has already been recorded. The recordings will be deleted shortly.',
+                deletionSuccess: '✅ Your deletion request has been recorded. All recordings made from this number will be deleted without undue delay, at the latest within one month.',
+                deletionConfirm: 'Are you sure you want to request deletion of all recordings made from this phone number? This cannot be undone.',
+                deletionSubmit: 'Request deletion',
+                deletionPhonePlaceholder: 'e.g. 0171 1234567',
+                deletionPhoneLabel: 'Phone number you called from',
                 footerOrg: 'marinom GmbH',
                 footerImprint: 'Imprint',
                 footerPrivacy: 'Privacy Policy',
                 footerDeletion: 'Request Data Deletion',
-                privacyPreForm: 'Before registering, please review our <a href="#privacySection">Privacy Policy</a>. The data you submit is processed only for the research purposes described there. You can withdraw your consent at any time using the <a href="#deletionSection">data deletion form</a> below.',
-                emailLabel: 'Email <span class="label-optional">(optional)</span>',
-                consentLabel: 'I have read the <a href="#privacySection">Privacy Policy</a> and consent to the processing of my phone number, phone model, voicemail recordings, and (if provided) email address for the research purposes described therein, including the sharing of my anonymised recordings with research partners who may use them only for the same purpose. I understand that I can withdraw this consent at any time without giving reasons.',
+                privacyPreForm: 'Before participating, please review our <a href="#privacySection">Privacy Policy</a>. The data you submit is processed only for the research purposes described there. You can withdraw your consent at any time using the <a href="#deletionSection">deletion form</a> below.',
+                consentLabel: 'I have read the <a href="#privacySection">Privacy Policy</a> and consent to the processing of my phone model, my voicemail recordings and a keyed hash of my caller number for the research purposes described therein, including the sharing of my anonymised recordings with research partners who may use them only for the same purpose. I understand that I can withdraw this consent at any time without giving reasons.',
                 consentRequired: 'Please confirm that you have read the Privacy Policy and consent to the processing.',
                 privacyHeading: '🔒 Privacy Policy (according to Art. 13 GDPR)',
                 privacyControllerTitle: '1. Controller',
@@ -876,37 +903,36 @@
                 privacyControllerDetails: 'Vincent Hock, marinom GmbH, Wilhelm-Herbst-Straße 5, 28359 Bremen-Horn-Lehe, v.hock@marinom.de',
                 privacyDpo: '[Thomas Böttner, marinom GmbH, Wilhelm-Herbst-Straße 5, 28359 Bremen-Horn-Lehe, t.boettner@marinom.de]',
                 privacyDataTitle: '3. Data we collect and process',
-                privacyData1: '<strong>Registration:</strong> phone number (mandatory — stored <strong>only temporarily</strong> and used solely to verify your participation by matching incoming voicemails to your participant ID), phone model (mandatory — research-relevant metadata), email address (optional), interface language, technical timestamp of registration, and a randomly generated participant ID.',
-                privacyData2: '<strong>Voicemails:</strong> the audio recordings you leave on 0421 989 690 30, plus call metadata provided by our PBX (caller phone number, call timestamp, call duration). The caller phone number is likewise stored only temporarily for this verification.',
-                privacyData3: '<strong>Feedback (optional):</strong> the participant ID you enter, the language used for the recordings, an ease-of-use rating, your free-text feedback, the interface language, and a submission timestamp.',
-                privacyData4: '<strong>Deletion requests:</strong> the phone number and/or participant ID you submit, plus the timestamp of the request and a counter to prevent abuse.',
-                privacyData5: '<strong>Server logs:</strong> our hosting providers (see section 6) automatically log technical data such as IP address, user agent, and request time. These logs are kept by the providers for security and operational purposes only and are not linked to your participant record by us.',
+                privacyData1: '<strong>Participation form:</strong> phone model (mandatory — research-relevant metadata), interface language, a technical timestamp, and the version of the privacy policy you consented to (proof of consent under Art. 7 (1) GDPR). We do <strong>not</strong> ask for your name, email address or phone number, and no participant ID is assigned.',
+                privacyData2: '<strong>Voicemails:</strong> the audio recordings you leave on 0421 989 690 30, plus call metadata provided by our PBX (caller phone number, call timestamp, call duration). When the recordings are processed, the caller phone number is replaced by a <strong>keyed hash</strong> (HMAC-SHA256 with a secret key) and the number itself is deleted. Without the secret key, the hash cannot be traced back to your number; it is used only to find your recordings if you request deletion.',
+                privacyData3: '<strong>Feedback (optional):</strong> the language used for the recordings, an ease-of-use rating, your free-text feedback, the interface language, and a submission timestamp.',
+                privacyData4: '<strong>Deletion requests:</strong> the phone number you enter in the deletion form is immediately converted into the same keyed hash on our database server. Only the hash, the time of the request and a request counter are stored, never the number itself.',
+                privacyData5: '<strong>Server logs:</strong> our hosting providers (see section 6) automatically log technical data such as IP address, user agent, and request time. These logs are kept by the providers for security and operational purposes only and are not linked by us to your participation data.',
                 privacyDataNote: 'Your voice may be considered personal data under Art. 4 No. 1 GDPR. We do not use the recordings for biometric identification within the meaning of Art. 9 (1) GDPR.',
                 privacyPurposeTitle: '4. Purposes and legal basis',
-                privacyPurpose1: '<strong>Research participation</strong> (matching voicemails to participants, analysing how room acoustics affect mobile phone audio, and sharing the anonymised recordings with research partners for the same purpose, see section 7): processing is based on your <strong>explicit consent</strong> under Art. 6 (1)(a) GDPR, given via the consent checkbox on the registration form.',
-                privacyPurpose2: '<strong>Operating and securing the website</strong> (including the deletion-request and feedback forms): processing is based on our <strong>legitimate interest</strong> in providing a functional, secure service under Art. 6 (1)(f) GDPR.',
+                privacyPurpose1: '<strong>Research participation</strong> (analysing how room acoustics affect mobile phone audio, and sharing the anonymised recordings with research partners for the same purpose, see section 7): processing is based on your <strong>explicit consent</strong> under Art. 6 (1)(a) GDPR, given via the consent checkbox on the participation form.',
+                privacyPurpose2: '<strong>Operating and securing the website</strong> (including the feedback and deletion forms): processing is based on our <strong>legitimate interest</strong> in providing a functional, secure service under Art. 6 (1)(f) GDPR. <strong>Handling withdrawal and deletion requests</strong>: Art. 6 (1)(c) in conjunction with Art. 17 GDPR.',
                 privacyPurpose3: '<strong>Scientific publication of aggregated, anonymised results</strong>: based on Art. 6 (1)(e) and Art. 89 GDPR (research in the public interest). Published results will not contain identifying personal data.',
                 privacyRetentionTitle: '5. Retention periods',
-                privacyRetention1: '<strong>Phone number:</strong> stored only temporarily. It is kept only until we have verified that you participated (i.e. that your voicemails have arrived and been assigned to your participant ID) and is deleted immediately afterwards, both from our registration database and from the call metadata.',
-                privacyRetention1b: '<strong>Email, phone model:</strong> deleted at the latest after the recordings linked to your participant ID have been processed and pseudonymised, typically within <strong>6 months</strong> of your registration.',
-                privacyRetention2: '<strong>Voicemail recordings:</strong> stored in pseudonymised form (linked only to the random participant ID, not to your phone number) for the duration of the research project and any required archiving period under good scientific practice (typically <strong>10 years</strong> after publication, per DFG guidelines).',
-                privacyRetention3: '<strong>Feedback entries:</strong> stored for the duration of the research project; the optional participant ID field can be left blank if you prefer.',
-                privacyRetention4: '<strong>Deletion-request flags:</strong> the affected participant row is hard-deleted automatically <strong>24 hours</strong> after the request is recorded.',
+                privacyRetention1: '<strong>Caller phone number (call metadata):</strong> stored in plain form only temporarily, until the recordings have been downloaded from our PBX and processed. It is then replaced by its keyed hash and deleted.',
+                privacyRetention1b: '<strong>Phone model, interface language, timestamp:</strong> stored as non-identifying technical metadata for the duration of the research project. The consent record (policy version and timestamp) is kept as proof of consent.',
+                privacyRetention2: '<strong>Voicemail recordings and hashed caller number:</strong> stored in pseudonymised form (linked only to the keyed hash, not to your phone number) for the duration of the research project and any required archiving period under good scientific practice (typically <strong>10 years</strong> after publication, per DFG guidelines). The hash is kept as long as the recordings, so that you can request deletion at any time.',
+                privacyRetention3: '<strong>Feedback entries:</strong> stored for the duration of the research project. They contain no information that identifies you unless you write it into the free-text field yourself.',
+                privacyRetention4: '<strong>Deletion requests:</strong> recordings matching the hash are deleted without undue delay, at the latest within one month (Art. 12 (3) GDPR).',
                 privacyProcessorsTitle: '6. Recipients / processors',
                 privacyProcessor1: '<strong>Supabase (database hosting):</strong> Supabase Inc., 970 Toa Payoh North #07-04, Singapore 318992, with EU data hosted by Amazon Web Services EMEA SARL in the AWS region <em>eu-north-1</em> (Stockholm, Sweden). A Data Processing Agreement under Art. 28 GDPR is in place.',
                 privacyProcessor2: '<strong>3CX (telephony / voicemail PBX):</strong> 3CX Ltd., operating the on-premises PBX that records and stores voicemails before we download them.',
-                privacyProcessor3: '<strong>jsDelivr (Content Delivery Network):</strong> this page loads the open-source library <em>intl-tel-input</em> from <code>cdn.jsdelivr.net</code> (Cloudflare / Fastly). Loading the script transmits your IP address and user-agent to that CDN. Legal basis: Art. 6 (1)(f) GDPR — legitimate interest in providing reliable phone-number validation. We are working on self-hosting this asset to remove this third-party request.',
                 privacySharingTitle: '7. Sharing with third parties',
-                privacySharing1: '<strong>Purpose limitation:</strong> your voicemail recordings are used exclusively in <strong>anonymised</strong> form, i.e. without your phone number, email address or any other information that identifies you, and solely to <strong>infer the acoustic properties</strong> of the rooms you recorded in (e.g. reverberation). The content of what you say is only used insofar as it describes the room. We do not use the recordings to identify speakers.',
+                privacySharing1: '<strong>Purpose limitation:</strong> your voicemail recordings are used exclusively in <strong>anonymised</strong> form, i.e. without your caller phone number, its hash or any other information that identifies you, and solely to <strong>infer the acoustic properties</strong> of the rooms you recorded in (e.g. reverberation). The content of what you say is only used insofar as it describes the room. We do not use the recordings to identify speakers.',
                 privacySharing2: '<strong>Sharing with research partners:</strong> we may share the anonymised recordings, together with non-identifying technical metadata such as the phone model, with third parties such as scientific research partners. Recipients are contractually bound to use the recordings <strong>only for the same purpose</strong>, the analysis of room acoustics. Any other use, in particular any attempt to identify the speakers, is not permitted.',
-                privacySharing3: '<strong>No other disclosure:</strong> your phone number and email address are never shared with third parties, apart from the processors listed in section 6, which act solely on our instructions. We do not sell your data.',
+                privacySharing3: '<strong>No other disclosure:</strong> your email address, the caller phone number and its hash are never shared with third parties, apart from the processors listed in section 6, which act solely on our instructions. We do not sell your data.',
                 privacyTransferTitle: '8. Transfers to third countries',
-                privacyTransfer: 'Personal data submitted via the registration, feedback, and deletion forms is stored in the EU (AWS eu-north-1, Stockholm). The CDN request mentioned above may be served from servers outside the EU; the CDN provider relies on the EU Standard Contractual Clauses for any such transfer.',
+                privacyTransfer: 'Personal data submitted via the participation, feedback, raffle and deletion forms is stored in the EU (AWS eu-north-1, Stockholm). This page does not load any resources from third-party servers.',
                 privacyRightsTitle: '9. Your rights',
                 privacyRightsIntro: 'Under the GDPR you have, in particular, the following rights:',
                 privacyRight1: '<strong>Right of access</strong> (Art. 15) — you can request a copy of the data we hold about you.',
                 privacyRight2: '<strong>Right to rectification</strong> (Art. 16) — you can request correction of inaccurate data.',
-                privacyRight3: '<strong>Right to erasure</strong> (Art. 17) — you can request deletion at any time, easily via the <a href="#deletionSection">data deletion form</a> on this page.',
+                privacyRight3: '<strong>Right to erasure</strong> (Art. 17) — you can request deletion of your recordings at any time via the <a href="#deletionSection">deletion form</a> on this page.',
                 privacyRight4: '<strong>Right to restriction of processing</strong> (Art. 18).',
                 privacyRight5: '<strong>Right to data portability</strong> (Art. 20) — receive your data in a structured, commonly used, machine-readable format.',
                 privacyRight6: '<strong>Right to object</strong> (Art. 21) to processing based on legitimate interest.',
@@ -917,7 +943,7 @@
                 privacyCookiesTitle: '11. Cookies and tracking',
                 privacyCookies: 'This website does <strong>not</strong> set any cookies, does <strong>not</strong> use web analytics, and does <strong>not</strong> contain advertising or social-media trackers.',
                 privacyChangesTitle: '12. Changes to this policy',
-                privacyChanges: 'We may update this policy if our processing practices change. The current version is dated <strong>27 April 2026</strong> (v1).',
+                privacyChanges: 'We may update this policy if our processing practices change. The current version is dated <strong>26 November 2026</strong> (v2).',
                 imprintHeading: '📜 Imprint (Impressum)',
                 imprintIntro: 'Information pursuant to § 5 DDG (formerly TMG) and § 18 (2) MStV:',
                 imprintProviderTitle: 'Provider',
@@ -949,15 +975,13 @@
                 exampleQuote: '"Hallo, hier spricht ein Teilnehmer. Ich bin im Badezimmer. Die Tür ist geschlossen. Das Badezimmer ist ungefähr 4 Meter breit und 3 Meter lang, die Deckenhöhe beträgt etwa 2,5 Meter. Der Boden ist gefliest, und die Wände sind bis etwa 2 Meter Höhe gefliest. Der Rest ist tapeziert. Es gibt ein Waschbecken, eine Toilette und eine Badewanne. Ich gehe gerade im Raum umher, jetzt stehe ich eher nahe an einer Wand - in der Nähe der Fliesen klingt es ziemlich hallig. Okay, ich habe gerade die Tür geöffnet - ich gehe wieder umher, und der Klang wirkt jetzt deutlich offener, weniger hallig. Über der Badewanne ist außerdem ein kleines Fenster; ich habe gerade auch das Fenster geöffnet, und jetzt klingt es noch trockener und ein bisschen Straßenlärm kommt herein. Hm, was kann ich noch sagen … das Wetter heute ist wirklich schön, sonnig und etwa 20 Grad. Wenn ich eine Sache auf eine einsame Insel mitnehmen könnte, wäre es wahrscheinlich ein gutes Buch. Ich glaube, das war ungefähr eine Minute, auf Wiederhören!"',
                 exampleQuote2: '"Hallo, hier spricht ein Teilnehmer. Ich bin in meinem Schlafzimmer. Die Tür ist geschlossen. Das Schlafzimmer ist ungefähr 4 mal 3,5 Meter groß, die Deckenhöhe beträgt etwa 2,6 Meter. Der Boden ist Parkett mit einem großen Teppich in der Mitte, die Wände sind verputzt und gestrichen, die Decke ist ebenfalls gestrichen. An der langen Wand steht ein Doppelbett, daneben zwei Nachttische mit Lampen, gegenüber dem Bett ein hoher Kleiderschrank, am Fenster ein kleiner Schreibtisch mit Stuhl, und das Fenster hat Vorhänge. An den Wänden hängen ein paar gerahmte Bilder und in der Ecke steht eine Zimmerpflanze. Ich gehe beim Sprechen im Raum umher.. in der Nähe des Kleiderschranks klingt es ein wenig wärmer, und auf dem Teppich wirkt der Klang etwas weicher als an der Wand. Okay, ich habe gerade das Fenster geöffnet... ich gehe wieder im Raum umher, und ehrlich gesagt, klingt es für mich eigentlich ziemlich gleich, vielleicht nur ein bisschen mehr Außengeräusche. Das war es für das Schlafzimmer, bis zum nächsten Mal, tschüss!"',
                 introP4: 'Alle Daten werden vertraulich behandelt und ausschließlich zu wissenschaftlichen Zwecken verwendet.',
-                introP5: 'Um zu starten, <strong>registrieren Sie sich unten</strong> mit Ihrer E-Mail-Adresse und der <strong>Telefonnummer, von der Sie anrufen werden</strong>. Ihre Teilnehmenden-ID und die detaillierten Anweisungen erscheinen <strong>sofort auf dieser Seite</strong> - Sie müssen nicht auf eine E-Mail oder SMS warten.',
+                introP5: 'Um zu starten, geben Sie unten Ihr <strong>Handymodell</strong> ein und klicken Sie auf <strong>Teilnehmen</strong>. Mehr brauchen wir nicht - keinen Namen, keine E-Mail-Adresse und keine Telefonnummer. Die detaillierten Anweisungen erscheinen <strong>sofort auf dieser Seite</strong>.',
                 participateTitle: 'Teilnehmen',
-                emailPlaceholder: 'guenther.jauch@beispiel.de',
-                phoneLabel: 'Telefonnummer',
-                phoneHint: '<strong>Wichtig:</strong> Bitte registrieren Sie sich mit der Telefonnummer, von der Sie auch anrufen werden.',
                 phoneModelLabel: 'Handymodell',
                 phoneModelPlaceholder: 'z. B. Samsung Galaxy A54',
-                registerButton: 'Registrieren',
-                msgText: 'Danke! Ihre Teilnehmer-ID ist',
+                phoneModelHint: 'Bitte geben Sie das Modell des Handys ein, von dem Sie anrufen werden.',
+                participateButton: 'Teilnehmen',
+                msgText: 'Vielen Dank für Ihre Teilnahme! Bitte lesen Sie die folgenden Anweisungen sorgfältig, bevor Sie anrufen.',
                 instructionsTitle: '📋 Anweisungen',
                 i1: 'Für <strong>jeden</strong> Raum rufen Sie unsere Voicemail-Nummer an und hinterlassen jeweils eine separate Voicemail (~1-2 Minuten).',
                 i2: '<strong>Sie entscheiden selbst, welche Räume Sie aufnehmen</strong>. Sie müssen nicht alle abdecken. Die folgende Liste ist nur ein Vorschlag; ergänzen Sie gern eigene Orte wie Dachboden, Abstellraum, Keller, Garage oder andere interessante Plätze:',
@@ -979,13 +1003,32 @@
                 i12: '<strong>Etwa 1-2 Minuten zu sprechen ist der Kern des Experiments.</strong> Wenn Ihre Raumbeschreibung die Zeit nicht füllt, sprechen Sie einfach über etwas anderes weiter. Das Wetter, Ihr Lieblingsgericht, oder lesen Sie einfach laut von dieser Seite vor. Wichtig ist, natürlich weiterzusprechen.',
                 i13: 'Sobald Sie alle obigen Punkte gelesen und verstanden haben, <strong>rufen Sie die folgende Nummer an</strong>, um Ihre erste Voicemail zu hinterlassen: <a class="phone" href="tel:+4942198969030">0421 989 690 30</a>Legen Sie danach auf, gehen Sie in den nächsten Raum und rufen Sie dieselbe Nummer erneut an.',
                 instructionsExamplesHint: '↑ Beispiele für Voicemails finden Sie in der Einführung am Anfang der Seite.',
+                surveyCodeLabel: 'Der Survey Code lautet:',
+                privacyRetention5: '<strong>Gewinnspiel-Einträge</strong> (E-Mail-Adresse, Telefon-Hash): werden gelöscht, sobald die Gewinner gezogen und benachrichtigt und die Gewinne übergeben wurden. Für eine frühere Löschung schreiben Sie an <a href="mailto:v.hock@marinom.de">v.hock@marinom.de</a>.',
+                privacyPurpose4: '<strong>Gewinnspiel</strong> (Überprüfung der Teilnahme anhand des Hashs, Ziehung und Benachrichtigung der Gewinner per E-Mail): Grundlage ist Art. 6 Abs. 1 lit. b DSGVO, da die Verarbeitung zur Durchführung des Gewinnspiels erforderlich ist, an dem Sie teilnehmen.',
+                privacyData6: '<strong>Gewinnspiel (optional):</strong> Ihre E-Mail-Adresse und ein Hash mit geheimem Schlüssel der Telefonnummer, von der Sie angerufen haben (die Nummer selbst wird nicht gespeichert), sowie der Zeitpunkt der Teilnahme und die Oberflächensprache.',
+                raffleError: 'Ihre Teilnahme am Gewinnspiel konnte gerade nicht übermittelt werden. Bitte versuchen Sie es gleich erneut.',
+                raffleAlready: 'ℹ️ Mit dieser Telefonnummer wurde bereits am Gewinnspiel teilgenommen.',
+                raffleSuccess: '🎉 Sie nehmen am Gewinnspiel teil. Im Gewinnfall benachrichtigen wir Sie per E-Mail. Viel Glück!',
+                raffleSubmit: 'Am Gewinnspiel teilnehmen',
+                rafflePrivacy: 'Ihre E-Mail-Adresse wird ausschließlich zur Durchführung des Gewinnspiels und zur Benachrichtigung der Gewinner verwendet und nach Abschluss des Gewinnspiels gelöscht. Details in unserer <a href="#privacySection">Datenschutzerklärung</a>.',
+                rafflePhoneHint: '<strong>Ihre Telefonnummer wird nicht gespeichert.</strong> Sie wird sofort in einen Hash mit geheimem Schlüssel umgewandelt, der nur dazu dient, Ihre Teilnahme Ihren Aufnahmen zuzuordnen.',
+                rafflePhoneLabel: 'Telefonnummer, von der Sie angerufen haben',
+                raffleEmailError: 'Bitte geben Sie eine gültige E-Mail-Adresse ein.',
+                raffleEmailPlaceholder: 'name@beispiel.de',
+                raffleEmailLabel: 'E-Mail-Adresse',
+                raffleIntro: 'Als Dankeschön können Sie an unserem Gewinnspiel teilnehmen. Geben Sie Ihre E-Mail-Adresse an, damit wir Sie im Gewinnfall benachrichtigen können, sowie die Telefonnummer, von der Sie angerufen haben, damit wir Ihre Teilnahme überprüfen können.',
+                raffleTitle: '🎁 Gewinnspiel',
+                surveyThanks: 'Vielen Dank für Ihre Teilnahme. Lösen Sie den folgenden Survey Code auf <a href="https://www.surveycircle.com" target="_blank" rel="noopener noreferrer">https://www.surveycircle.com</a> ein und erhalten Sie kostenlos Umfrageteilnehmer über SurveyCircle.',
+                finishedTooEarly: 'Bitte stellen Sie sicher, dass Sie insgesamt mindestens 5 Minuten Aufnahmen hinterlassen haben.',
+                finishedButton: 'Fertig',
                 faqTitle: 'FAQ',
                 faqQ1: 'Muss es beim Aufnehmen völlig still sein?',
                 faqA1: 'Nein - normale Hintergrundgeräusche sind völlig in Ordnung. Sie müssen nicht auf Stille warten. Sprechen Sie einfach deutlich, damit Ihre Stimme gut hörbar ist.',
                 faqQ2: 'Muss ich die exakten Maße meiner Räume kennen?',
                 faqA2: 'Nein. Eine grobe Schätzung reicht aus (z. B. „etwa 3 mal 4 Meter"). Sie müssen nichts ausmessen - beschreiben Sie einfach, was Sie sehen, so gut Sie können.',
                 faqQ3: 'Wie werden meine Daten behandelt?',
-                faqA3: 'Alle Aufnahmen werden anonym gespeichert und nur mit Ihrer Teilnehmer-ID verknüpft. Ihre Telefonnummer wird nur vorübergehend gespeichert, bis wir Ihre Teilnahme überprüft haben, und danach umgehend gelöscht. Ihre E-Mail-Adresse wird gelöscht, sobald Ihr Durchlauf verarbeitet wurde. Die Daten werden ausschließlich für wissenschaftliche Forschungszwecke verwendet. Wenn Sie möchten, dass wir Ihre Daten früher löschen, nutzen Sie bitte das <a href="#deletionSection">Formular zur Datenlöschung</a> am Ende dieser Seite.',
+                faqA3: 'Wir fragen nur nach Ihrem Handymodell - nicht nach Namen, E-Mail-Adresse oder Telefonnummer. Das Telefonnetz übermittelt bei jeder Voicemail Ihre Rufnummer; bei der Verarbeitung Ihrer Aufnahmen wird sie durch einen Hash mit geheimem Schlüssel ersetzt und die Nummer selbst gelöscht. Der Hash dient nur dazu, Ihre Aufnahmen auf Wunsch zu finden und zu löschen. Die Daten werden ausschließlich für wissenschaftliche Forschungszwecke verwendet. Für einen Widerruf nutzen Sie bitte das <a href="#deletionSection">Löschformular</a> am Ende dieser Seite.',
                 faqQ4: 'Wie lange dauert der gesamte Ablauf?',
                 faqA4: 'Jede Voicemail sollte etwa 1-2 Minuten dauern. Je nachdem, wie viele Räume Sie aufnehmen, beträgt der gesamte Zeitaufwand ungefähr 5 bis 10 Minuten.',
                 faqQ5: 'Was ist, wenn ich etwas vergessen habe?',
@@ -996,8 +1039,6 @@
                 faqA7: 'Englisch und Deutsch sind beide in Ordnung.',
                 feedbackTitle: '📝 Feedback',
                 feedbackIntro: 'Wenn Sie Feedback zum Ablauf haben, teilen Sie es uns bitte hier mit. Das hilft uns, die Verständlichkeit der Aufgabe und die Qualität der Studie zu verbessern.',
-                feedbackParticipantIdLabel: 'Teilnehmer-ID (optional)',
-                feedbackParticipantIdPlaceholder: 'z. B. 1234',
                 feedbackLanguageLabel: 'Für die Voicemail verwendete Sprache',
                 feedbackLanguageEnglish: 'Englisch',
                 feedbackLanguageGerman: 'Deutsch',
@@ -1011,34 +1052,23 @@
                 feedbackSubmit: 'Feedback senden',
                 feedbackSuccess: 'Vielen Dank für Ihr Feedback!',
                 feedbackError: 'Feedback konnte gerade nicht gesendet werden. Bitte versuchen Sie es gleich erneut.',
-                registerError: 'Die Registrierung konnte gerade nicht abgeschlossen werden. Bitte versuchen Sie es gleich erneut.',
-                phoneError: 'Bitte geben Sie eine gültige Telefonnummer ein.',
-                phoneErrorInvalidCountryCode: 'Ungültige Ländervorwahl - bitte wählen Sie Ihr Land aus der Liste aus.',
-                phoneErrorTooShort: 'Die Telefonnummer ist zu kurz.',
-                phoneErrorTooLong: 'Die Telefonnummer ist zu lang.',
-                phoneErrorNotANumber: 'Bitte geben Sie nur Ziffern ein.',
-                warningDuplicate: '⚠️ Diese Telefonnummer wurde bereits in unserer Studie registriert. Sie können mit Ihrer bestehenden Teilnehmer-ID weitere Beiträge leisten: {id}',
-                deletionTitle: '🗑️ Datenlöschung beantragen',
-                deletionIntro: 'Wenn Sie möchten, dass wir die zu Ihrer Teilnahme gehörenden Daten löschen, geben Sie bitte die Telefonnummer ein, mit der Sie sich registriert haben, und klicken Sie auf die Schaltfläche unten. Wir markieren Ihren Datensatz dann zur Löschung.',
-                deletionPhoneLabel: 'Telefonnummer, mit der Sie sich registriert haben',
-                deletionSubmit: 'Löschung beantragen',
-                deletionSuccess: '✅ Ihr Löschantrag für die Teilnehmer-ID <strong>{id}</strong> wurde erfasst. Wir werden Ihre Daten in Kürze entfernen.',
-                deletionAlready: 'ℹ️ Für die Teilnehmer-ID <strong>{id}</strong> wurde bereits ein Löschantrag erfasst. Ihre Daten werden in Kürze entfernt.',
-                deletionNotFound: '⚠️ Für diese Telefonnummer konnten wir keine Registrierung finden. Bitte überprüfen Sie die Nummer, mit der Sie sich registriert haben.',
+                registerError: 'Ihre Teilnahme konnte gerade nicht erfasst werden. Bitte versuchen Sie es gleich erneut.',
+                deletionTitle: '🗑️ Einwilligung widerrufen / Löschung beantragen',
+                deletionIntro: 'Um Ihre Einwilligung zu widerrufen und Ihre Aufnahmen löschen zu lassen, geben Sie die Telefonnummer ein, von der Sie angerufen haben. Die Nummer selbst wird nie gespeichert: Sie wird sofort in einen Hash mit geheimem Schlüssel umgewandelt, den wir mit den gehashten Rufnummern bei den Aufnahmen abgleichen.',
+                phoneError: 'Bitte geben Sie eine gültige Telefonnummer ein (z. B. 0171 1234567 oder +49 171 1234567).',
                 deletionError: 'Der Löschantrag konnte derzeit leider nicht übermittelt werden. Bitte versuchen Sie es in Kürze erneut.',
-                deletionConfirm: 'Möchten Sie wirklich die Löschung aller mit dieser Telefonnummer verknüpften Daten beantragen? Dies kann nicht rückgängig gemacht werden.',
-                deletionOr: '— oder —',
-                deletionParticipantIdLabel: 'Teilnehmer-ID (falls vorhanden)',
-                deletionParticipantIdPlaceholder: 'z. B. P-1234',
-                deletionMissingInput: 'Bitte geben Sie entweder eine Telefonnummer oder eine Teilnehmer-ID ein.',
-                deletionRateLimited: '⚠️ Zu viele Löschversuche für Teilnehmer-ID {id}. Falls dies ein Fehler ist, kontaktieren Sie uns bitte direkt.',
+                deletionAlready: 'ℹ️ Für diese Telefonnummer wurde bereits ein Löschantrag erfasst. Die Aufnahmen werden in Kürze gelöscht.',
+                deletionSuccess: '✅ Ihr Löschantrag wurde erfasst. Alle Aufnahmen, die von dieser Nummer aus gemacht wurden, werden unverzüglich, spätestens innerhalb eines Monats gelöscht.',
+                deletionConfirm: 'Möchten Sie wirklich die Löschung aller Aufnahmen beantragen, die von dieser Telefonnummer aus gemacht wurden? Dies kann nicht rückgängig gemacht werden.',
+                deletionSubmit: 'Löschung beantragen',
+                deletionPhonePlaceholder: 'z. B. 0171 1234567',
+                deletionPhoneLabel: 'Telefonnummer, von der Sie angerufen haben',
                 footerOrg: 'marinom GmbH',
                 footerImprint: 'Impressum',
                 footerPrivacy: 'Datenschutzerklärung',
                 footerDeletion: 'Datenlöschung beantragen',
-                privacyPreForm: 'Bitte lesen Sie vor der Registrierung unsere <a href="#privacySection">Datenschutzerklärung</a>. Die von Ihnen übermittelten Daten werden ausschließlich für die dort beschriebenen Forschungszwecke verarbeitet. Sie können Ihre Einwilligung jederzeit widerrufen, indem Sie das <a href="#deletionSection">Formular zur Datenlöschung</a> weiter unten verwenden.',
-                emailLabel: 'E-Mail <span class="label-optional">(optional)</span>',
-                consentLabel: 'Ich habe die <a href="#privacySection">Datenschutzerklärung</a> gelesen und willige in die Verarbeitung meiner Telefonnummer, meines Telefonmodells, meiner Voicemail-Aufnahmen sowie (sofern angegeben) meiner E-Mail-Adresse zu den dort beschriebenen Forschungszwecken ein, einschließlich der Weitergabe meiner anonymisierten Aufnahmen an Forschungspartner, die diese ausschließlich zu demselben Zweck verwenden dürfen. Mir ist bekannt, dass ich diese Einwilligung jederzeit ohne Angabe von Gründen widerrufen kann.',
+                privacyPreForm: 'Bitte lesen Sie vor der Teilnahme unsere <a href="#privacySection">Datenschutzerklärung</a>. Die von Ihnen übermittelten Daten werden ausschließlich für die dort beschriebenen Forschungszwecke verarbeitet. Sie können Ihre Einwilligung jederzeit über das <a href="#deletionSection">Löschformular</a> weiter unten widerrufen.',
+                consentLabel: 'Ich habe die <a href="#privacySection">Datenschutzerklärung</a> gelesen und willige in die Verarbeitung meines Handymodells, meiner Voicemail-Aufnahmen und eines Hashs meiner Rufnummer zu den dort beschriebenen Forschungszwecken ein, einschließlich der Weitergabe meiner anonymisierten Aufnahmen an Forschungspartner, die diese ausschließlich zu demselben Zweck verwenden dürfen. Mir ist bekannt, dass ich diese Einwilligung jederzeit ohne Angabe von Gründen widerrufen kann.',
                 consentRequired: 'Bitte bestätigen Sie, dass Sie die Datenschutzerklärung gelesen und in die Verarbeitung eingewilligt haben.',
                 privacyHeading: '🔒 Datenschutzerklärung (gem. Art. 13 DSGVO)',
                 privacyControllerTitle: '1. Verantwortlicher',
@@ -1047,37 +1077,36 @@
                 privacyDpoTitle: '2. Datenschutzbeauftragte/r',
                 privacyDpo: 'Thomas Böttner, marinom GmbH, Wilhelm-Herbst-Straße 5, 28359 Bremen-Horn-Lehe, t.boettner@marinom.de',
                 privacyDataTitle: '3. Welche Daten wir erheben und verarbeiten',
-                privacyData1: '<strong>Registrierung:</strong> Telefonnummer (Pflicht — wird <strong>nur vorübergehend</strong> gespeichert und ausschließlich verwendet, um Ihre Teilnahme durch Zuordnung eingehender Voicemails zu Ihrer Teilnehmer-ID zu überprüfen), Telefonmodell (Pflicht — forschungsrelevantes Metadatum), E-Mail-Adresse (optional), Oberflächensprache, technischer Zeitstempel der Registrierung sowie eine zufällig generierte Teilnehmer-ID.',
-                privacyData2: '<strong>Voicemails:</strong> die Audioaufnahmen, die Sie unter 0421 989 690 30 hinterlassen, sowie die von unserer Telefonanlage bereitgestellten Anrufmetadaten (Anrufer-Telefonnummer, Anrufzeit, Anrufdauer). Auch die Anrufer-Telefonnummer wird nur vorübergehend für diese Überprüfung gespeichert.',
-                privacyData3: '<strong>Feedback (optional):</strong> die von Ihnen eingegebene Teilnehmer-ID, die Sprache der Aufnahmen, eine Bewertung der Benutzerfreundlichkeit, Ihr Freitext-Feedback, die Oberflächensprache sowie ein Übermittlungs-Zeitstempel.',
-                privacyData4: '<strong>Löschanträge:</strong> die von Ihnen übermittelte Telefonnummer und/oder Teilnehmer-ID, der Zeitstempel des Antrags sowie ein Zähler zur Missbrauchsprävention.',
-                privacyData5: '<strong>Server-Logs:</strong> unsere Hosting-Anbieter (siehe Abschnitt 6) protokollieren automatisch technische Daten wie IP-Adresse, User-Agent und Anfragezeit. Diese Logs werden ausschließlich aus Sicherheits- und Betriebsgründen bei den Anbietern aufbewahrt und werden von uns nicht mit Ihrem Teilnehmer-Datensatz verknüpft.',
+                privacyData1: '<strong>Teilnahmeformular:</strong> Handymodell (Pflicht — forschungsrelevantes Metadatum), Oberflächensprache, ein technischer Zeitstempel sowie die Version der Datenschutzerklärung, in die Sie eingewilligt haben (Nachweis der Einwilligung nach Art. 7 Abs. 1 DSGVO). Wir fragen <strong>nicht</strong> nach Ihrem Namen, Ihrer E-Mail-Adresse oder Telefonnummer, und es wird keine Teilnehmer-ID vergeben.',
+                privacyData2: '<strong>Voicemails:</strong> die Audioaufnahmen, die Sie unter 0421 989 690 30 hinterlassen, sowie die von unserer Telefonanlage bereitgestellten Anrufmetadaten (Anrufer-Telefonnummer, Anrufzeit, Anrufdauer). Bei der Verarbeitung der Aufnahmen wird die Anrufer-Telefonnummer durch einen <strong>Hash mit geheimem Schlüssel</strong> (HMAC-SHA256) ersetzt und die Nummer selbst gelöscht. Ohne den geheimen Schlüssel lässt sich der Hash nicht auf Ihre Nummer zurückführen; er dient nur dazu, Ihre Aufnahmen bei einem Löschantrag zu finden.',
+                privacyData3: '<strong>Feedback (optional):</strong> die Sprache der Aufnahmen, eine Bewertung der Benutzerfreundlichkeit, Ihr Freitext-Feedback, die Oberflächensprache sowie ein Übermittlungs-Zeitstempel.',
+                privacyData4: '<strong>Löschanträge:</strong> die Telefonnummer, die Sie in das Löschformular eingeben, wird auf unserem Datenbankserver sofort in denselben Hash mit geheimem Schlüssel umgewandelt. Gespeichert werden nur der Hash, der Zeitpunkt des Antrags und ein Antragszähler, nie die Nummer selbst.',
+                privacyData5: '<strong>Server-Logs:</strong> unsere Hosting-Anbieter (siehe Abschnitt 6) protokollieren automatisch technische Daten wie IP-Adresse, User-Agent und Anfragezeit. Diese Logs werden ausschließlich aus Sicherheits- und Betriebsgründen bei den Anbietern aufbewahrt und werden von uns nicht mit Ihren Teilnahmedaten verknüpft.',
                 privacyDataNote: 'Ihre Stimme kann personenbezogene Daten im Sinne von Art. 4 Nr. 1 DSGVO darstellen. Wir verwenden die Aufnahmen nicht zur biometrischen Identifizierung im Sinne von Art. 9 Abs. 1 DSGVO.',
                 privacyPurposeTitle: '4. Zwecke und Rechtsgrundlagen',
-                privacyPurpose1: '<strong>Forschungsteilnahme</strong> (Zuordnung von Voicemails zu Teilnehmenden, Analyse, wie sich Raumakustik auf Mobiltelefon-Audio auswirkt, sowie Weitergabe der anonymisierten Aufnahmen an Forschungspartner zu demselben Zweck, siehe Abschnitt 7): die Verarbeitung erfolgt auf Grundlage Ihrer <strong>ausdrücklichen Einwilligung</strong> nach Art. 6 Abs. 1 lit. a DSGVO, die über das Einwilligungskästchen im Registrierungsformular erteilt wird.',
-                privacyPurpose2: '<strong>Betrieb und Absicherung der Website</strong> (einschließlich des Lösch- und Feedback-Formulars): die Verarbeitung erfolgt auf Grundlage unseres <strong>berechtigten Interesses</strong> an einem funktionsfähigen, sicheren Dienst nach Art. 6 Abs. 1 lit. f DSGVO.',
+                privacyPurpose1: '<strong>Forschungsteilnahme</strong> (Analyse, wie sich Raumakustik auf Mobiltelefon-Audio auswirkt, sowie Weitergabe der anonymisierten Aufnahmen an Forschungspartner zu demselben Zweck, siehe Abschnitt 7): die Verarbeitung erfolgt auf Grundlage Ihrer <strong>ausdrücklichen Einwilligung</strong> nach Art. 6 Abs. 1 lit. a DSGVO, die über das Einwilligungskästchen im Teilnahmeformular erteilt wird.',
+                privacyPurpose2: '<strong>Betrieb und Absicherung der Website</strong> (einschließlich des Feedback- und Löschformulars): die Verarbeitung erfolgt auf Grundlage unseres <strong>berechtigten Interesses</strong> an einem funktionsfähigen, sicheren Dienst nach Art. 6 Abs. 1 lit. f DSGVO. <strong>Bearbeitung von Widerrufs- und Löschanfragen</strong>: Art. 6 Abs. 1 lit. c i. V. m. Art. 17 DSGVO.',
                 privacyPurpose3: '<strong>Wissenschaftliche Veröffentlichung aggregierter, anonymisierter Ergebnisse</strong>: Grundlage sind Art. 6 Abs. 1 lit. e i. V. m. Art. 89 DSGVO (Forschung im öffentlichen Interesse). Veröffentlichte Ergebnisse enthalten keine identifizierenden personenbezogenen Daten.',
                 privacyRetentionTitle: '5. Speicherdauer',
-                privacyRetention1: '<strong>Telefonnummer:</strong> wird nur vorübergehend gespeichert. Sie wird nur so lange aufbewahrt, bis wir Ihre Teilnahme überprüft haben (d. h. Ihre Voicemails eingegangen und Ihrer Teilnehmer-ID zugeordnet sind), und danach umgehend gelöscht – sowohl aus unserer Registrierungsdatenbank als auch aus den Anrufmetadaten.',
-                privacyRetention1b: '<strong>E-Mail, Telefonmodell:</strong> spätestens nach Verarbeitung und Pseudonymisierung der mit Ihrer Teilnehmer-ID verknüpften Aufnahmen gelöscht, in der Regel innerhalb von <strong>6 Monaten</strong> nach Ihrer Registrierung.',
-                privacyRetention2: '<strong>Voicemail-Aufnahmen:</strong> in pseudonymisierter Form (nur mit der zufälligen Teilnehmer-ID verknüpft, nicht mit Ihrer Telefonnummer) für die Dauer des Forschungsprojekts und etwaiger Aufbewahrungsfristen nach den Regeln guter wissenschaftlicher Praxis gespeichert (in der Regel <strong>10 Jahre</strong> nach Veröffentlichung gemäß DFG-Leitlinien).',
-                privacyRetention3: '<strong>Feedback-Einträge:</strong> für die Dauer des Forschungsprojekts gespeichert; das optionale Feld „Teilnehmer-ID“ kann auf Wunsch leer bleiben.',
-                privacyRetention4: '<strong>Löschantrags-Markierungen:</strong> der betroffene Teilnehmer-Datensatz wird automatisch <strong>24 Stunden</strong> nach Erfassung des Antrags vollständig gelöscht.',
+                privacyRetention1: '<strong>Anrufer-Telefonnummer (Anrufmetadaten):</strong> wird nur vorübergehend im Klartext gespeichert, bis die Aufnahmen aus unserer Telefonanlage heruntergeladen und verarbeitet wurden. Danach wird sie durch ihren Hash ersetzt und gelöscht.',
+                privacyRetention1b: '<strong>Handymodell, Oberflächensprache, Zeitstempel:</strong> werden als nicht identifizierende technische Metadaten für die Dauer des Forschungsprojekts gespeichert. Der Einwilligungsnachweis (Version der Erklärung und Zeitstempel) wird als Nachweis der Einwilligung aufbewahrt.',
+                privacyRetention2: '<strong>Voicemail-Aufnahmen und gehashte Rufnummer:</strong> in pseudonymisierter Form (nur mit dem Hash verknüpft, nicht mit Ihrer Telefonnummer) für die Dauer des Forschungsprojekts und etwaiger Aufbewahrungsfristen nach den Regeln guter wissenschaftlicher Praxis gespeichert (in der Regel <strong>10 Jahre</strong> nach Veröffentlichung gemäß DFG-Leitlinien). Der Hash wird so lange aufbewahrt wie die Aufnahmen, damit Sie jederzeit die Löschung beantragen können.',
+                privacyRetention3: '<strong>Feedback-Einträge:</strong> für die Dauer des Forschungsprojekts gespeichert. Sie enthalten keine Angaben, die Sie identifizieren, sofern Sie diese nicht selbst in das Freitextfeld schreiben.',
+                privacyRetention4: '<strong>Löschanträge:</strong> Aufnahmen mit passendem Hash werden unverzüglich, spätestens innerhalb eines Monats gelöscht (Art. 12 Abs. 3 DSGVO).',
                 privacyProcessorsTitle: '6. Empfänger / Auftragsverarbeiter',
                 privacyProcessor1: '<strong>Supabase (Datenbank-Hosting):</strong> Supabase Inc., 970 Toa Payoh North #07-04, Singapur 318992; EU-Daten werden bei Amazon Web Services EMEA SARL in der AWS-Region <em>eu-north-1</em> (Stockholm, Schweden) gespeichert. Eine Auftragsverarbeitungsvereinbarung nach Art. 28 DSGVO liegt vor.',
                 privacyProcessor2: '<strong>3CX (Telefonie / Voicemail-Anlage):</strong> 3CX Ltd., betreibt die On-Premises-Telefonanlage, die Voicemails aufzeichnet und speichert, bevor wir sie herunterladen.',
-                privacyProcessor3: '<strong>jsDelivr (Content Delivery Network):</strong> diese Seite lädt die Open-Source-Bibliothek <em>intl-tel-input</em> von <code>cdn.jsdelivr.net</code> (Cloudflare / Fastly). Beim Laden des Skripts werden Ihre IP-Adresse und Ihr User-Agent an dieses CDN übermittelt. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO — berechtigtes Interesse an einer zuverlässigen Telefonnummern-Validierung. Wir arbeiten an einer Selbst-Auslieferung, um diese Drittanbieter-Anfrage zu entfernen.',
                 privacySharingTitle: '7. Weitergabe an Dritte',
-                privacySharing1: '<strong>Zweckbindung:</strong> Ihre Voicemail-Aufnahmen werden ausschließlich in <strong>anonymisierter</strong> Form verwendet, d. h. ohne Ihre Telefonnummer, E-Mail-Adresse oder sonstige Angaben, die Sie identifizieren, und allein zur <strong>Bestimmung der akustischen Eigenschaften</strong> der Räume, in denen Sie aufgenommen haben (z. B. Nachhall). Der Inhalt Ihrer Aussagen wird nur verwendet, soweit er den Raum beschreibt. Wir nutzen die Aufnahmen nicht zur Identifizierung von Sprechenden.',
+                privacySharing1: '<strong>Zweckbindung:</strong> Ihre Voicemail-Aufnahmen werden ausschließlich in <strong>anonymisierter</strong> Form verwendet, d. h. ohne Ihre Anrufer-Telefonnummer, deren Hash oder sonstige Angaben, die Sie identifizieren, und allein zur <strong>Bestimmung der akustischen Eigenschaften</strong> der Räume, in denen Sie aufgenommen haben (z. B. Nachhall). Der Inhalt Ihrer Aussagen wird nur verwendet, soweit er den Raum beschreibt. Wir nutzen die Aufnahmen nicht zur Identifizierung von Sprechenden.',
                 privacySharing2: '<strong>Weitergabe an Forschungspartner:</strong> Wir können die anonymisierten Aufnahmen, zusammen mit nicht identifizierenden technischen Metadaten wie dem Telefonmodell, an Dritte wie z. B. wissenschaftliche Kooperationspartner weitergeben. Die Empfänger sind vertraglich verpflichtet, die Aufnahmen <strong>ausschließlich zu demselben Zweck</strong> zu verwenden, nämlich zur Analyse von Raumakustik. Jede andere Nutzung, insbesondere der Versuch, Sprechende zu identifizieren, ist untersagt.',
-                privacySharing3: '<strong>Keine sonstige Weitergabe:</strong> Ihre Telefonnummer und E-Mail-Adresse werden nicht an Dritte weitergegeben, abgesehen von den in Abschnitt 6 genannten Auftragsverarbeitern, die ausschließlich nach unserer Weisung handeln. Wir verkaufen Ihre Daten nicht.',
+                privacySharing3: '<strong>Keine sonstige Weitergabe:</strong> Ihre E-Mail-Adresse, die Anrufer-Telefonnummer und deren Hash werden nicht an Dritte weitergegeben, abgesehen von den in Abschnitt 6 genannten Auftragsverarbeitern, die ausschließlich nach unserer Weisung handeln. Wir verkaufen Ihre Daten nicht.',
                 privacyTransferTitle: '8. Drittlandtransfers',
-                privacyTransfer: 'Personenbezogene Daten, die über das Registrierungs-, Feedback- und Löschformular übermittelt werden, werden in der EU gespeichert (AWS eu-north-1, Stockholm). Die oben genannte CDN-Anfrage kann von Servern außerhalb der EU bedient werden; der CDN-Anbieter stützt sich für solche Transfers auf die EU-Standardvertragsklauseln.',
+                privacyTransfer: 'Personenbezogene Daten, die über das Teilnahme-, Feedback-, Gewinnspiel- und Löschformular übermittelt werden, werden in der EU gespeichert (AWS eu-north-1, Stockholm). Diese Seite lädt keine Ressourcen von Servern Dritter.',
                 privacyRightsTitle: '9. Ihre Rechte',
                 privacyRightsIntro: 'Nach der DSGVO stehen Ihnen insbesondere folgende Rechte zu:',
                 privacyRight1: '<strong>Auskunftsrecht</strong> (Art. 15) — Sie können eine Kopie der zu Ihrer Person gespeicherten Daten anfordern.',
                 privacyRight2: '<strong>Recht auf Berichtigung</strong> (Art. 16) — Sie können die Berichtigung unrichtiger Daten verlangen.',
-                privacyRight3: '<strong>Recht auf Löschung</strong> (Art. 17) — Sie können jederzeit die Löschung verlangen, einfach über das <a href="#deletionSection">Formular zur Datenlöschung</a> auf dieser Seite.',
+                privacyRight3: '<strong>Recht auf Löschung</strong> (Art. 17) — Sie können jederzeit über das <a href="#deletionSection">Löschformular</a> auf dieser Seite die Löschung Ihrer Aufnahmen verlangen.',
                 privacyRight4: '<strong>Recht auf Einschränkung der Verarbeitung</strong> (Art. 18).',
                 privacyRight5: '<strong>Recht auf Datenübertragbarkeit</strong> (Art. 20) — Sie erhalten Ihre Daten in einem strukturierten, gängigen, maschinenlesbaren Format.',
                 privacyRight6: '<strong>Widerspruchsrecht</strong> (Art. 21) gegen eine auf berechtigtem Interesse beruhende Verarbeitung.',
@@ -1088,7 +1117,7 @@
                 privacyCookiesTitle: '11. Cookies und Tracking',
                 privacyCookies: 'Diese Website setzt <strong>keine</strong> Cookies, verwendet <strong>keine</strong> Webanalyse und enthält <strong>keine</strong> Werbe- oder Social-Media-Tracker.',
                 privacyChangesTitle: '12. Änderungen dieser Erklärung',
-                privacyChanges: 'Bei Änderungen unserer Verarbeitungspraxis kann diese Erklärung aktualisiert werden. Stand der aktuellen Fassung: <strong>27. April 2026</strong> (v1).',
+                privacyChanges: 'Bei Änderungen unserer Verarbeitungspraxis kann diese Erklärung aktualisiert werden. Stand der aktuellen Fassung: <strong>26. November 2026</strong> (v2).',
                 imprintHeading: '📜 Impressum',
                 imprintIntro: 'Angaben gemäß § 5 DDG (vormals TMG) und § 18 Abs. 2 MStV:',
                 imprintProviderTitle: 'Anbieter',
@@ -1136,72 +1165,13 @@
             });
         });
 
-        // Initialise the international phone input (intl-tel-input).
-        // - Locked to Germany only (no country dropdown)
-        // - Validation and E.164 formatting via libphonenumber (bundled in `intlTelInputWithUtils`)
-        // - Accepts numbers with or without leading 0 (national format)
-        // If the CDN script fails to load, fall back to the raw <input> + a basic regex check
-        // so the rest of the page stays functional.
-        const phoneInputEl = document.getElementById('phone');
-        const deletionPhoneEl = document.getElementById('deletionPhone');
-        const ITI_LOADED = typeof window.intlTelInput === 'function';
-        const ITI_OPTS = {
-            initialCountry: 'de',
-            onlyCountries: ['de'],
-            allowDropdown: false,
-            separateDialCode: true,
-            nationalMode: true,
-            autoPlaceholder: 'polite',
-            formatAsYouType: true
-        };
-        const iti = ITI_LOADED ? window.intlTelInput(phoneInputEl, ITI_OPTS) : null;
-        const deletionIti = ITI_LOADED ? window.intlTelInput(deletionPhoneEl, ITI_OPTS) : null;
-
-        // Lightweight fallback validator if intl-tel-input could not load.
-        // German mobile/landline numbers in E.164 are between 10 and 15 digits including +49.
-        const FALLBACK_DE_PHONE_RE = /^\+?49[1-9]\d{6,12}$/;
-        function fallbackValidate(rawValue) {
-            const digits = rawValue.replace(/[^0-9+]/g, '').replace(/^00/, '+');
-            const normalized = digits.startsWith('+')
-                ? digits
-                : (digits.startsWith('49') ? '+' + digits
-                    : '+49' + digits.replace(/^0/, ''));
-            return FALLBACK_DE_PHONE_RE.test(normalized) ? normalized : null;
-        }
-        function readPhone(inputEl, itiInstance, errorEl, dict) {
-            const raw = inputEl.value.trim();
-            if (itiInstance) {
-                if (!raw || !itiInstance.isValidNumber()) {
-                    const errCode = itiInstance.getValidationError();
-                    const errMap = {
-                        1: dict.phoneErrorInvalidCountryCode,
-                        2: dict.phoneErrorTooShort,
-                        3: dict.phoneErrorTooLong,
-                        4: dict.phoneErrorNotANumber
-                    };
-                    errorEl.textContent = errMap[errCode] || dict.phoneError;
-                    errorEl.style.display = 'block';
-                    inputEl.focus();
-                    return null;
-                }
-                errorEl.style.display = 'none';
-                return itiInstance.getNumber();
-            }
-            const normalized = fallbackValidate(raw);
-            if (!normalized) {
-                errorEl.textContent = dict.phoneError;
-                errorEl.style.display = 'block';
-                inputEl.focus();
-                return null;
-            }
-            errorEl.style.display = 'none';
-            return normalized;
-        }
-
         // Supabase configuration (publishable key is safe to embed in the browser)
         const SUPABASE_URL = 'https://tbfnxnfnsabajfkkkxvg.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_JbK3ufdlaTxjczSvYL0ZQw_fkSsEJpT';
         const SUPABASE_FEEDBACK_ENDPOINT = `${SUPABASE_URL}/rest/v1/feedback`;
+        const SUPABASE_PARTICIPATIONS_ENDPOINT = `${SUPABASE_URL}/rest/v1/participations`;
+        // Version of the privacy policy / consent text shown on this page (Art. 7 (1) GDPR proof of consent).
+        const CONSENT_VERSION = 'v2-2026-11-26';
 
         function supabaseHeaders() {
             return {
@@ -1223,57 +1193,68 @@
             }
         }
 
-        document.getElementById('contactForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
+        // SurveyCircle reward code, shown once the participant clicks "Finished".
+        const SURVEY_CODE = 'XXXX-XXXX-XXXX-XXXX';
+        // Clicking "Finished" sooner than this after "Participate" shows a warning instead of the code.
+        const MIN_FINISH_DELAY_MS = 60 * 1000;
+        let participatedAt = null;
 
-            const email = document.getElementById('email').value.trim();
-            const phoneModel = document.getElementById('phoneModel').value.trim();
+        document.getElementById('finishedBtn').addEventListener('click', function() {
+            const warningEl = document.getElementById('finishedWarning');
+            const surveyBox = document.getElementById('surveyCodeBox');
 
-            const msgEl = document.getElementById('msg');
-            const lang = document.documentElement.lang || 'en';
-            const dict = translations[lang] || translations.en;
-            const phoneErrorEl = document.getElementById('phoneError');
-
-            // Phone validation via intl-tel-input + libphonenumber (or fallback regex).
-            const phone = readPhone(phoneInputEl, iti, phoneErrorEl, dict);
-            if (!phone) return;
-
-            // GDPR consent validation
-            const consentBox = document.getElementById('consentBox');
-            const consentError = document.getElementById('consentError');
-            if (consentError) {
-                consentError.style.display = 'none';
-                consentError.textContent = '';
-            }
-            if (!consentBox || !consentBox.checked) {
-                if (consentError) {
-                    consentError.textContent = dict.consentRequired || 'Please confirm consent.';
-                    consentError.style.display = 'block';
-                }
-                if (consentBox && typeof consentBox.focus === 'function') consentBox.focus();
+            if (participatedAt === null || Date.now() - participatedAt < MIN_FINISH_DELAY_MS) {
+                warningEl.style.display = 'block';
                 return;
             }
 
-            // Reset any previous error styling on the message element
-            msgEl.classList.remove('error');
-            msgEl.style.display = 'none';
-            msgEl.removeAttribute('data-i18n-locked');
+            warningEl.style.display = 'none';
+            document.getElementById('surveyCode').textContent = SURVEY_CODE;
+            surveyBox.style.display = 'block';
+            document.getElementById('raffleForm').style.display = 'block';
+            this.style.display = 'none';
+        });
+
+        document.getElementById('raffleForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const lang = document.documentElement.lang || 'en';
+            const dict = translations[lang] || translations.en;
+            const emailEl = document.getElementById('raffleEmail');
+            const emailErrorEl = document.getElementById('raffleEmailError');
+            const phoneEl = document.getElementById('rafflePhone');
+            const phoneErrorEl = document.getElementById('rafflePhoneError');
+            const raffleMsg = document.getElementById('raffleMsg');
+
+            emailErrorEl.style.display = 'none';
+            phoneErrorEl.style.display = 'none';
+            raffleMsg.classList.remove('error');
+            raffleMsg.style.display = 'none';
+
+            const email = emailEl.value.trim();
+            if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+                emailErrorEl.textContent = dict.raffleEmailError;
+                emailErrorEl.style.display = 'block';
+                emailEl.focus();
+                return;
+            }
+            const phone = normalizePhone(phoneEl.value.trim());
+            if (!phone) {
+                phoneErrorEl.textContent = dict.phoneError;
+                phoneErrorEl.style.display = 'block';
+                phoneEl.focus();
+                return;
+            }
 
             const submitBtn = this.querySelector('button[type="submit"]');
             if (submitBtn) submitBtn.disabled = true;
 
             try {
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/register_or_get_participant`, {
+                // The number is hashed server-side (keyed HMAC) and never stored in plain form.
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/enter_raffle`, {
                     method: 'POST',
                     headers: supabaseHeaders(),
-                    body: JSON.stringify({
-                        p_email: email,
-                        p_phone: phone,
-                        p_phone_model: phoneModel,
-                        p_ui_language: lang,
-                        p_registered_at: new Date().toISOString(),
-                        p_consent_version: 'v1-2026-04-27'
-                    })
+                    body: JSON.stringify({ p_email: email, p_phone: phone, p_ui_language: lang })
                 });
 
                 if (!response.ok) {
@@ -1283,24 +1264,90 @@
 
                 const result = await response.json();
 
-                if (result.status === 'existing') {
-                    const warnEl = document.getElementById('duplicateWarning');
-                    warnEl.innerHTML = dict.warningDuplicate
-                        .replace('{id}', `<strong>${result.participant_id}</strong>`);
-                    warnEl.style.display = 'block';
+                if (result.status === 'entered') {
+                    raffleMsg.innerHTML = dict.raffleSuccess;
+                    this.reset();
                     this.style.display = 'none';
-                    document.getElementById('participantId').textContent = result.participant_id;
-                    document.getElementById('instructionsBox').style.display = 'block';
+                } else if (result.status === 'already') {
+                    raffleMsg.innerHTML = dict.raffleAlready;
+                    raffleMsg.classList.add('error');
+                } else if (result.status === 'invalid_input') {
+                    phoneErrorEl.textContent = dict.phoneError;
+                    phoneErrorEl.style.display = 'block';
+                    return;
                 } else {
-                    document.getElementById('participantId').textContent = result.participant_id || '';
-                    this.style.display = 'none';
-                    msgEl.style.display = 'block';
-                    document.getElementById('instructionsBox').style.display = 'block';
+                    throw new Error(`unexpected status ${result.status}`);
                 }
+                raffleMsg.style.display = 'block';
+            } catch (err) {
+                const baseError = dict.raffleError;
+                const detail = err && err.message ? String(err.message) : '';
+                raffleMsg.textContent = detail ? `${baseError} (${detail})` : baseError;
+                raffleMsg.classList.add('error');
+                raffleMsg.style.display = 'block';
+            } finally {
+                if (submitBtn) submitBtn.disabled = false;
+            }
+        });
+
+        document.getElementById('participateForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const phoneModel = document.getElementById('phoneModel').value.trim();
+            const msgEl = document.getElementById('msg');
+            const lang = document.documentElement.lang || 'en';
+            const dict = translations[lang] || translations.en;
+
+            if (!phoneModel) {
+                document.getElementById('phoneModel').focus();
+                return;
+            }
+
+            // GDPR consent validation
+            const consentBox = document.getElementById('consentBox');
+            const consentError = document.getElementById('consentError');
+            consentError.style.display = 'none';
+            consentError.textContent = '';
+            if (!consentBox.checked) {
+                consentError.textContent = dict.consentRequired;
+                consentError.style.display = 'block';
+                consentBox.focus();
+                return;
+            }
+
+            // Reset any previous error state on the message element
+            msgEl.classList.remove('error');
+            msgEl.style.display = 'none';
+            msgEl.removeAttribute('data-i18n-locked');
+
+            const submitBtn = this.querySelector('button[type="submit"]');
+            if (submitBtn) submitBtn.disabled = true;
+
+            try {
+                const response = await fetch(SUPABASE_PARTICIPATIONS_ENDPOINT, {
+                    method: 'POST',
+                    headers: supabaseHeaders(),
+                    body: JSON.stringify({
+                        phone_model: phoneModel,
+                        ui_language: lang,
+                        consent_version: CONSENT_VERSION
+                    })
+                });
+
+                if (!response.ok) {
+                    const detail = await extractSupabaseError(response);
+                    throw new Error(detail || `HTTP ${response.status}`);
+                }
+
+                this.style.display = 'none';
+                msgEl.innerHTML = dict.msgText;
+                msgEl.style.display = 'block';
+                document.getElementById('instructionsBox').style.display = 'block';
+                participatedAt = Date.now();
             } catch (err) {
                 const baseError = dict.registerError;
                 const detail = err && err.message ? String(err.message) : '';
-                msgEl.innerHTML = detail ? `${baseError} (${detail})` : baseError;
+                msgEl.textContent = detail ? `${baseError} (${detail})` : baseError;
                 msgEl.classList.add('error');
                 msgEl.style.display = 'block';
                 msgEl.setAttribute('data-i18n-locked', '1');
@@ -1315,7 +1362,6 @@
             // Map to snake_case columns expected by the Supabase `feedback` table
             const ratingRaw = document.getElementById('feedbackRating').value;
             const payload = {
-                participant_id: document.getElementById('feedbackParticipantId').value.trim() || null,
                 voicemail_language: document.getElementById('feedbackLanguage').value || null,
                 ease_rating: ratingRaw ? parseInt(ratingRaw, 10) : null,
                 feedback_text: document.getElementById('feedbackText').value.trim(),
@@ -1363,50 +1409,48 @@
             }
         });
 
+        // Normalise a phone number to E.164 (e.g. "0171 1234567" -> "+491711234567").
+        // Must produce the same format the processing pipeline hashes caller numbers in,
+        // otherwise deletion requests won't match. National numbers are assumed German.
+        function normalizePhone(raw) {
+            let s = raw.replace(/[\s\-\/().]/g, '');
+            if (s.startsWith('00')) s = '+' + s.slice(2);
+            else if (s.startsWith('0')) s = '+49' + s.slice(1);
+            return /^\+[1-9]\d{7,14}$/.test(s) ? s : null;
+        }
+
         document.getElementById('deletionForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
             const lang = document.documentElement.lang || 'en';
             const dict = translations[lang] || translations.en;
+            const phoneEl = document.getElementById('deletionPhone');
+            const phoneErrorEl = document.getElementById('deletionPhoneError');
             const deletionMsg = document.getElementById('deletionMsg');
-            const deletionPhoneError = document.getElementById('deletionPhoneError');
 
             deletionMsg.classList.remove('error');
             deletionMsg.style.display = 'none';
-            deletionPhoneError.style.display = 'none';
+            phoneErrorEl.style.display = 'none';
 
-            const participantIdRaw = (document.getElementById('deletionParticipantId').value || '').trim();
-            const phoneRaw = (deletionPhoneEl.value || '').trim();
-
-            // Need at least one identifier.
-            if (!phoneRaw && !participantIdRaw) {
-                deletionMsg.textContent = dict.deletionMissingInput;
-                deletionMsg.classList.add('error');
-                deletionMsg.style.display = 'block';
+            const phone = normalizePhone(phoneEl.value.trim());
+            if (!phone) {
+                phoneErrorEl.textContent = dict.phoneError;
+                phoneErrorEl.style.display = 'block';
+                phoneEl.focus();
                 return;
             }
 
-            // Validate phone only if the user actually entered one.
-            let phone = null;
-            if (phoneRaw) {
-                phone = readPhone(deletionPhoneEl, deletionIti, deletionPhoneError, dict);
-                if (!phone) return;
-            }
-
-            // Confirm with the user before sending the deletion request.
             if (!window.confirm(dict.deletionConfirm)) return;
 
             const submitBtn = this.querySelector('button[type="submit"]');
             if (submitBtn) submitBtn.disabled = true;
 
             try {
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/request_participant_deletion`, {
+                // The number is hashed server-side (keyed HMAC) and never stored in plain form.
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/request_recording_deletion`, {
                     method: 'POST',
                     headers: supabaseHeaders(),
-                    body: JSON.stringify({
-                        p_phone: phone,
-                        p_participant_id: participantIdRaw || null
-                    })
+                    body: JSON.stringify({ p_phone: phone })
                 });
 
                 if (!response.ok) {
@@ -1416,24 +1460,16 @@
 
                 const result = await response.json();
 
-                if (result.status === 'flagged') {
-                    deletionMsg.innerHTML = dict.deletionSuccess.replace('{id}', result.participant_id || '');
+                if (result.status === 'recorded' || result.status === 'already') {
+                    deletionMsg.innerHTML = result.status === 'recorded' ? dict.deletionSuccess : dict.deletionAlready;
                     this.reset();
                     this.style.display = 'none';
-                } else if (result.status === 'already') {
-                    deletionMsg.innerHTML = dict.deletionAlready.replace('{id}', result.participant_id || '');
-                    this.reset();
-                    this.style.display = 'none';
-                } else if (result.status === 'rate_limited') {
-                    deletionMsg.innerHTML = dict.deletionRateLimited.replace('{id}', result.participant_id || '');
-                    deletionMsg.classList.add('error');
                 } else if (result.status === 'invalid_input') {
-                    deletionMsg.textContent = dict.deletionMissingInput;
-                    deletionMsg.classList.add('error');
+                    phoneErrorEl.textContent = dict.phoneError;
+                    phoneErrorEl.style.display = 'block';
+                    return;
                 } else {
-                    // 'not_found' or anything unexpected
-                    deletionMsg.textContent = dict.deletionNotFound;
-                    deletionMsg.classList.add('error');
+                    throw new Error(`unexpected status ${result.status}`);
                 }
                 deletionMsg.style.display = 'block';
             } catch (err) {
