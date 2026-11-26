@@ -66,7 +66,7 @@ Postgres tables  public.feedback, public.participations   (managed via supabase/
 
 ## Supabase CLI workflow (this machine)
 
-- Binary: `~/.local/bin/supabase` (v2.90.0). Add `~/.local/bin` to PATH if invoking from a fresh shell.
+- Binary: no longer installed globally (the former `~/.local/bin/supabase` is gone). Use `npx --yes supabase@2.90.0 <command>` instead; all commands below work the same with that prefix.
 - Project is already linked (`supabase link --project-ref tbfnxnfnsabajfkkkxvg`). Local CLI cache lives in `supabase/.temp/` and is gitignored (it contains the pooler URL with the DB password).
 - Standard flow for a schema change:
   1. Write `supabase/migrations/<ts>_<name>.sql`.

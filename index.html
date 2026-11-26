@@ -276,12 +276,12 @@
         .raffle-box > p.raffle-privacy { font-size: .82rem; color: var(--muted); }
         .raffle-box .participate-btn { margin-bottom: 1rem; }
         .survey-box a { color: inherit; }
-        .survey-code {
-            display: inline-block; margin-top: .3rem; padding: .35rem .75rem;
+        .survey-link {
+            display: block; margin-top: .4rem; padding: .45rem .85rem;
             background: var(--surface); border: 1px solid var(--ok-line); border-radius: 8px;
-            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-            font-size: 1.15rem; letter-spacing: .05em; color: var(--ink); user-select: all;
+            font-size: .92rem; font-weight: 600; color: var(--navy-700); overflow-wrap: anywhere;
         }
+        .survey-box a.survey-link { color: var(--navy-700); }
         .rooms-list { margin-top: .5rem; }
         .rooms-list li { margin-bottom: .2rem; }
         a.phone, .instructions .phone {
@@ -573,8 +573,7 @@
                 <button type="button" id="finishedBtn" class="participate-btn" data-i18n="finishedButton">Finished</button>
                 <p id="finishedWarning" class="finish-warning" role="alert" data-i18n="finishedTooEarly">Please ensure that you have provided at least 5 minutes of recordings.</p>
                 <div id="surveyCodeBox" class="survey-box" role="status" aria-live="polite">
-                    <p data-i18n="surveyThanks">Thank you for participating. Redeem the following Survey Code at <a href="https://www.surveycircle.com" target="_blank" rel="noopener noreferrer">https://www.surveycircle.com</a> and get free survey participants through SurveyCircle.</p>
-                    <p><span data-i18n="surveyCodeLabel">The Survey Code is:</span><br><strong id="surveyCode" class="survey-code"></strong></p>
+                    <p><span data-i18n="surveyRedeem">Redeem Survey Code with one click:</span><br><a id="surveyLink" class="survey-link" target="_blank" rel="noopener noreferrer"></a></p>
                 </div>
 
                 <form id="raffleForm" class="raffle-box">
@@ -610,7 +609,7 @@
         </details>
         <details>
             <summary data-i18n="faqQ3">How is my data handled?</summary>
-            <p data-i18n="faqA3">We only ask for your phone model - no name, email address or phone number. The phone network transmits your caller number with each voicemail; when your recordings are processed it is replaced by a keyed hash and the number itself is deleted. The hash is only used to find and delete your recordings if you ask us to. The data is used exclusively for scientific research purposes. To withdraw, use the <a href="#deletionSection">deletion form</a> at the bottom of this page.</p>
+            <p data-i18n="faqA3">We only ask for your phone model - no name, email address or phone number. The phone network transmits your caller number with each voicemail; when your recordings are processed it is replaced by a keyed hash and the number itself is deleted. The hash is only used to find and delete your recordings if you ask us to. The recordings are used exclusively for scientific research, namely to <strong>infer the acoustics of the rooms</strong> you recorded in (e.g. reverberation) - not to identify you or to evaluate what you say beyond your description of the room. The recordings may be passed on in <strong>anonymised</strong> form (without your caller number or its hash) to third parties such as research partners, who may likewise use them <strong>only for this exact purpose</strong>. To withdraw, use the <a href="#deletionSection">deletion form</a> at the bottom of this page.</p>
         </details>
         <details>
             <summary data-i18n="faqQ4">How long does the whole process take?</summary>
@@ -829,7 +828,7 @@
                 i12: '<strong>Talking for about 1-2 minutes is the core of the experiment.</strong> If your room description doesn\'t fill the full time, just keep talking about anything - the weather, your favorite dish, or simply read aloud from this page. The important thing is to keep speaking naturally.',
                 i13: 'Once you have read and understood all of the above, <strong>call the following number</strong> to leave your first voicemail: <a class="phone" href="tel:+4942198969030">0421 989 690 30</a>After hanging up, move to the next room and call the same number again.',
                 instructionsExamplesHint: '↑ See the example voicemails in the introduction at the top of the page.',
-                surveyCodeLabel: 'The Survey Code is:',
+                surveyRedeem: 'Redeem Survey Code with one click:',
                 privacyRetention5: '<strong>Raffle entries</strong> (email address, phone hash): deleted once the winners have been drawn and notified and the prizes handed over. To have your entry deleted sooner, write to <a href="mailto:v.hock@marinom.de">v.hock@marinom.de</a>.',
                 privacyPurpose4: '<strong>Raffle</strong> (verifying via the hash that you took part, drawing the winners and notifying them by email): based on Art. 6 (1)(b) GDPR, as processing is necessary to carry out the raffle you entered.',
                 privacyData6: '<strong>Raffle (optional):</strong> your email address and a keyed hash of the phone number you called from (the number itself is not stored), plus the time of entry and the interface language.',
@@ -845,7 +844,6 @@
                 raffleEmailLabel: 'Email address',
                 raffleIntro: 'As a thank you, you can take part in our raffle. Enter your email address so we can notify you if you win, and the phone number you called from so we can verify that you took part.',
                 raffleTitle: '🎁 Raffle',
-                surveyThanks: 'Thank you for participating. Redeem the following Survey Code at <a href="https://www.surveycircle.com" target="_blank" rel="noopener noreferrer">https://www.surveycircle.com</a> and get free survey participants through SurveyCircle.',
                 finishedTooEarly: 'Please ensure that you have provided at least 5 minutes of recordings.',
                 finishedButton: 'Finished',
                 faqTitle: 'FAQ',
@@ -854,7 +852,7 @@
                 faqQ2: 'Do I need to know the exact dimensions of my rooms?',
                 faqA2: 'Not at all. A rough estimate is enough (e.g. "about 3 by 4 meters"). You don\'t need to measure anything - just describe what you see and estimate as best you can.',
                 faqQ3: 'How is my data handled?',
-                faqA3: 'We only ask for your phone model - no name, email address or phone number. The phone network transmits your caller number with each voicemail; when your recordings are processed it is replaced by a keyed hash and the number itself is deleted. The hash is only used to find and delete your recordings if you ask us to. The data is used exclusively for scientific research purposes. To withdraw, use the <a href="#deletionSection">deletion form</a> at the bottom of this page.',
+                faqA3: 'We only ask for your phone model - no name, email address or phone number. The phone network transmits your caller number with each voicemail; when your recordings are processed it is replaced by a keyed hash and the number itself is deleted. The hash is only used to find and delete your recordings if you ask us to. The recordings are used exclusively for scientific research, namely to <strong>infer the acoustics of the rooms</strong> you recorded in (e.g. reverberation) - not to identify you or to evaluate what you say beyond your description of the room. The recordings may be passed on in <strong>anonymised</strong> form (without your caller number or its hash) to third parties such as research partners, who may likewise use them <strong>only for this exact purpose</strong>. To withdraw, use the <a href="#deletionSection">deletion form</a> at the bottom of this page.',
                 faqQ4: 'How long does the whole process take?',
                 faqA4: 'Each voicemail should be about 1-2 minutes long. Depending on how many rooms you record, the total time is approximately 5 to 10 minutes.',
                 faqQ5: 'What if I forgot to mention something?',
@@ -1003,7 +1001,7 @@
                 i12: '<strong>Etwa 1-2 Minuten zu sprechen ist der Kern des Experiments.</strong> Wenn Ihre Raumbeschreibung die Zeit nicht füllt, sprechen Sie einfach über etwas anderes weiter. Das Wetter, Ihr Lieblingsgericht, oder lesen Sie einfach laut von dieser Seite vor. Wichtig ist, natürlich weiterzusprechen.',
                 i13: 'Sobald Sie alle obigen Punkte gelesen und verstanden haben, <strong>rufen Sie die folgende Nummer an</strong>, um Ihre erste Voicemail zu hinterlassen: <a class="phone" href="tel:+4942198969030">0421 989 690 30</a>Legen Sie danach auf, gehen Sie in den nächsten Raum und rufen Sie dieselbe Nummer erneut an.',
                 instructionsExamplesHint: '↑ Beispiele für Voicemails finden Sie in der Einführung am Anfang der Seite.',
-                surveyCodeLabel: 'Der Survey Code lautet:',
+                surveyRedeem: 'Survey Code mit einem Klick einlösen:',
                 privacyRetention5: '<strong>Gewinnspiel-Einträge</strong> (E-Mail-Adresse, Telefon-Hash): werden gelöscht, sobald die Gewinner gezogen und benachrichtigt und die Gewinne übergeben wurden. Für eine frühere Löschung schreiben Sie an <a href="mailto:v.hock@marinom.de">v.hock@marinom.de</a>.',
                 privacyPurpose4: '<strong>Gewinnspiel</strong> (Überprüfung der Teilnahme anhand des Hashs, Ziehung und Benachrichtigung der Gewinner per E-Mail): Grundlage ist Art. 6 Abs. 1 lit. b DSGVO, da die Verarbeitung zur Durchführung des Gewinnspiels erforderlich ist, an dem Sie teilnehmen.',
                 privacyData6: '<strong>Gewinnspiel (optional):</strong> Ihre E-Mail-Adresse und ein Hash mit geheimem Schlüssel der Telefonnummer, von der Sie angerufen haben (die Nummer selbst wird nicht gespeichert), sowie der Zeitpunkt der Teilnahme und die Oberflächensprache.',
@@ -1019,7 +1017,6 @@
                 raffleEmailLabel: 'E-Mail-Adresse',
                 raffleIntro: 'Als Dankeschön können Sie an unserem Gewinnspiel teilnehmen. Geben Sie Ihre E-Mail-Adresse an, damit wir Sie im Gewinnfall benachrichtigen können, sowie die Telefonnummer, von der Sie angerufen haben, damit wir Ihre Teilnahme überprüfen können.',
                 raffleTitle: '🎁 Gewinnspiel',
-                surveyThanks: 'Vielen Dank für Ihre Teilnahme. Lösen Sie den folgenden Survey Code auf <a href="https://www.surveycircle.com" target="_blank" rel="noopener noreferrer">https://www.surveycircle.com</a> ein und erhalten Sie kostenlos Umfrageteilnehmer über SurveyCircle.',
                 finishedTooEarly: 'Bitte stellen Sie sicher, dass Sie insgesamt mindestens 5 Minuten Aufnahmen hinterlassen haben.',
                 finishedButton: 'Fertig',
                 faqTitle: 'FAQ',
@@ -1028,7 +1025,7 @@
                 faqQ2: 'Muss ich die exakten Maße meiner Räume kennen?',
                 faqA2: 'Nein. Eine grobe Schätzung reicht aus (z. B. „etwa 3 mal 4 Meter"). Sie müssen nichts ausmessen - beschreiben Sie einfach, was Sie sehen, so gut Sie können.',
                 faqQ3: 'Wie werden meine Daten behandelt?',
-                faqA3: 'Wir fragen nur nach Ihrem Handymodell - nicht nach Namen, E-Mail-Adresse oder Telefonnummer. Das Telefonnetz übermittelt bei jeder Voicemail Ihre Rufnummer; bei der Verarbeitung Ihrer Aufnahmen wird sie durch einen Hash mit geheimem Schlüssel ersetzt und die Nummer selbst gelöscht. Der Hash dient nur dazu, Ihre Aufnahmen auf Wunsch zu finden und zu löschen. Die Daten werden ausschließlich für wissenschaftliche Forschungszwecke verwendet. Für einen Widerruf nutzen Sie bitte das <a href="#deletionSection">Löschformular</a> am Ende dieser Seite.',
+                faqA3: 'Wir fragen nur nach Ihrem Handymodell - nicht nach Namen, E-Mail-Adresse oder Telefonnummer. Das Telefonnetz übermittelt bei jeder Voicemail Ihre Rufnummer; bei der Verarbeitung Ihrer Aufnahmen wird sie durch einen Hash mit geheimem Schlüssel ersetzt und die Nummer selbst gelöscht. Der Hash dient nur dazu, Ihre Aufnahmen auf Wunsch zu finden und zu löschen. Die Aufnahmen werden ausschließlich für wissenschaftliche Forschung verwendet, nämlich zur <strong>Bestimmung der Raumakustik</strong> der Räume, in denen Sie aufgenommen haben (z. B. Nachhall) - nicht, um Sie zu identifizieren oder Ihre Aussagen über die Raumbeschreibung hinaus auszuwerten. Die Aufnahmen können in <strong>anonymisierter</strong> Form (ohne Ihre Rufnummer oder deren Hash) an Dritte wie Forschungspartner weitergegeben werden, die sie ebenfalls <strong>ausschließlich für genau diesen Zweck</strong> verwenden dürfen. Für einen Widerruf nutzen Sie bitte das <a href="#deletionSection">Löschformular</a> am Ende dieser Seite.',
                 faqQ4: 'Wie lange dauert der gesamte Ablauf?',
                 faqA4: 'Jede Voicemail sollte etwa 1-2 Minuten dauern. Je nachdem, wie viele Räume Sie aufnehmen, beträgt der gesamte Zeitaufwand ungefähr 5 bis 10 Minuten.',
                 faqQ5: 'Was ist, wenn ich etwas vergessen habe?',
@@ -1193,7 +1190,7 @@
             }
         }
 
-        // SurveyCircle reward code, shown once the participant clicks "Finished".
+        // SurveyCircle reward code, shown as a one-click redeem link (surveycircle.com/<code>) after "Finished".
         const SURVEY_CODE = 'XXXX-XXXX-XXXX-XXXX';
         // Clicking "Finished" sooner than this after "Participate" shows a warning instead of the code.
         const MIN_FINISH_DELAY_MS = 60 * 1000;
@@ -1209,7 +1206,10 @@
             }
 
             warningEl.style.display = 'none';
-            document.getElementById('surveyCode').textContent = SURVEY_CODE;
+            const surveyUrl = `https://www.surveycircle.com/${SURVEY_CODE}`;
+            const surveyLink = document.getElementById('surveyLink');
+            surveyLink.href = surveyUrl;
+            surveyLink.textContent = surveyUrl;
             surveyBox.style.display = 'block';
             document.getElementById('raffleForm').style.display = 'block';
             this.style.display = 'none';
